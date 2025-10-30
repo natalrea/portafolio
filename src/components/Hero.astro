@@ -1,0 +1,117 @@
+---
+---
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-content fade-in">
+      <p class="mono greeting">$ whoami</p>
+      <h1>686f6c61<span class="blink">_</span></h1>
+      <p class="subtitle">
+        Tech Enthusiast
+      </p>
+      <p class="description">
+        Trabajo desarrollando con IA, análisis de datos y sistemas escalables.
+        Transformo ideas complejas en soluciones digitales elegantes.
+      </p>
+      <div class="cta">
+        <a href="#projects" class="btn-primary mono">cd ~/projects</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    padding: 6rem 0;
+  }
+
+  .hero-content {
+    max-width: 800px;
+  }
+
+  .greeting {
+    font-size: 0.9rem;
+    opacity: 0.7;
+    margin-bottom: 0.5rem;
+  }
+
+  h1 {
+    margin-bottom: 1rem;
+  }
+
+  .blink {
+    animation: blink 1s infinite;
+  }
+
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  .subtitle {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    opacity: 0.8;
+  }
+
+  .description {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    opacity: 0.7;
+  }
+
+  .cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 0.75rem 2rem;
+    border: 2px solid var(--text);
+    transition: all 0.3s;
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.9rem;
+  }
+
+  .btn-primary {
+    background: var(--text);
+    color: var(--bg);
+    border-bottom: none;
+  }
+
+  .btn-primary:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary {
+    background: transparent;
+  }
+
+  .btn-secondary:hover {
+    background: var(--text);
+    color: var(--bg);
+    opacity: 1;
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      min-height: 80vh;
+    }
+
+    .cta {
+      flex-direction: column;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      text-align: center;
+    }
+  }
+</style>

@@ -1,0 +1,251 @@
+---
+interface Props {
+  images: string[];
+  projectTitle: string;
+}
+
+const { images, projectTitle } = Astro.props;
+const galleryId = `gallery-${projectTitle.toLowerCase().replace(/\s+/g, '-')}`;
+---
+
+<div class="gallery-modal" id={galleryId}>
+  <div class="modal-overlay"></div>
+  <div class="modal-content">
+    <button class="modal-close" aria-label="Cerrar">×</button>
+    <div class="modal-body">
+      <button class="nav-btn prev" aria-label="Anterior">‹</button>
+      <div class="image-container">
+        <img src="" alt={`${projectTitle} screenshot`} />
+      </div>
+      <button class="nav-btn next" aria-label="Siguiente">›</button>
+    </div>
+    <div class="thumbnail-strip">
+      {images.map((img, index) => (
+        <button class="thumbnail" data-index={index}>
+          <img src={img} alt={`${projectTitle} thumbnail ${index + 1}`} />
+        </button>
+      ))}
+    </div>
+  </div>
+</div>
+
+<style>
+  .gallery-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+  }
+
+  .gallery-modal.active {
+    display: block;
+  }
+
+  .modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.95);
+  }
+
+  .modal-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: transparent;
+    border: 2px solid var(--text);
+    color: var(--text);
+    font-size: 2rem;
+    width: 3rem;
+    height: 3rem;
+    cursor: pointer;
+    z-index: 10;
+    font-family: var(--mono);
+    line-height: 1;
+    transition: all 0.2s;
+  }
+
+  .modal-close:hover {
+    background: var(--text);
+    color: var(--bg);
+  }
+
+  .modal-body {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .image-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-height: 100%;
+    max-width: 100%;
+    min-height: 0;
+    min-width: 0;
+  }
+
+  .image-container img {
+    max-width: 100%;
+    max-height: calc(100vh - 250px);
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border: 1px solid var(--border);
+  }
+
+  .nav-btn {
+    background: transparent;
+    border: 2px solid var(--text);
+    color: var(--text);
+    font-size: 3rem;
+    width: 3rem;
+    height: 3rem;
+    cursor: pointer;
+    font-family: var(--mono);
+    line-height: 1;
+    transition: all 0.2s;
+  }
+
+  .nav-btn:hover {
+    background: var(--text);
+    color: var(--bg);
+  }
+
+  .thumbnail-strip {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    overflow-x: auto;
+    padding: 1rem 0;
+    max-width: 100%;
+  }
+
+  .thumbnail {
+    flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+    border: 2px solid var(--border);
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    transition: border-color 0.2s;
+  }
+
+  .thumbnail:hover,
+  .thumbnail.active {
+    border-color: var(--text);
+  }
+
+  .thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @media (max-width: 768px) {
+    .modal-content {
+      padding: 1rem;
+    }
+
+    .modal-body {
+      gap: 0.5rem;
+    }
+
+    .nav-btn {
+      width: 2.5rem;
+      height: 2.5rem;
+      font-size: 2rem;
+    }
+
+    .thumbnail {
+      width: 60px;
+      height: 60px;
+    }
+  }
+</style>
+
+<script define:vars={{ galleryId, images }}>
+  const modal = document.getElementById(galleryId);
+  const overlay = modal.querySelector('.modal-overlay');
+  const closeBtn = modal.querySelector('.modal-close');
+  const prevBtn = modal.querySelector('.prev');
+  const nextBtn = modal.querySelector('.next');
+  const img = modal.querySelector('.image-container img');
+  const thumbnails = modal.querySelectorAll('.thumbnail');
+
+  let currentIndex = 0;
+
+  function showImage(index) {
+    currentIndex = index;
+    img.src = images[index];
+
+    thumbnails.forEach((thumb, i) => {
+      thumb.classList.toggle('active', i === index);
+    });
+  }
+
+  function openGallery(startIndex = 0) {
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    showImage(startIndex);
+  }
+
+  function closeGallery() {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function nextImage() {
+    const newIndex = (currentIndex + 1) % images.length;
+    showImage(newIndex);
+  }
+
+  function prevImage() {
+    const newIndex = (currentIndex - 1 + images.length) % images.length;
+    showImage(newIndex);
+  }
+
+  // Event listeners
+  closeBtn.addEventListener('click', closeGallery);
+  overlay.addEventListener('click', closeGallery);
+  prevBtn.addEventListener('click', prevImage);
+  nextBtn.addEventListener('click', nextImage);
+
+  thumbnails.forEach((thumb, index) => {
+    thumb.addEventListener('click', () => showImage(index));
+  });
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (!modal.classList.contains('active')) return;
+
+    if (e.key === 'Escape') closeGallery();
+    if (e.key === 'ArrowRight') nextImage();
+    if (e.key === 'ArrowLeft') prevImage();
+  });
+
+  // Expose openGallery globally for this specific gallery
+  window[`open_${galleryId}`] = openGallery;
+</script>

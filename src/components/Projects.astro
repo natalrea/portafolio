@@ -1,0 +1,289 @@
+---
+import ImageGallery from './ImageGallery.astro';
+
+const projects = [
+  {
+    title: "SPARRING",
+    description: "<strong>SaaS para empresas de desarrollo de software.</strong> Plataforma que automatiza entrevistas técnicas con IA, ofreciendo 8 tipos de evaluaciones dirigidas a perfiles técnicos.",
+    tech: ["React", "Node.js", "MongoDB", "AWS", "IA Models +9", "Resend"],
+    link: null,
+    demo: "https://www.sparring.dev",
+    featured: true,
+    images: null
+  },
+  {
+    title: "LLM Synthetic Personality Review",
+    description: "<strong>Revisión sistemática de literatura académica.</strong> Compilación de 119 artículos científicos (2022-2025) sobre evaluación psicológica y manifestación de rasgos de personalidad en modelos de lenguaje grandes (LLMs).",
+    tech: ["Research", "Python", "Data Analysis", "LLMs", "Psychology"],
+    link: "https://github.com/686f6c61/llm-synthetic-personality-review",
+    demo: null,
+    featured: true,
+    images: null
+  },
+  {
+    title: "Open Mood",
+    description: "<strong>App iOS de red social para la Generación Z.</strong> Comparte tu estado de ánimo con emojis y tu ubicación. Una nueva forma minimalista de conectar con tu gente.",
+    tech: ["iOS", "Swift", "Supabase", "Real-time"],
+    link: "https://github.com/yourusername/open-mood",
+    demo: "https://apps.apple.com/app/open-mood",
+    featured: false,
+    images: null
+  },
+  {
+    title: "IA Gota",
+    description: "<strong>App iOS para análisis nutricional especializado.</strong> Escanea cartas de restaurantes con una foto y calcula el nivel de purinas de cada plato. Obtén fichas detalladas de cualquier alimento.",
+    tech: ["iOS", "Swift", "IA", "Computer Vision"],
+    link: "https://github.com/686f6c61/IAGota",
+    demo: null,
+    featured: false,
+    images: [
+      "/screenshots/ia-gota/IA-Gota-v2.gif",
+      "/screenshots/ia-gota/01.png",
+      "/screenshots/ia-gota/02.png",
+      "/screenshots/ia-gota/03.png",
+      "/screenshots/ia-gota/04.png",
+      "/screenshots/ia-gota/05.png",
+      "/screenshots/ia-gota/06.png",
+      "/screenshots/ia-gota/07.png",
+      "/screenshots/ia-gota/08.png"
+    ]
+  },
+  {
+    title: "X.com Analytics",
+    description: "<strong>Sistema profesional de análisis de redes sociales para X.com (Twitter).</strong> Procesa datos scrapeados mediante grafos interactivos. Detecta comunidades, calcula métricas de red avanzadas, identifica influencers y bots con optimizaciones de rendimiento. Beta v0.6.8",
+    tech: ["Python", "Twitter Graph", "X.com", "Gephi Visualizations"],
+    link: "https://github.com/686f6c61/x-twitter-community-analysis",
+    demo: null,
+    featured: false,
+    images: null
+  },
+  {
+    title: "Prompt Engineering Framework Generator",
+    description: "<strong>Aplicación web para generar prompts efectivos.</strong> Utiliza 75 frameworks especializados de prompt engineering para crear prompts optimizados con las mejores prácticas de IA.",
+    tech: ["Python", "Flask", "OpenAI", "Claude", "Prompt Engineering"],
+    link: "https://github.com/686f6c61/prompt-engineering-frameworks",
+    demo: null,
+    featured: false,
+    images: [
+      "/screenshots/prompt-framework/Frameworks-Prompt.png",
+      "/screenshots/prompt-framework/configuracion.png",
+      "/screenshots/prompt-framework/diseño.png",
+      "/screenshots/prompt-framework/bolt-lovable.png",
+      "/screenshots/prompt-framework/codigos.png",
+      "/screenshots/prompt-framework/razonadores.png"
+    ]
+  },
+  {
+    title: "LinkedIn Job Scraper",
+    description: "<strong>Script interactivo para búsqueda de trabajos en LinkedIn.</strong> Integración con RapidAPI JSearch. Permite búsquedas personalizadas y predefinidas con exportación a CSV.",
+    tech: ["Python", "RapidAPI", "CSV", "LinkedIn", "Job Search"],
+    link: "https://github.com/686f6c61/linkedIN-Jobs-Scrapper",
+    demo: null,
+    featured: false,
+    images: null
+  },
+  {
+    title: "Organizador Automático de Gmail",
+    description: "<strong>Script automatizado para organización de correos electrónicos.</strong> Clasifica automáticamente emails según el dominio del remitente, creando etiquetas dinámicas y agrupando dominios genéricos.",
+    tech: ["Google Apps Script", "Gmail API", "JavaScript", "Automation"],
+    link: "https://github.com/686f6c61/organizador-etiquetas-gmail-google-script",
+    demo: null,
+    featured: false,
+    images: [
+      "/screenshots/gmail-organizer/configurador.png",
+      "/screenshots/gmail-organizer/estadisticas.png"
+    ]
+  }
+];
+---
+
+<section id="projects" class="projects border-top">
+  <div class="container">
+    <h2 class="mono">$ ls ~/projects</h2>
+    <div class="projects-grid">
+      {projects.map((project, index) => (
+        <article class={`project-card ${project.featured ? 'featured' : ''} fade-in`} style={`animation-delay: ${index * 0.1}s`}>
+          {project.featured && (
+            <span class="featured-badge mono">PINNED</span>
+          )}
+          <h3>{project.title}</h3>
+          <p set:html={project.description}></p>
+          <div class="tech-stack">
+            {project.tech.map(tech => (
+              <span class="tech-tag">{tech}</span>
+            ))}
+          </div>
+          <div class="project-links">
+            {project.demo && (
+              <a href={project.demo} target="_blank" rel="noopener">
+                <span class="mono">[web]</span>
+              </a>
+            )}
+            {project.link && (
+              <a href={project.link} target="_blank" rel="noopener">
+                <span class="mono">[code]</span>
+              </a>
+            )}
+            {project.images && (
+              <button class="btn-images mono" data-gallery={`gallery-${project.title.toLowerCase().replace(/\s+/g, '-')}`}>
+                [images]
+              </button>
+            )}
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+
+  {projects.map(project =>
+    project.images && (
+      <ImageGallery images={project.images} projectTitle={project.title} />
+    )
+  )}
+</section>
+
+<style>
+  .projects {
+    padding: 6rem 0;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .project-card {
+    padding: 2rem;
+    border: 1px solid var(--border);
+    transition: transform 0.3s, border-color 0.3s, background 0.3s;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .project-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--text);
+  }
+
+  .project-card.featured {
+    border: 2px solid var(--text);
+    background: linear-gradient(135deg, transparent 0%, rgba(0,0,0,0.02) 100%);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .project-card.featured {
+      background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.02) 100%);
+    }
+  }
+
+  .featured-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 0.65rem;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--text);
+    background: var(--bg);
+    letter-spacing: 0.1em;
+  }
+
+  .project-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .project-card.featured h3 {
+    font-size: 1.75rem;
+  }
+
+  .project-card p {
+    opacity: 0.8;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    font-family: var(--mono);
+    line-height: 1.7;
+    flex-grow: 1;
+  }
+
+  .tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    min-height: 3.5rem;
+    align-content: flex-start;
+  }
+
+  .tech-tag {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    border: 1px solid var(--border);
+    background: var(--bg);
+  }
+
+  .project-links {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: auto;
+  }
+
+  .project-links a,
+  .btn-images {
+    font-size: 0.9rem;
+  }
+
+  .btn-images {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--text);
+    color: var(--text);
+    cursor: pointer;
+    padding: 0;
+    transition: opacity 0.2s;
+    font-family: var(--mono);
+  }
+
+  .btn-images:hover {
+    opacity: 0.6;
+  }
+
+  @media (max-width: 768px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const imageButtons = document.querySelectorAll('.btn-images');
+
+    imageButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const galleryId = button.getAttribute('data-gallery');
+        const gallery = document.getElementById(galleryId);
+
+        if (gallery) {
+          gallery.classList.add('active');
+          document.body.style.overflow = 'hidden';
+
+          // Trigger the first image
+          const firstImage = gallery.querySelector('.image-container img');
+          const images = gallery.querySelectorAll('.thumbnail');
+          if (firstImage && images.length > 0) {
+            const firstThumbnail = images[0];
+            const firstSrc = firstThumbnail.querySelector('img').src;
+            firstImage.src = firstSrc;
+            firstThumbnail.classList.add('active');
+          }
+        }
+      });
+    });
+  });
+</script>
