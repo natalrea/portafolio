@@ -4,7 +4,7 @@ import ImageGallery from './ImageGallery.astro';
 const projects = [
   {
     title: "SPARRING",
-    description: "<strong>SaaS para empresas de desarrollo de software.</strong> Plataforma que automatiza entrevistas técnicas con IA, ofreciendo 8 tipos de evaluaciones dirigidas a perfiles técnicos.",
+    description: "<strong>Platforma SaaS de entrevistas técnicas automatizadas.</strong><br><br>IA que evalúa talentos tech. Reduce tiempo de hiring en 85% y elimina 95% de costes y bias humano. Informes ejecutivos y de profundidad (+20pgs). <strong>Preguntas desarrollo</strong>, <strong>Preguntas test</strong>, <strong>Realización de código</strong>, <strong>Complejidad algorítmica</strong>, <strong>Errores</strong>, <strong>Completado</strong>, <strong>PR</strong>, <strong>Lógica matemática</strong>, <strong>Clean code</strong>.",
     tech: ["React", "Node.js", "MongoDB", "AWS", "IA Models +9", "Resend"],
     link: null,
     demo: "https://www.sparring.dev",
@@ -13,7 +13,7 @@ const projects = [
   },
   {
     title: "LLM Synthetic Personality Review",
-    description: "<strong>Revisión sistemática de literatura académica.</strong> Compilación de 119 artículos científicos (2022-2025) sobre evaluación psicológica y manifestación de rasgos de personalidad en modelos de lenguaje grandes (LLMs).",
+    description: "<strong>Análisis de literatura sobre personalidad en LLMs.</strong><br><br>Compilación de 119 artículos científicos (2022-2025). Manifestación de rasgos de personalidad en LLMs.",
     tech: ["Research", "Python", "Data Analysis", "LLMs", "Psychology"],
     link: "https://github.com/686f6c61/llm-synthetic-personality-review",
     demo: null,
@@ -22,16 +22,20 @@ const projects = [
   },
   {
     title: "Open Mood",
-    description: "<strong>App iOS de red social para la Generación Z.</strong> Comparte tu estado de ánimo con emojis y tu ubicación. Una nueva forma minimalista de conectar con tu gente.",
-    tech: ["iOS", "Swift", "Supabase", "Real-time"],
+    description: "<strong>App iOS de red social para Gen Z.</strong><br><br>Comparte estados de ánimo con emojis y ubicación. App en Swift + Supabase. Backend de gestión y control para administradores en Next.js.",
+    tech: ["iOS", "Swift", "Supabase", "Real-time", "Next.js", "Backend", "Analytics"],
     link: "https://github.com/yourusername/open-mood",
-    demo: "https://apps.apple.com/app/open-mood",
+    demo: null,
     featured: false,
-    images: null
+    images: [
+      "/screenshots/open-mood/01.png",
+      "/screenshots/open-mood/02.png",
+      "/screenshots/open-mood/03.png"
+    ]
   },
   {
     title: "IA Gota",
-    description: "<strong>App iOS para análisis nutricional especializado.</strong> Escanea cartas de restaurantes con una foto y calcula el nivel de purinas de cada plato. Obtén fichas detalladas de cualquier alimento.",
+    description: "<strong>App iOS de análisis nutricional.</strong><br><br>Escanea cartas de restaurantes con una foto y calcula niveles de purinas. Fichas nutricionales detalladas de alimentos o platos concretos.",
     tech: ["iOS", "Swift", "IA", "Computer Vision"],
     link: "https://github.com/686f6c61/IAGota",
     demo: null,
@@ -50,7 +54,7 @@ const projects = [
   },
   {
     title: "Astro Portfolio Template",
-    description: "<strong>Template usado en este portfolio.</strong> Diseño minimalista terminal-inspired con estética monospace, modo oscuro/claro automático, galería de imágenes para proyectos y protección anti-spam de email. Template open source disponible para uso público.",
+    description: "<strong>Template portfolio minimalista.</strong><br><br>Diseño terminal-inspired con estética monospace, modo oscuro/claro automático, galería de imágenes para proyectos y protección anti-spam de email. Template open source disponible para uso público.",
     tech: ["Astro", "TypeScript", "CSS", "JavaScript", "Open Source"],
     link: "https://github.com/686f6c61/astro-portfolio-template-686f6c61",
     demo: null,
@@ -59,7 +63,7 @@ const projects = [
   },
   {
     title: "X.com Analytics",
-    description: "<strong>Sistema profesional de análisis de redes sociales para X.com (Twitter).</strong> Procesa datos scrapeados mediante grafos interactivos. Detecta comunidades, calcula métricas de red avanzadas, identifica influencers y bots con optimizaciones de rendimiento. Beta v0.6.8",
+    description: "<strong>Sistema profesional de análisis de redes sociales para X.com (Twitter).</strong><br><br>Procesa datos scrapeados mediante grafos interactivos. Detecta comunidades, calcula métricas de red avanzadas, identifica influencers y bots con optimizaciones de rendimiento. Beta v0.6.8",
     tech: ["Python", "Twitter Graph", "X.com", "Gephi Visualizations"],
     link: "https://github.com/686f6c61/x-twitter-community-analysis",
     demo: null,
@@ -68,7 +72,7 @@ const projects = [
   },
   {
     title: "AI Unicode Detector",
-    description: "<strong>Herramienta web para detectar caracteres Unicode invisibles.</strong> Analiza y visualiza caracteres Unicode sin representación visual insertados inadvertidamente por modelos de IA durante la generación de texto, que pueden causar problemas en ciertos contextos.",
+    description: "<strong>Herramienta para detectar Unicode invisible.</strong><br><br>Analiza caracteres sin representación visual generados por IA que pueden causar problemas en datos. Detecta textos realizados con IA.",
     tech: ["HTML", "JavaScript", "Unicode", "AI"],
     link: "https://github.com/686f6c61/ai-unicode-detector",
     demo: "https://686f6c61.github.io/ai-unicode-detector/",
@@ -77,7 +81,7 @@ const projects = [
   },
   {
     title: "Prompt Engineering Framework Generator",
-    description: "<strong>Aplicación web para generar prompts efectivos.</strong> Utiliza 75 frameworks especializados de prompt engineering para crear prompts optimizados con las mejores prácticas de IA.",
+    description: "<strong>Aplicación web para generar prompts efectivos.</strong><br><br>Utiliza 75 frameworks especializados de prompt engineering para crear prompts optimizados con las mejores prácticas de IA.",
     tech: ["Python", "Flask", "OpenAI", "Claude", "Prompt Engineering"],
     link: "https://github.com/686f6c61/prompt-engineering-frameworks",
     demo: null,
@@ -93,7 +97,7 @@ const projects = [
   },
   {
     title: "LinkedIn Job Scraper",
-    description: "<strong>Script interactivo para búsqueda de trabajos en LinkedIn.</strong> Integración con RapidAPI JSearch. Permite búsquedas personalizadas y predefinidas con exportación a CSV.",
+    description: "<strong>Script interactivo para búsqueda de trabajos en LinkedIn.</strong><br><br>Integración con RapidAPI JSearch. Permite búsquedas personalizadas y predefinidas con exportación a CSV.",
     tech: ["Python", "RapidAPI", "CSV", "LinkedIn", "Job Search"],
     link: "https://github.com/686f6c61/linkedIN-Jobs-Scrapper",
     demo: null,
@@ -102,7 +106,7 @@ const projects = [
   },
   {
     title: "Organizador Automático de Gmail",
-    description: "<strong>Script automatizado para organización de correos electrónicos.</strong> Clasifica automáticamente emails según el dominio del remitente, creando etiquetas dinámicas y agrupando dominios genéricos.",
+    description: "<strong>Script automatizado para organización de correos electrónicos.</strong><br><br>Clasifica automáticamente emails según el dominio del remitente, creando etiquetas dinámicas y agrupando dominios genéricos.",
     tech: ["Google Apps Script", "Gmail API", "JavaScript", "Automation"],
     link: "https://github.com/686f6c61/organizador-etiquetas-gmail-google-script",
     demo: null,
@@ -114,7 +118,7 @@ const projects = [
   },
   {
     title: "Refutación Matemática de la Numerología",
-    description: "<strong>Demostración matemática contra pretensiones numerológicas.</strong> Sistema diseñado donde todos los números convergen al 7 por diseño arbitrario, no por propiedades místicas, demostrando la falacia del razonamiento numerológico.",
+    description: "<strong>Demostración matemática contra pretensiones numerológicas.</strong><br><br>Sistema diseñado donde todos los números convergen al 7 por diseño arbitrario, no por propiedades místicas, demostrando la falacia del razonamiento numerológico.",
     tech: ["Python", "Mathematics", "Logic", "Scientific Method"],
     link: "https://github.com/686f6c61/conjetura-falso-7",
     demo: null,
@@ -123,7 +127,7 @@ const projects = [
   },
   {
     title: "Extensión Detector de Lovable",
-    description: "<strong>Extensión de Chrome para detectar sitios construidos con Lovable.</strong> Analiza el código fuente de páginas web buscando metaetiquetas que contengan palabras clave indicativas del framework Lovable.",
+    description: "<strong>Extensión de Chrome para detectar sitios construidos con Lovable.</strong><br><br>Analiza el código fuente de páginas web buscando metaetiquetas que contengan palabras clave indicativas del framework Lovable.",
     tech: ["Chrome Extension", "JavaScript", "Web Scraping", "Lovable"],
     link: "https://github.com/686f6c61/lovable-detector-extension",
     demo: null,
