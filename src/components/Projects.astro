@@ -24,13 +24,28 @@ const projects = [
     title: "Open Mood",
     description: "<strong>App iOS de red social para Gen Z.</strong><br><br>Comparte estados de ánimo con emojis y ubicación. App en Swift + Supabase. Backend de gestión y control para administradores en Next.js.",
     tech: ["iOS", "Swift", "Supabase", "Real-time", "Next.js", "Backend", "Analytics"],
-    link: "https://github.com/yourusername/open-mood",
+    link: null,
     demo: null,
     featured: false,
     images: [
       "/screenshots/open-mood/01.png",
       "/screenshots/open-mood/02.png",
-      "/screenshots/open-mood/03.png"
+      "/screenshots/open-mood/03.png",
+      "/screenshots/open-mood/04.png",
+      "/screenshots/open-mood/05.png",
+      "/screenshots/open-mood/06.png",
+      "/screenshots/open-mood/07.png",
+      "/screenshots/open-mood/08.png",
+      "/screenshots/open-mood/09.png",
+      "/screenshots/open-mood/10.png",
+      "/screenshots/open-mood/11.png",
+      "/screenshots/open-mood/12.png",
+      "/screenshots/open-mood/13.png",
+      "/screenshots/open-mood/14.png",
+      "/screenshots/open-mood/15.png",
+      "/screenshots/open-mood/16.png",
+      "/screenshots/open-mood/17.png",
+      "/screenshots/open-mood/18.png"
     ]
   },
   {
@@ -316,21 +331,12 @@ const projects = [
     imageButtons.forEach(button => {
       button.addEventListener('click', () => {
         const galleryId = button.getAttribute('data-gallery');
-        const gallery = document.getElementById(galleryId);
-
-        if (gallery) {
-          gallery.classList.add('active');
-          document.body.style.overflow = 'hidden';
-
-          // Trigger the first image
-          const firstImage = gallery.querySelector('.image-container img');
-          const images = gallery.querySelectorAll('.thumbnail');
-          if (firstImage && images.length > 0) {
-            const firstThumbnail = images[0];
-            const firstSrc = firstThumbnail.querySelector('img').src;
-            firstImage.src = firstSrc;
-            firstThumbnail.classList.add('active');
-          }
+        if (!galleryId) return;
+        
+        // Call the gallery's open function
+        const openFunction = window[`open_${galleryId}`];
+        if (openFunction) {
+          openFunction(0);
         }
       });
     });
