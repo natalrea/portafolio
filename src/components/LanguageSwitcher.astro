@@ -1,0 +1,66 @@
+---
+interface Props {
+  currentLang?: string;
+  currentPath?: string;
+}
+
+const { currentLang = 'es', currentPath = '/' } = Astro.props;
+
+// Function to get the alternate language path
+function getAlternatePath(path: string, targetLang: string): string {
+  if (targetLang === 'en') {
+    return path === '/' ? '/en' : `/en${path}`;
+  } else {
+    if (path.startsWith('/en')) {
+      return path === '/en' ? '/' : path.replace('/en', '');
+    }
+    return path;
+  }
+}
+
+const alternateLang = currentLang === 'es' ? 'en' : 'es';
+const alternatePath = getAlternatePath(currentPath, alternateLang);
+---
+
+<div class="language-switcher mono">
+  <a 
+    href={alternatePath} 
+    class="lang-link"
+    title={currentLang === 'es' ? 'Switch to English' : 'Cambiar a español'}
+  >
+    {currentLang === 'es' ? 'EN' : 'ES'}
+  </a>
+</div>
+
+<style>
+  .language-switcher {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    z-index: 1000;
+  }
+
+  .lang-link {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .lang-link:hover {
+    border-color: var(--text);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
+    .language-switcher {
+      top: 1rem;
+      right: 1rem;
+    }
+  }
+</style>

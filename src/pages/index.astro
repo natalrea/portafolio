@@ -3,15 +3,19 @@ import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import Projects from '../components/Projects.astro';
 import Footer from '../components/Footer.astro';
+import { useI18n } from '../lib/i18n.js';
+
+const { t } = useI18n('es');
 ---
 
 <Layout
-  title="686f6c61.dev - Portfolio Tech"
-  description="Portfolio de desarrollo web full stack. Especializado en React, Node.js y tecnologías modernas."
+  title={t.siteTitle}
+  description={t.siteDescription}
+  lang="es"
 >
   <main>
-    <Hero />
-    <Projects />
-    <Footer />
+    <Hero lang="es" />
+    <Projects lang="es" />
+    <Footer lang="es" />
   </main>
 </Layout>

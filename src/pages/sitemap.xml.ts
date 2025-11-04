@@ -14,7 +14,17 @@ export const GET: APIRoute = async ({ site }) => {
       url: '',
       lastmod: currentDate,
       changefreq: 'weekly',
-      priority: '1.0'
+      priority: '1.0',
+      lang: 'es',
+      alternate: '/en'
+    },
+    {
+      url: '/en',
+      lastmod: currentDate,
+      changefreq: 'weekly',
+      priority: '0.9',
+      lang: 'en',
+      alternate: '/'
     }
   ];
 
@@ -27,6 +37,8 @@ ${pages.map(page => `  <url>
     <lastmod>${page.lastmod}</lastmod>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
+    <xhtml:link rel="alternate" hreflang="${page.lang}" href="${baseUrl}${page.url}" />
+    <xhtml:link rel="alternate" hreflang="${page.lang === 'es' ? 'en' : 'es'}" href="${baseUrl}${page.alternate}" />
   </url>`).join('\n')}
 </urlset>`;
 

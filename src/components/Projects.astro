@@ -1,186 +1,28 @@
 ---
 import ImageGallery from './ImageGallery.astro';
+import { getAllProjects } from '../lib/projects.js';
+import { useI18n } from '../lib/i18n.js';
 
-const projects = [
-  {
-    title: "SPARRING",
-    description: "<strong>Platforma SaaS de entrevistas técnicas automatizadas.</strong><br><br>IA que evalúa talentos tech. Reduce tiempo de hiring en 85% y elimina 95% de costes y bias humano. Informes ejecutivos y de profundidad (+20pgs). <strong>Preguntas desarrollo</strong>, <strong>Preguntas test</strong>, <strong>Realización de código</strong>, <strong>Complejidad algorítmica</strong>, <strong>Errores</strong>, <strong>Completado</strong>, <strong>PR</strong>, <strong>Lógica matemática</strong>, <strong>Clean code</strong>.",
-    tech: ["React", "Node.js", "MongoDB", "AWS", "IA Models +9", "Resend"],
-    link: null,
-    demo: "https://www.sparring.dev",
-    featured: true,
-    images: null
-  },
-  {
-    title: "LLM Synthetic Personality Review",
-    description: "<strong>Análisis de literatura sobre personalidad en LLMs.</strong><br><br>Compilación de 119 artículos científicos (2022-2025). Manifestación de rasgos de personalidad en LLMs.",
-    tech: ["Research", "Python", "Data Analysis", "LLMs", "Psychology"],
-    link: "https://github.com/686f6c61/llm-synthetic-personality-review",
-    demo: null,
-    featured: true,
-    images: null
-  },
-  {
-    title: "Red de Agentes IA errores JAVA - COBOL",
-    description: "<strong>SaaS de orquestación de agentes IA para debugging bancario.</strong><br><br>6 agentes especializados procesan errores de consola Java/Cobol. Identifican ubicación exacta del error y proporcionan soluciones accionables para equipos de desarrollo. Ahorro de 1-8 horas por error. Integración con Gemini 2.5 Pro.",
-    tech: ["React", "Python", "LLM Gemini 2.5 Pro", "Supabase", "SaaS", "Agent Architecture"],
-    link: null,
-    demo: null,
-    featured: false,
-    images: null
-  },
-  {
-    title: "Open Mood",
-    description: "<strong>App iOS de red social para Gen Z.</strong><br><br>Comparte estados de ánimo con emojis y ubicación. App en Swift + Supabase. Backend de gestión y control para administradores en Next.js.",
-    tech: ["iOS", "Swift", "Supabase", "Real-time", "Next.js", "Backend", "Analytics"],
-    link: null,
-    demo: null,
-    featured: false,
-    images: [
-      "/screenshots/open-mood/01.png",
-      "/screenshots/open-mood/02.png",
-      "/screenshots/open-mood/03.png",
-      "/screenshots/open-mood/04.png",
-      "/screenshots/open-mood/05.png",
-      "/screenshots/open-mood/06.png",
-      "/screenshots/open-mood/07.png",
-      "/screenshots/open-mood/08.png",
-      "/screenshots/open-mood/09.png",
-      "/screenshots/open-mood/10.png",
-      "/screenshots/open-mood/11.png",
-      "/screenshots/open-mood/12.png",
-      "/screenshots/open-mood/13.png",
-      "/screenshots/open-mood/14.png",
-      "/screenshots/open-mood/15.png",
-      "/screenshots/open-mood/16.png",
-      "/screenshots/open-mood/17.png",
-      "/screenshots/open-mood/18.png"
-    ]
-  },
-  {
-    title: "IA Gota",
-    description: "<strong>App iOS de análisis nutricional.</strong><br><br>Escanea cartas de restaurantes con una foto y calcula niveles de purinas. Fichas nutricionales detalladas de alimentos o platos concretos.",
-    tech: ["iOS", "Swift", "IA", "Computer Vision"],
-    link: "https://github.com/686f6c61/IAGota",
-    demo: null,
-    featured: false,
-    images: [
-      "/screenshots/ia-gota/IA-Gota-v2.gif",
-      "/screenshots/ia-gota/01.png",
-      "/screenshots/ia-gota/02.png",
-      "/screenshots/ia-gota/03.png",
-      "/screenshots/ia-gota/04.png",
-      "/screenshots/ia-gota/05.png",
-      "/screenshots/ia-gota/06.png",
-      "/screenshots/ia-gota/07.png",
-      "/screenshots/ia-gota/08.png"
-    ]
-  },
-  {
-    title: "Astro Portfolio Template",
-    description: "<strong>Template portfolio minimalista.</strong><br><br>Diseño terminal-inspired con estética monospace, modo oscuro/claro automático, galería de imágenes para proyectos y protección anti-spam de email. Template open source disponible para uso público.",
-    tech: ["Astro", "TypeScript", "CSS", "JavaScript", "Open Source"],
-    link: "https://github.com/686f6c61/astro-portfolio-template-686f6c61",
-    demo: null,
-    featured: false,
-    images: null
-  },
-  {
-    title: "X.com Analytics",
-    description: "<strong>Sistema profesional de análisis de redes sociales para X.com (Twitter).</strong><br><br>Procesa datos scrapeados mediante grafos interactivos. Detecta comunidades, calcula métricas de red avanzadas, identifica influencers y bots con optimizaciones de rendimiento. Beta v0.6.8",
-    tech: ["Python", "Twitter Graph", "X.com", "Gephi Visualizations"],
-    link: "https://github.com/686f6c61/x-twitter-community-analysis",
-    demo: null,
-    featured: false,
-    images: null
-  },
-  {
-    title: "Módulo Automático de Albaranes para Farmacias",
-    description: "<strong>Sistema automatizado de gestión de albaranes.</strong><br><br>Procesamiento CSV de listado de pedidos mensuales de laboratorio farmacéutico. Creación de albaranes en Excel/PDF. Validación de datos con reportes de errores. Login por magic link. Interfaz intuitiva. Desplegado en Render. Reduce carga de trabajo de 5 días a 3 minutos. Personalización de albaranes.",
-    tech: ["Python", "Excel", "PDF", "CSV", "MVC", "Render"],
-    link: null,
-    demo: null,
-    featured: false,
-    images: null
-  },
-  {
-    title: "AI Unicode Detector",
-    description: "<strong>Herramienta para detectar Unicode invisible.</strong><br><br>Analiza caracteres sin representación visual generados por IA que pueden causar problemas en datos. Detecta textos realizados con IA.",
-    tech: ["HTML", "JavaScript", "Unicode", "AI"],
-    link: "https://github.com/686f6c61/ai-unicode-detector",
-    demo: "https://686f6c61.github.io/ai-unicode-detector/",
-    featured: false,
-    images: null
-  },
-  {
-    title: "Prompt Engineering Framework Generator",
-    description: "<strong>Aplicación web para generar prompts efectivos.</strong><br><br>Utiliza 75 frameworks especializados de prompt engineering para crear prompts optimizados con las mejores prácticas de IA.",
-    tech: ["Python", "Flask", "OpenAI", "Claude", "Prompt Engineering"],
-    link: "https://github.com/686f6c61/prompt-engineering-frameworks",
-    demo: null,
-    featured: false,
-    images: [
-      "/screenshots/prompt-framework/Frameworks-Prompt.png",
-      "/screenshots/prompt-framework/configuracion.png",
-      "/screenshots/prompt-framework/diseño.png",
-      "/screenshots/prompt-framework/bolt-lovable.png",
-      "/screenshots/prompt-framework/codigos.png",
-      "/screenshots/prompt-framework/razonadores.png"
-    ]
-  },
-  {
-    title: "LinkedIn Job Scraper",
-    description: "<strong>Script interactivo para búsqueda de trabajos en LinkedIn.</strong><br><br>Integración con RapidAPI JSearch. Permite búsquedas personalizadas y predefinidas con exportación a CSV.",
-    tech: ["Python", "RapidAPI", "CSV", "LinkedIn", "Job Search"],
-    link: "https://github.com/686f6c61/linkedIN-Jobs-Scrapper",
-    demo: null,
-    featured: false,
-    images: null
-  },
-  {
-    title: "Organizador Automático de Gmail",
-    description: "<strong>Script automatizado para organización de correos electrónicos.</strong><br><br>Clasifica automáticamente emails según el dominio del remitente, creando etiquetas dinámicas y agrupando dominios genéricos.",
-    tech: ["Google Apps Script", "Gmail API", "JavaScript", "Automation"],
-    link: "https://github.com/686f6c61/organizador-etiquetas-gmail-google-script",
-    demo: null,
-    featured: false,
-    images: [
-      "/screenshots/gmail-organizer/configurador.png",
-      "/screenshots/gmail-organizer/estadisticas.png"
-    ]
-  },
-  {
-    title: "Refutación Matemática de la Numerología",
-    description: "<strong>Demostración matemática contra pretensiones numerológicas.</strong><br><br>Sistema diseñado donde todos los números convergen al 7 por diseño arbitrario, no por propiedades místicas, demostrando la falacia del razonamiento numerológico.",
-    tech: ["Python", "Mathematics", "Logic", "Scientific Method"],
-    link: "https://github.com/686f6c61/conjetura-falso-7",
-    demo: null,
-    featured: false,
-    images: null
-  },
-  {
-    title: "Extensión Detector de Lovable",
-    description: "<strong>Extensión de Chrome para detectar sitios construidos con Lovable.</strong><br><br>Analiza el código fuente de páginas web buscando metaetiquetas que contengan palabras clave indicativas del framework Lovable.",
-    tech: ["Chrome Extension", "JavaScript", "Web Scraping", "Lovable"],
-    link: "https://github.com/686f6c61/lovable-detector-extension",
-    demo: null,
-    featured: false,
-    images: null
-  }
-];
+interface Props {
+  lang?: string;
+}
+
+const { lang = 'es' } = Astro.props;
+const { t } = useI18n(lang);
+const projects = getAllProjects();
 ---
 
 <section id="projects" class="projects border-top">
   <div class="container">
-    <h2 class="mono">$ ls ~/projects</h2>
+    <h2 class="mono">{t.projectsTitle}</h2>
     <div class="projects-grid">
       {projects.map((project, index) => (
         <article class={`project-card ${project.featured ? 'featured' : ''} fade-in`} style={`animation-delay: ${index * 0.1}s`}>
           {project.featured && (
-            <span class="featured-badge mono">PINNED</span>
+            <span class="featured-badge mono">{t.projectsFeatured}</span>
           )}
-          <h3>{project.title}</h3>
-          <p set:html={project.description}></p>
+          <h3>{project.title[lang]}</h3>
+          <p set:html={project.description[lang]}></p>
           <div class="tech-stack">
             {project.tech.map(tech => (
               <span class="tech-tag">{tech}</span>
@@ -189,17 +31,22 @@ const projects = [
           <div class="project-links">
             {project.demo && (
               <a href={project.demo} target="_blank" rel="noopener">
-                <span class="mono">[demo]</span>
+                <span class="mono">{t.projectsDemo}</span>
               </a>
             )}
             {project.link && (
               <a href={project.link} target="_blank" rel="noopener">
-                <span class="mono">[code]</span>
+                <span class="mono">{t.projectsCode}</span>
               </a>
             )}
             {project.images && (
-              <button class="btn-images mono" data-gallery={`gallery-${project.title.toLowerCase().replace(/\s+/g, '-')}`}>
-                [images]
+              <button class="btn-images mono" data-gallery={`gallery-${project.title[lang].toLowerCase().replace(/\s+/g, '-')}`}>
+                {t.projectsImages}
+              </button>
+            )}
+            {project.explanation && (
+              <button class="btn-explanation mono" data-explanation={`explanation-${project.title[lang].toLowerCase().replace(/\s+/g, '-')}`}>
+                {t.projectsExplanation}
               </button>
             )}
           </div>
@@ -210,7 +57,23 @@ const projects = [
 
   {projects.map(project =>
     project.images && (
-      <ImageGallery images={project.images} projectTitle={project.title} />
+      <ImageGallery images={project.images} projectTitle={project.title[lang]} />
+    )
+  )}
+  
+  {projects.map(project =>
+    project.explanation && (
+      <div class="explanation-modal" id={`explanation-${project.title[lang].toLowerCase().replace(/\s+/g, '-')}`}>
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+          <button class="modal-close" aria-label="Cerrar">×</button>
+          <div class="modal-body">
+            <h3 class="mono">{project.title[lang]}</h3>
+            <div class="explanation-text" set:html={project.explanation ? project.explanation[lang] : ''}>
+            </div>
+          </div>
+        </div>
+      </div>
     )
   )}
 </section>
@@ -326,6 +189,124 @@ const projects = [
     opacity: 0.6;
   }
 
+  .btn-explanation {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--text);
+    color: var(--text);
+    cursor: pointer;
+    padding: 0;
+    transition: opacity 0.2s;
+    font-family: var(--mono);
+  }
+
+  .btn-explanation:hover {
+    opacity: 0.6;
+  }
+
+  .explanation-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+  }
+
+  .explanation-modal.active {
+    display: block;
+  }
+
+  .explanation-modal .modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.95);
+  }
+
+  .explanation-modal .modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    margin: 5% auto;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .explanation-modal .modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: transparent;
+    border: 2px solid var(--text);
+    color: var(--text);
+    font-size: 2rem;
+    width: 3rem;
+    height: 3rem;
+    cursor: pointer;
+    font-family: var(--mono);
+    line-height: 1;
+    transition: all 0.2s;
+  }
+
+  .explanation-modal .modal-close:hover {
+    background: var(--text);
+    color: var(--bg);
+  }
+
+  .explanation-modal .modal-body {
+    margin-top: 1rem;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+
+  .explanation-modal .modal-body::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+
+  .explanation-modal h3 {
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+  }
+
+  .explanation-text {
+    font-family: var(--mono);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    opacity: 0.9;
+    text-align: justify;
+    padding-right: 0.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .explanation-modal .modal-content {
+      width: 95%;
+      max-height: 95vh;
+      margin: 2.5% auto;
+      padding: 1.5rem;
+    }
+
+    .explanation-modal .modal-close {
+      width: 2.5rem;
+      height: 2.5rem;
+      font-size: 1.5rem;
+    }
+
+    .explanation-text {
+      font-size: 0.9rem;
+    }
+  }
+
   @media (max-width: 768px) {
     .projects-grid {
       grid-template-columns: 1fr;
@@ -336,7 +317,9 @@ const projects = [
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const imageButtons = document.querySelectorAll('.btn-images');
+    const explanationButtons = document.querySelectorAll('.btn-explanation');
 
+    // Handle image gallery buttons
     imageButtons.forEach(button => {
       button.addEventListener('click', () => {
         const galleryId = button.getAttribute('data-gallery');
@@ -348,6 +331,42 @@ const projects = [
           openFunction(0);
         }
       });
+    });
+
+    // Handle explanation modal buttons
+    explanationButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const explanationId = button.getAttribute('data-explanation');
+        if (!explanationId) return;
+        
+        const modal = document.getElementById(explanationId);
+        if (modal) {
+          modal.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        }
+      });
+    });
+
+    // Handle explanation modal close
+    document.addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal-close') || e.target.classList.contains('modal-overlay')) {
+        const modal = e.target.closest('.explanation-modal');
+        if (modal) {
+          modal.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      }
+    });
+
+    // Handle escape key for explanation modals
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const activeModal = document.querySelector('.explanation-modal.active');
+        if (activeModal) {
+          activeModal.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      }
     });
   });
 </script>

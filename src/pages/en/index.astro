@@ -1,0 +1,21 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Hero from '../../components/Hero.astro';
+import Projects from '../../components/Projects.astro';
+import Footer from '../../components/Footer.astro';
+import { useI18n } from '../../lib/i18n.js';
+
+const { t } = useI18n('en');
+---
+
+<Layout
+  title={t.siteTitle}
+  description={t.siteDescription}
+  lang="en"
+>
+  <main>
+    <Hero lang="en" />
+    <Projects lang="en" />
+    <Footer lang="en" />
+  </main>
+</Layout>

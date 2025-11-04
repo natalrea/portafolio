@@ -1,21 +1,26 @@
 ---
+import { useI18n } from '../lib/i18n.js';
+
+interface Props {
+  lang?: string;
+}
+
+const { lang = 'es' } = Astro.props;
+const { t } = useI18n(lang);
 ---
 
 <section class="hero">
   <div class="container">
     <div class="hero-content fade-in">
-      <p class="mono greeting">$ whoami</p>
-      <h1>686f6c61<span class="blink">_</span></h1>
+      <p class="mono greeting">{t.heroGreeting}</p>
+      <h1>{t.heroTitle}<span class="blink">_</span></h1>
       <p class="subtitle mono">
-        Tech Enthusiast & Product Lover
+        {t.heroSubtitle}
       </p>
-      <p class="description mono">
-        Desarrollo de producto y software, IA, análisis de datos y sistemas escalables.<br>
-        <span class="terminal-info">Bájate el template si te gusta o explora en los proyectos que me divierto</span>
-      </p>
+      <p class="description mono" set:html={t.heroDescription}></p>
       <div class="cta">
-        <a href="#projects" class="btn-primary mono">cd ~/projects</a>
-        <a href="https://github.com/686f6c61/astro-portfolio-template-686f6c61" target="_blank" rel="noopener" class="btn-secondary mono">git clone template</a>
+        <a href="#projects" class="btn-primary mono">{t.heroCta}</a>
+        <a href="https://github.com/686f6c61/astro-portfolio-template-686f6c61" target="_blank" rel="noopener" class="btn-secondary mono">{t.heroTemplateButton}</a>
       </div>
     </div>
   </div>
