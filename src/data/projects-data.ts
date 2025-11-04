@@ -150,7 +150,7 @@ export const projectsData: Project[] = [
     tech: ["Python", "Requests", "Concurrent Processing", "CSV Export", "Security Analytics"],
     link: "https://github.com/686f6c61/domain-scraper-alerts",
     demo: null,
-    csv: "https://github.com/686f6c61/domain-scraper-alerts/blob/main/example_domain_results.csv",
+    csv: "/15-dias-1M-dominios-com.csv",
     featured: false,
     images: [
       "/screenshots/domain-scraper/Domain-Scraper01",
