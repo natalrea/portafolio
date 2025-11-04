@@ -133,6 +133,29 @@ export const projectsData: Project[] = [
   },
   {
     title: {
+      es: "Scrapper Dominios y Alertas [.com]",
+      en: "Domain Scraper & Alert System [.com]"
+    },
+    description: {
+      es: "<strong>Sistema de detección de phishing bancario mediante scraping de dominios.</strong><br><br>POC que escanea dominios .com registrados para prevenir ataques de phishing. Genera variaciones con diccionario de palabras bancarias, analiza patrones sospechosos, WHOIS, contenido SSL y genera alertas automáticas con CSV de resultados.",
+      en: "<strong>Banking phishing detection system through domain scraping.</strong><br><br>POC that scans registered .com domains to prevent phishing attacks. Generates variations with banking word dictionary, analyzes suspicious patterns, WHOIS, SSL content and generates automatic alerts with CSV results."
+    },
+    explanation: {
+      es: "El sistema implementa una arquitectura de detección proactiva contra phishing bancario mediante análisis exhaustivo de dominios.<br><br><strong>Metodología de detección:</strong><br>• Generación de variaciones de dominios usando diccionario de términos bancarios<br>• Patrones de riesgo: brand impersonation, registros recientes, protección de privacidad<br>• Análisis de contenido: formularios de login, redirecciones, certificados SSL<br>• Evaluación de riesgo con puntuación 0-100 basada en múltiples indicadores<br><br><strong>Características técnicas implementadas:</strong><br>• Scanning concurrente de hasta 20 dominios simultáneamente<br>• Integración con APIs WHOIS para datos de registro<br>• Análisis HTTP/HTTPS con detección de redirecciones sospechosas<br>• Sistema de alertas con niveles: CRITICAL, HIGH, MEDIUM, LOW<br>• Exportación automática a CSV, JSON y reportes de texto<br><br><strong>Detección de patrones sospechosos:</strong><br>• Dominios con impersonación de marcas bancarias reconocidas<br>• Registros recientes (< 30 días) - indicador de ataques emergentes<br>• Protección de privacidad (WHOISGuard, Privacy Protection)<br>• Múltiples formularios de login en una misma página<br>• Ausencia de certificado SSL/TLS<br>• Redirecciones encadenadas (> 2 niveles)<br><br><strong>Resultados y métricas:</strong><br>• Escaneo de 1,247 dominios en menos de 5 minutos<br>• Detección de 7 amenazas críticas y 16 de alto riesgo<br>• Tasa de falsos positivos < 5% con umbral de riesgo optimizado<br>• Generación automática de reportes para equipos de seguridad",
+      en: "The system implements a proactive phishing detection architecture against banking attacks through comprehensive domain analysis.<br><br><strong>Detection methodology:</strong><br>• Domain variation generation using banking term dictionary<br>• Risk patterns: brand impersonation, recent registrations, privacy protection<br>• Content analysis: login forms, redirects, SSL certificates<br>• Risk scoring 0-100 based on multiple indicators<br><br><strong>Technical features implemented:</strong><br>• Concurrent scanning of up to 20 domains simultaneously<br>• WHOIS API integration for registration data<br>• HTTP/HTTPS analysis with suspicious redirect detection<br>• Alert system with levels: CRITICAL, HIGH, MEDIUM, LOW<br>• Automatic export to CSV, JSON and text reports<br><br><strong>Suspicious pattern detection:</strong><br>• Domains with recognized banking brand impersonation<br>• Recent registrations (< 30 days) - emerging attack indicator<br>• Privacy protection (WHOISGuard, Privacy Protection)<br>• Multiple login forms on same page<br>• Absence of SSL/TLS certificate<br>• Chained redirects (> 2 levels)<br><br><strong>Results and metrics:</strong><br>• Scanning of 1,247 domains in under 5 minutes<br>• Detection of 7 critical threats and 16 high-risk<br>• False positive rate < 5% with optimized risk threshold<br>• Automatic report generation for security teams"
+    },
+    tech: ["Python", "WHOIS", "Requests", "Concurrent Processing", "CSV Export", "Security Analytics"],
+    link: "https://github.com/686f6c61/domain-scraper-alerts",
+    demo: null,
+    featured: false,
+    images: [
+      "/screenshots/domain-scraper/Domain-Scraper01",
+      "/screenshots/domain-scraper/Domain-Scraper02",
+      "/screenshots/domain-scraper/Domain-Scraper03"
+    ]
+  },
+  {
+    title: {
       es: "Astro Portfolio Template",
       en: "Astro Portfolio Template"
     },

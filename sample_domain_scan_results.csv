@@ -1,0 +1,21 @@
+domain,exists,registered,risk_score,indicators,registrar,created_date,expires_date,country,http_status,ssl_enabled,risk_level
+santander-secure-login.com,True,True,85,"Brand impersonation: santander; Recently registered (< 30 days); Privacy protection enabled; Multiple login forms detected; No SSL certificate",NameSilo,LLC,"2024-01-02 00:00:00","2025-01-02 00:00:00",Panama,200,False,CRITICAL
+bbva-verify-account.com,True,True,78,"Brand impersonation: bbva; Recently registered (< 30 days); No SSL certificate; Multiple redirects",GoDaddy,"2024-01-05 00:00:00","2025-01-05 00:00:00",China,302,False,HIGH
+caixabank-security-update.com,True,True,72,"Brand impersonation: caixabank; Recently registered (< 30 days); Privacy protection enabled; Suspicious pattern: .*security.*update",NameCheap,"2024-01-08 00:00:00","2025-01-08 00:00:00",Bahamas,200,True,HIGH
+bankia-online-banking.com,True,True,65,"Brand impersonation: bankia; Recently registered (< 30 days); Excessive hyphens; No SSL certificate",Porkbun,"2024-01-10 00:00:00","2025-01-10 00:00:00",Marshall Islands,200,False,HIGH
+ing-direct-support.com,True,True,58,"Brand impersonation: ing; Recently registered (< 30 days); Contains numbers",Google Domains,"2024-01-12 00:00:00","2025-01-12 00:00:00",United States,200,True,MEDIUM
+my-santander-account.com,True,True,52,"Brand impersonation: santander; Recently registered (< 30 days); Privacy protection enabled",Amazon Route 53,"2024-01-14 00:00:00","2025-01-14 00:00:00",Ireland,200,True,MEDIUM
+secure-bbva-login.com,True,True,48,"Brand impersonation: bbva; Suspicious pattern: secure.*login; Recently registered (< 30 days)",Cloudflare,"2024-01-15 00:00:00","2025-01-15 00:00:00",United States,200,True,MEDIUM
+verify-caixabank.com,True,True,45,"Brand impersonation: caixabank; Suspicious pattern: verify.*account; No SSL certificate",Name.com,"2024-01-16 00:00:00","2025-01-16 00:00:00",Canada,200,False,MEDIUM
+bankia-digital.com,True,True,42,"Brand impersonation: bankia; Recently registered (< 30 days)",Hover,"2024-01-17 00:00:00","2025-01-17 00:00:00",Germany,200,True,MEDIUM
+ing-banking-secure.com,True,True,38,"Brand impersonation: ing; Suspicious pattern: .*banking.*secure; Recently registered (< 30 days)",Tucows,"2024-01-18 00:00:00","2025-01-18 00:00:00",Netherlands,200,True,LOW
+santanderonline.com,True,True,25,"Brand impersonation: santander; SSL certificate; Legitimate registrar",Network Solutions,"2010-03-15 00:00:00","2025-03-15 00:00:00",Spain,200,True,LOW
+bbvaonline.com,True,True,22,"Brand impersonation: bbva; SSL certificate; Established domain",GoDaddy,"2012-06-20 00:00:00","2024-06-20 00:00:00",Spain,200,True,LOW
+caixabank-digital.com,False,False,15,"Domain not registered; Low risk pattern",N/A,N/A,N/A,N/A,N/A,N/A,N/A,LOW
+bankia-secure.com,False,False,12,"Domain not registered; Low risk pattern",N/A,N/A,N/A,N/A,N/A,N/A,N/A,LOW
+ing-login.com,True,True,18,"Brand impersonation: ing; Low risk score; SSL certificate",NameCheap,"2018-09-10 00:00:00","2024-09-10 00:00:00",United States,200,True,LOW
+santander-security.com,True,True,20,"Brand impersonation: santander; Established domain; SSL certificate",Google Domains,"2015-11-25 00:00:00","2025-11-25 00:00:00",United States,200,True,LOW
+bbva-digital-banking.com,False,False,8,"Domain not registered; Generic pattern",N/A,N/A,N/A,N/A,N/A,N/A,N/A,LOW
+caixabank-online.com,True,True,15,"Brand impersonation: caixabank; Established domain",Network Solutions,"2011-04-08 00:00:00","2024-04-08 00:00:00",Spain,200,True,LOW
+bankia-mobile.com,False,False,10,"Domain not registered; Low risk",N/A,N/A,N/A,N/A,N/A,N/A,N/A,LOW
+ing-secure.com,True,True,12,"Brand impersonation: ing; Low risk; SSL certificate",Hover,"2019-07-30 00:00:00","2024-07-30 00:00:00",Canada,200,True,LOW
