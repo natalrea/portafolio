@@ -141,7 +141,7 @@ export const projectsData: Project[] = [
       en: "<strong>Banking phishing detection system through domain scraping.</strong><br><br>POC that scans .com domains to prevent phishing attacks. Generates variations with banking dictionary and generates automatic alerts with CSV results."
     },
 
-    tech: ["Python", "WHOIS", "Requests", "Concurrent Processing", "CSV Export", "Security Analytics"],
+    tech: ["Python", "Requests", "Concurrent Processing", "CSV Export", "Security Analytics"],
     link: "https://github.com/686f6c61/domain-scraper-alerts",
     demo: null,
     featured: false,
