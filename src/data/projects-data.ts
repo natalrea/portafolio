@@ -137,8 +137,8 @@ export const projectsData: Project[] = [
       en: "Domain Scraper & Alert System [.com]"
     },
     description: {
-      es: "<strong>Sistema de detección de phishing bancario mediante scraping de dominios.</strong><br><br>POC que escanea dominios .com para prevenir ataques de phishing. Genera variaciones con diccionario bancario, analiza patrones sospechosos, WHOIS, SSL y genera alertas automáticas con CSV de resultados.",
-      en: "<strong>Banking phishing detection system through domain scraping.</strong><br><br>POC that scans .com domains to prevent phishing attacks. Generates variations with banking dictionary, analyzes suspicious patterns, WHOIS, SSL and generates automatic alerts with CSV results."
+      es: "<strong>Sistema de detección de phishing bancario mediante scraping de dominios.</strong><br><br>POC que escanea dominios .com para prevenir ataques de phishing. Genera variaciones con diccionario bancario y genera alertas automáticas con CSV de resultados.",
+      en: "<strong>Banking phishing detection system through domain scraping.</strong><br><br>POC that scans .com domains to prevent phishing attacks. Generates variations with banking dictionary and generates automatic alerts with CSV results."
     },
 
     tech: ["Python", "WHOIS", "Requests", "Concurrent Processing", "CSV Export", "Security Analytics"],
