@@ -18,6 +18,7 @@ export interface Translations {
   projectsCode: string;
   projectsImages: string;
   projectsExplanation: string;
+  projectsCsv: string;
   
   // Skills Section
   skillsTitle: string;
@@ -56,6 +57,7 @@ export const translations: Record<string, Translations> = {
     projectsCode: "[code]",
     projectsImages: "[images]",
     projectsExplanation: "[explicación]",
+    projectsCsv: "[csv]",
     
     skillsTitle: "$ cat skills.json",
     skillsFrontend: "Frontend",
@@ -90,6 +92,7 @@ export const translations: Record<string, Translations> = {
     projectsCode: "[code]",
     projectsImages: "[images]",
     projectsExplanation: "[explanation]",
+    projectsCsv: "[csv]",
     
     skillsTitle: "$ cat skills.json",
     skillsFrontend: "Frontend",

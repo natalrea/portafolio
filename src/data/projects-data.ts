@@ -14,6 +14,7 @@ export interface Project {
   tech: string[];
   link: string | null;
   demo: string | null;
+  csv: string | null;
   featured: boolean;
   images: string[] | null;
 }
@@ -31,6 +32,7 @@ export const projectsData: Project[] = [
     tech: ["React", "Node.js", "MongoDB", "AWS", "IA Models +9", "Resend"],
     link: null,
     demo: "https://www.sparring.dev",
+    csv: null,
     featured: true,
     images: null
   },
@@ -46,6 +48,7 @@ export const projectsData: Project[] = [
     tech: ["Research", "Python", "Data Analysis", "LLMs", "Psychology"],
     link: "https://github.com/686f6c61/llm-synthetic-personality-review",
     demo: null,
+    csv: null,
     featured: true,
     images: null
   },
@@ -65,6 +68,7 @@ export const projectsData: Project[] = [
     tech: ["React", "Python", "LLM Gemini 2.5 Pro", "Supabase", "SaaS", "Agent Architecture"],
     link: null,
     demo: null,
+    csv: null,
     featured: false,
     images: [
       "/screenshots/red-agentes-ia/Java-Cobol01",
@@ -84,6 +88,7 @@ export const projectsData: Project[] = [
     tech: ["iOS", "Swift", "Supabase", "Real-time", "Next.js", "Backend", "Analytics"],
     link: null,
     demo: null,
+    csv: null,
     featured: false,
     images: [
       "/screenshots/open-mood/01.png",
@@ -118,6 +123,7 @@ export const projectsData: Project[] = [
     tech: ["iOS", "Swift", "IA", "Computer Vision"],
     link: "https://github.com/686f6c61/IAGota",
     demo: null,
+    csv: null,
     featured: false,
     images: [
       "/screenshots/ia-gota/IA-Gota-v2.gif",
@@ -144,6 +150,7 @@ export const projectsData: Project[] = [
     tech: ["Python", "Requests", "Concurrent Processing", "CSV Export", "Security Analytics"],
     link: "https://github.com/686f6c61/domain-scraper-alerts",
     demo: null,
+    csv: "https://github.com/686f6c61/domain-scraper-alerts/blob/main/example_domain_results.csv",
     featured: false,
     images: [
       "/screenshots/domain-scraper/Domain-Scraper01",
@@ -163,6 +170,7 @@ export const projectsData: Project[] = [
     tech: ["Astro", "TypeScript", "CSS", "JavaScript", "Open Source"],
     link: "https://github.com/686f6c61/astro-portfolio-template-686f6c61",
     demo: null,
+    csv: null,
     featured: false,
     images: null
   },
@@ -178,6 +186,7 @@ export const projectsData: Project[] = [
     tech: ["Python", "Twitter Graph", "X.com", "Gephi Visualizations"],
     link: "https://github.com/686f6c61/x-twitter-community-analysis",
     demo: null,
+    csv: null,
     featured: false,
     images: null
   },
@@ -193,6 +202,7 @@ export const projectsData: Project[] = [
     tech: ["Python", "Excel", "PDF", "CSV", "MVC", "Render"],
     link: null,
     demo: null,
+    csv: null,
     featured: false,
     images: null
   },
@@ -208,6 +218,7 @@ export const projectsData: Project[] = [
     tech: ["HTML", "JavaScript", "Unicode", "AI"],
     link: "https://github.com/686f6c61/ai-unicode-detector",
     demo: "https://686f6c61.github.io/ai-unicode-detector/",
+    csv: null,
     featured: false,
     images: null
   },
@@ -223,6 +234,7 @@ export const projectsData: Project[] = [
     tech: ["Python", "Flask", "OpenAI", "Claude", "Prompt Engineering"],
     link: "https://github.com/686f6c61/prompt-engineering-frameworks",
     demo: null,
+    csv: null,
     featured: false,
     images: [
       "/screenshots/prompt-framework/Frameworks-Prompt.png",
@@ -245,6 +257,7 @@ export const projectsData: Project[] = [
     tech: ["Python", "RapidAPI", "CSV", "LinkedIn", "Job Search"],
     link: "https://github.com/686f6c61/linkedIN-Jobs-Scrapper",
     demo: null,
+    csv: null,
     featured: false,
     images: null
   },
@@ -260,6 +273,7 @@ export const projectsData: Project[] = [
     tech: ["Google Apps Script", "Gmail API", "JavaScript", "Automation"],
     link: "https://github.com/686f6c61/organizador-etiquetas-gmail-google-script",
     demo: null,
+    csv: null,
     featured: false,
     images: [
       "/screenshots/gmail-organizer/configurador.png",
@@ -278,6 +292,7 @@ export const projectsData: Project[] = [
     tech: ["Python", "Mathematics", "Logic", "Scientific Method"],
     link: "https://github.com/686f6c61/conjetura-falso-7",
     demo: null,
+    csv: null,
     featured: false,
     images: null
   },
@@ -293,6 +308,7 @@ export const projectsData: Project[] = [
     tech: ["Chrome Extension", "JavaScript", "Web Scraping", "Lovable"],
     link: "https://github.com/686f6c61/lovable-detector-extension",
     demo: null,
+    csv: null,
     featured: false,
     images: null
   }

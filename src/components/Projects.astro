@@ -49,6 +49,11 @@ const projects = getAllProjects();
                 {t.projectsExplanation}
               </button>
             )}
+            {project.csv && (
+              <a href={project.csv} target="_blank" rel="noopener">
+                <span class="mono">{t.projectsCsv}</span>
+              </a>
+            )}
           </div>
         </article>
       ))}
