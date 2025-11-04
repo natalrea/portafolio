@@ -117,8 +117,8 @@ export const projectsData: Project[] = [
       en: "AI Gota"
     },
     description: {
-      es: "<strong>App iOS de análisis nutricional.</strong><br><br>Escanea cartas de restaurantes con una foto y calcula niveles de purinas. Fichas nutricionales detalladas de alimentos o platos concretos.",
-      en: "<strong>iOS nutritional analysis app.</strong><br><br>Scan restaurant menus with a photo and calculate purine levels. Detailed nutritional cards for specific foods or dishes."
+      es: "<strong>App iOS de análisis nutricional.</strong><br><br>Escanea cartas de restaurantes con una foto y calcula niveles de purinas. Fichas nutricionales detalladas de alimentos o platos concretos. Agrega un ingrediente o un plato para saber el nivel de purinas y establecer el semáforo de las mismas.",
+      en: "<strong>iOS nutritional analysis app.</strong><br><br>Scan restaurant menus with a photo and calculate purine levels. Detailed nutritional cards for specific foods or dishes. Add an ingredient or dish to know purine level and establish traffic light system."
     },
     tech: ["iOS", "Swift", "IA", "Computer Vision"],
     link: "https://github.com/686f6c61/IAGota",
