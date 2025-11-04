@@ -139,12 +139,12 @@ export const projectsData: Project[] = [
   },
   {
     title: {
-      es: "Scrapper Dominios y Alertas [.com]",
-      en: "Domain Scraper & Alert System [.com]"
+      es: "Scrapper Dominios y Alertas [.com/.net/.org]",
+      en: "Domain Scraper & Alert System [.com/.net/.org]"
     },
     description: {
-      es: "<strong>Sistema de detección de phishing bancario mediante scraping de dominios.</strong><br><br>POC que escanea dominios .com para prevenir ataques de phishing. Genera variaciones con diccionario bancario y genera alertas automáticas con CSV de resultados.",
-      en: "<strong>Banking phishing detection system through domain scraping.</strong><br><br>POC that scans .com domains to prevent phishing attacks. Generates variations with banking dictionary and generates automatic alerts with CSV results."
+      es: "<strong>Sistema de detección de phishing bancario mediante scraping de dominios.</strong><br><br>POC que escanea dominios .com, .net y .org para prevenir ataques de phishing. Genera variaciones con diccionario bancario y genera alertas automáticas con CSV de resultados.",
+      en: "<strong>Banking phishing detection system through domain scraping.</strong><br><br>POC that scans .com, .net and .org domains to prevent phishing attacks. Generates variations with banking dictionary and generates automatic alerts with CSV results."
     },
 
     tech: ["Python", "Requests", "Concurrent Processing", "CSV Export", "Security Analytics"],

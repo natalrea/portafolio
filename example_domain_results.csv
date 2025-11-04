@@ -1,4 +1,0 @@
-domain,exists,registered,risk_score,indicators,registrar,created_date,expires_date,country,http_status,ssl_enabled,risk_level
-# Example CSV data will be provided by user
-# This file will be replaced with actual domain scan results
-# Format: domain analysis with risk scoring and security indicators
