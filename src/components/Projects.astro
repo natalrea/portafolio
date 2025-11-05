@@ -195,13 +195,14 @@ const projects = getAllProjects();
   .filter-output {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 0.5rem;
+    gap: 0.75rem 1.5rem;
     margin-top: 1rem;
     padding: 1.5rem;
     border: 1px solid var(--border);
     background: rgba(0, 0, 0, 0.02);
-    max-height: 400px;
+    max-height: 500px;
     overflow-y: auto;
+    overflow-x: hidden;
   }
 
   @media (prefers-color-scheme: dark) {
@@ -235,7 +236,7 @@ const projects = getAllProjects();
     background: transparent;
     border: none;
     color: var(--text);
-    padding: 0.5rem;
+    padding: 0.5rem 0.75rem;
     cursor: pointer;
     transition: all 0.2s;
     font-family: var(--mono);
@@ -243,9 +244,8 @@ const projects = getAllProjects();
     text-align: left;
     width: 100%;
     opacity: 0.7;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    word-wrap: break-word;
+    line-height: 1.4;
   }
 
   .filter-btn:hover {
@@ -262,12 +262,21 @@ const projects = getAllProjects();
   @media (max-width: 768px) {
     .filter-output {
       grid-template-columns: repeat(2, 1fr);
+      padding: 1rem;
+      gap: 0.5rem 1rem;
     }
   }
 
   @media (max-width: 480px) {
     .filter-output {
       grid-template-columns: 1fr;
+      gap: 0.5rem;
+      padding: 1rem;
+    }
+
+    .filter-btn {
+      font-size: 0.8rem;
+      padding: 0.4rem 0.5rem;
     }
   }
 
