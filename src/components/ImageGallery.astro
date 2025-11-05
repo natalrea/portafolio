@@ -48,7 +48,7 @@ const thumbnailImages = images.map(img => {
     <div class="modal-body">
       <button class="nav-btn prev" aria-label="Previous image">‹</button>
       <div class="image-container">
-        <img src="" alt={`${projectTitle} screenshot`} />
+        <img src="" alt={`Imagen de ejemplo del proyecto ${projectTitle}`} />
       </div>
       <button class="nav-btn next" aria-label="Next image">›</button>
     </div>
@@ -62,7 +62,7 @@ const thumbnailImages = images.map(img => {
         >
           <img
             src={thumbnailImages[index]}
-            alt={`${projectTitle} thumbnail ${index + 1}`}
+            alt={`Imagen de ejemplo del proyecto ${projectTitle}`}
             loading="lazy"
             decoding="async"
           />
@@ -110,8 +110,8 @@ const thumbnailImages = images.map(img => {
     top: 1rem;
     right: 1rem;
     background: transparent;
-    border: 2px solid var(--text);
-    color: var(--text);
+    border: 2px solid #ffffff;
+    color: #ffffff;
     font-size: 2rem;
     width: 3rem;
     height: 3rem;
@@ -123,8 +123,8 @@ const thumbnailImages = images.map(img => {
   }
 
   .modal-close:hover {
-    background: var(--text);
-    color: var(--bg);
+    background: #ffffff;
+    color: #000000;
   }
 
   .modal-body {
@@ -169,8 +169,8 @@ const thumbnailImages = images.map(img => {
 
   .nav-btn {
     background: transparent;
-    border: 2px solid var(--text);
-    color: var(--text);
+    border: 2px solid #ffffff;
+    color: #ffffff;
     font-size: 3rem;
     width: 3rem;
     height: 3rem;
@@ -181,8 +181,8 @@ const thumbnailImages = images.map(img => {
   }
 
   .nav-btn:hover {
-    background: var(--text);
-    color: var(--bg);
+    background: #ffffff;
+    color: #000000;
   }
 
   .thumbnail-strip {

@@ -71,9 +71,9 @@ export const projectsData: Project[] = [
     csv: null,
     featured: false,
     images: [
-      "/screenshots/red-agentes-ia/Java-Cobol01",
-      "/screenshots/red-agentes-ia/Java-Cobol02",
-      "/screenshots/red-agentes-ia/Java-Cobol03"
+      "/screenshots/red-agentes-ia/686f6c61-red-agentes-ia-01",
+      "/screenshots/red-agentes-ia/686f6c61-red-agentes-ia-02",
+      "/screenshots/red-agentes-ia/686f6c61-red-agentes-ia-03"
     ]
   },
   {
@@ -91,24 +91,24 @@ export const projectsData: Project[] = [
     csv: null,
     featured: false,
     images: [
-      "/screenshots/open-mood/01.png",
-      "/screenshots/open-mood/02.png",
-      "/screenshots/open-mood/03.png",
-      "/screenshots/open-mood/04.png",
-      "/screenshots/open-mood/05.png",
-      "/screenshots/open-mood/06.png",
-      "/screenshots/open-mood/07.png",
-      "/screenshots/open-mood/08.png",
-      "/screenshots/open-mood/09.png",
-      "/screenshots/open-mood/10.png",
-      "/screenshots/open-mood/11.png",
-      "/screenshots/open-mood/12.png",
-      "/screenshots/open-mood/13.png",
-      "/screenshots/open-mood/14.png",
-      "/screenshots/open-mood/15.png",
-      "/screenshots/open-mood/16.png",
-      "/screenshots/open-mood/17.png",
-      "/screenshots/open-mood/18.png"
+      "/screenshots/open-mood/686f6c61-open-mood-01",
+      "/screenshots/open-mood/686f6c61-open-mood-02",
+      "/screenshots/open-mood/686f6c61-open-mood-03",
+      "/screenshots/open-mood/686f6c61-open-mood-04",
+      "/screenshots/open-mood/686f6c61-open-mood-05",
+      "/screenshots/open-mood/686f6c61-open-mood-06",
+      "/screenshots/open-mood/686f6c61-open-mood-07",
+      "/screenshots/open-mood/686f6c61-open-mood-08",
+      "/screenshots/open-mood/686f6c61-open-mood-09",
+      "/screenshots/open-mood/686f6c61-open-mood-10",
+      "/screenshots/open-mood/686f6c61-open-mood-11",
+      "/screenshots/open-mood/686f6c61-open-mood-12",
+      "/screenshots/open-mood/686f6c61-open-mood-13",
+      "/screenshots/open-mood/686f6c61-open-mood-14",
+      "/screenshots/open-mood/686f6c61-open-mood-15",
+      "/screenshots/open-mood/686f6c61-open-mood-16",
+      "/screenshots/open-mood/686f6c61-open-mood-17",
+      "/screenshots/open-mood/686f6c61-open-mood-18"
     ]
   },
   {
@@ -126,15 +126,16 @@ export const projectsData: Project[] = [
     csv: null,
     featured: false,
     images: [
-      "/screenshots/ia-gota/IA-Gota-v2.gif",
-      "/screenshots/ia-gota/01.png",
-      "/screenshots/ia-gota/02.png",
-      "/screenshots/ia-gota/03.png",
-      "/screenshots/ia-gota/04.png",
-      "/screenshots/ia-gota/05.png",
-      "/screenshots/ia-gota/06.png",
-      "/screenshots/ia-gota/07.png",
-      "/screenshots/ia-gota/08.png"
+      "/screenshots/ia-gota/686f6c61-ia-gota-01",
+      "/screenshots/ia-gota/686f6c61-ia-gota-02",
+      "/screenshots/ia-gota/686f6c61-ia-gota-03",
+      "/screenshots/ia-gota/686f6c61-ia-gota-04",
+      "/screenshots/ia-gota/686f6c61-ia-gota-05",
+      "/screenshots/ia-gota/686f6c61-ia-gota-06",
+      "/screenshots/ia-gota/686f6c61-ia-gota-07",
+      "/screenshots/ia-gota/686f6c61-ia-gota-08",
+      "/screenshots/ia-gota/686f6c61-ia-gota-09",
+      "/screenshots/ia-gota/686f6c61-ia-gota-10.gif"
     ]
   },
   {
@@ -153,12 +154,12 @@ export const projectsData: Project[] = [
     csv: "/assets/domain-scraper/15-dias-1M-dominios-com.csv",
     featured: false,
     images: [
-      "/screenshots/domain-scraper/Captura desde 2025-11-05 16-01-09.webp",
-      "/screenshots/domain-scraper/Captura desde 2025-11-05 16-01-23.webp",
-      "/screenshots/domain-scraper/Captura desde 2025-11-05 16-01-38.webp",
-      "/screenshots/domain-scraper/Captura desde 2025-11-05 16-10-31.webp",
-      "/screenshots/domain-scraper/Captura desde 2025-11-05 16-15-32.webp",
-      "/screenshots/domain-scraper/Captura desde 2025-11-05 16-20-22.webp"
+      "/screenshots/domain-scraper/686f6c61-domain-scraper-01",
+      "/screenshots/domain-scraper/686f6c61-domain-scraper-02",
+      "/screenshots/domain-scraper/686f6c61-domain-scraper-03",
+      "/screenshots/domain-scraper/686f6c61-domain-scraper-04",
+      "/screenshots/domain-scraper/686f6c61-domain-scraper-05",
+      "/screenshots/domain-scraper/686f6c61-domain-scraper-06"
     ]
   },
   {
@@ -240,12 +241,12 @@ export const projectsData: Project[] = [
     csv: null,
     featured: false,
     images: [
-      "/screenshots/prompt-framework/Frameworks-Prompt.png",
-      "/screenshots/prompt-framework/configuracion.png",
-      "/screenshots/prompt-framework/diseño.png",
-      "/screenshots/prompt-framework/bolt-lovable.png",
-      "/screenshots/prompt-framework/codigos.png",
-      "/screenshots/prompt-framework/razonadores.png"
+      "/screenshots/prompt-framework/686f6c61-prompt-framework-01",
+      "/screenshots/prompt-framework/686f6c61-prompt-framework-02",
+      "/screenshots/prompt-framework/686f6c61-prompt-framework-03",
+      "/screenshots/prompt-framework/686f6c61-prompt-framework-04",
+      "/screenshots/prompt-framework/686f6c61-prompt-framework-05",
+      "/screenshots/prompt-framework/686f6c61-prompt-framework-06"
     ]
   },
   {
@@ -279,8 +280,8 @@ export const projectsData: Project[] = [
     csv: null,
     featured: false,
     images: [
-      "/screenshots/gmail-organizer/configurador.png",
-      "/screenshots/gmail-organizer/estadisticas.png"
+      "/screenshots/gmail-organizer/686f6c61-gmail-organizer-01",
+      "/screenshots/gmail-organizer/686f6c61-gmail-organizer-02"
     ]
   },
   {
