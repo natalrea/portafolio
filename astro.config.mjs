@@ -3,7 +3,7 @@ import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://686f6c61.dev',
+  site: 'https://www.686f6c61.dev',
   devToolbar: {
     enabled: false
   },
