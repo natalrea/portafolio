@@ -53,11 +53,11 @@ export const translations: Record<string, Translations> = {
     contactTitle: "$ contact --me",
     contactEmailButton: "cat email.txt",
     contactLinks: "Links",
-    
-    footerCopyright: "© 2024 686f6c61.dev",
+
+    footerCopyright: "© {year} 686f6c61.dev",
     footerStatus: "● All systems operational"
   },
-  
+
   en: {
     siteTitle: "686f6c61.dev - Tech Portfolio",
     siteDescription: "Full stack web development portfolio. Specialised in React, Node.js and modern technologies.",
@@ -80,8 +80,8 @@ export const translations: Record<string, Translations> = {
     contactTitle: "$ contact --me",
     contactEmailButton: "cat email.txt",
     contactLinks: "Links",
-    
-    footerCopyright: "© 2024 686f6c61.dev",
+
+    footerCopyright: "© {year} 686f6c61.dev",
     footerStatus: "● All systems operational"
   }
 };
