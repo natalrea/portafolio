@@ -249,10 +249,7 @@ const thumbnailImages = images.map(img => {
 
 <script define:vars={{ galleryId, images, webpImages }}>
   const modal = document.getElementById(galleryId);
-  if (!modal) {
-    console.error(`Gallery modal with id "${galleryId}" not found`);
-    return;
-  }
+  if (!modal) return;
 
   const overlay = modal.querySelector('.modal-overlay');
   const closeBtn = modal.querySelector('.modal-close');
@@ -263,15 +260,13 @@ const thumbnailImages = images.map(img => {
 
   let currentIndex = 0;
 
-  // Handle image load errors
+  // Handle image load errors silently
   img.addEventListener('error', () => {
-    console.error(`Failed to load image: ${img.src}`);
     img.alt = 'Image failed to load';
   });
 
   function showImage(index) {
     if (index < 0 || index >= webpImages.length) {
-      console.error(`Invalid image index: ${index}`);
       return;
     }
 

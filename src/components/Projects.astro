@@ -17,15 +17,23 @@ const projects = getAllProjects();
     <h2 class="mono">{t.projectsTitle}</h2>
 
     <!-- Tech Filter -->
-    <div class="filter-container">
-      <button class="filter-btn active mono" data-filter="all">
-        {lang === 'es' ? 'Todos' : 'All'}
+    <div class="filter-wrapper">
+      <button class="filter-toggle mono" id="filter-toggle">
+        <span>{lang === 'es' ? 'Filtrar por tecnología' : 'Filter by technology'}</span>
+        <svg class="chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
       </button>
-      {Array.from(new Set(projects.flatMap(p => p.tech))).sort().map(tech => (
-        <button class="filter-btn mono" data-filter={tech}>
-          {tech}
+      <div class="filter-container" id="filter-container" style="display: none;">
+        <button class="filter-btn active mono" data-filter="all">
+          {lang === 'es' ? 'Todos' : 'All'}
         </button>
-      ))}
+        {Array.from(new Set(projects.flatMap(p => p.tech))).sort().map(tech => (
+          <button class="filter-btn mono" data-filter={tech}>
+            {tech}
+          </button>
+        ))}
+      </div>
     </div>
 
     <div class="projects-grid">
@@ -139,12 +147,59 @@ const projects = getAllProjects();
     padding: 6rem 0;
   }
 
+  .filter-wrapper {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .filter-toggle {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    max-width: 300px;
+    justify-content: space-between;
+  }
+
+  .filter-toggle:hover {
+    border-color: var(--text);
+    transform: translateY(-2px);
+  }
+
+  .filter-toggle .chevron {
+    transition: transform 0.3s;
+  }
+
+  .filter-toggle.active .chevron {
+    transform: rotate(180deg);
+  }
+
   .filter-container {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    background: rgba(0, 0, 0, 0.02);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .filter-container {
+      background: rgba(255, 255, 255, 0.02);
+    }
+  }
+
+  [data-theme="dark"] .filter-container {
+    background: rgba(255, 255, 255, 0.02);
   }
 
   .filter-btn {
@@ -414,7 +469,19 @@ const projects = getAllProjects();
     const explanationButtons = document.querySelectorAll('.btn-explanation');
     const filterButtons = document.querySelectorAll('.filter-btn');
     const projectCards = document.querySelectorAll('.project-card');
+    const filterToggle = document.getElementById('filter-toggle');
+    const filterContainer = document.getElementById('filter-container');
     let lastFocusedElement = null;
+
+    // Handle filter toggle
+    filterToggle?.addEventListener('click', () => {
+      const isVisible = filterContainer?.style.display !== 'none';
+
+      if (filterContainer) {
+        filterContainer.style.display = isVisible ? 'none' : 'flex';
+        filterToggle.classList.toggle('active');
+      }
+    });
 
     // Google Analytics Event Tracking
     function trackEvent(eventName, eventParams) {
