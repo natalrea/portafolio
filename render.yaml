@@ -3,7 +3,7 @@ services:
     name: portfolio-686f6c61
     env: node
     buildCommand: npm install && npm run build
-    startCommand: npx serve dist -l 10000
+    startCommand: npx serve dist -l 10000 -c serve.json
     envVars:
       - key: NODE_VERSION
         value: 18
