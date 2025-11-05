@@ -47,7 +47,7 @@ export const projectsData: Project[] = [
     },
     tech: ["Research", "Python", "Data Analysis", "LLMs", "Psychology"],
     link: "https://github.com/686f6c61/llm-synthetic-personality-review",
-    demo: null,
+    demo: "https://syntheticpersonality.com",
     csv: null,
     featured: true,
     images: null
