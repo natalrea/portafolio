@@ -14,6 +14,7 @@ export interface Project {
   tech: string[];
   link: string | null;
   demo: string | null;
+  web: string | null;
   csv: string | null;
   featured: boolean;
   images: string[] | null;
@@ -32,6 +33,7 @@ export const projectsData: Project[] = [
     tech: ["React", "Node.js", "MongoDB", "AWS", "IA Models +9", "Resend"],
     link: null,
     demo: "https://www.sparring.dev",
+    web: null,
     csv: null,
     featured: true,
     images: null
@@ -47,7 +49,8 @@ export const projectsData: Project[] = [
     },
     tech: ["Research", "Python", "Data Analysis", "LLMs", "Psychology"],
     link: "https://github.com/686f6c61/llm-synthetic-personality-review",
-    demo: "https://syntheticpersonality.com",
+    demo: null,
+    web: "https://syntheticpersonality.com",
     csv: null,
     featured: true,
     images: null
@@ -68,6 +71,7 @@ export const projectsData: Project[] = [
     tech: ["React", "Python", "LLM Gemini 2.5 Pro", "Supabase", "SaaS", "Agent Architecture"],
     link: null,
     demo: null,
+    web: null,
     csv: null,
     featured: false,
     images: [
@@ -88,6 +92,7 @@ export const projectsData: Project[] = [
     tech: ["iOS", "Swift", "Supabase", "Real-time", "Next.js", "Backend", "Analytics"],
     link: null,
     demo: null,
+    web: null,
     csv: null,
     featured: false,
     images: [
@@ -123,6 +128,7 @@ export const projectsData: Project[] = [
     tech: ["iOS", "Swift", "IA", "Computer Vision"],
     link: "https://github.com/686f6c61/IAGota",
     demo: null,
+    web: null,
     csv: null,
     featured: false,
     images: [
@@ -151,6 +157,7 @@ export const projectsData: Project[] = [
     tech: ["Python", "Requests", "Concurrent Processing", "CSV Export", "Security Analytics"],
     link: null,
     demo: null,
+    web: null,
     csv: "/assets/domain-scraper/15-dias-1M-dominios-com.csv",
     featured: false,
     images: [
@@ -174,6 +181,7 @@ export const projectsData: Project[] = [
     tech: ["Astro", "TypeScript", "CSS", "JavaScript", "Open Source"],
     link: "https://github.com/686f6c61/astro-portfolio-template-686f6c61",
     demo: null,
+    web: null,
     csv: null,
     featured: false,
     images: null
@@ -190,6 +198,7 @@ export const projectsData: Project[] = [
     tech: ["Python", "Twitter Graph", "X.com", "Gephi Visualizations"],
     link: "https://github.com/686f6c61/x-twitter-community-analysis",
     demo: null,
+    web: null,
     csv: null,
     featured: false,
     images: null
@@ -206,6 +215,7 @@ export const projectsData: Project[] = [
     tech: ["Python", "Excel", "PDF", "CSV", "MVC", "Render"],
     link: null,
     demo: null,
+    web: null,
     csv: null,
     featured: false,
     images: null
@@ -222,6 +232,7 @@ export const projectsData: Project[] = [
     tech: ["HTML", "JavaScript", "Unicode", "AI"],
     link: "https://github.com/686f6c61/ai-unicode-detector",
     demo: "https://686f6c61.github.io/ai-unicode-detector/",
+    web: null,
     csv: null,
     featured: false,
     images: null
@@ -238,6 +249,7 @@ export const projectsData: Project[] = [
     tech: ["Python", "Flask", "OpenAI", "Claude", "Prompt Engineering"],
     link: "https://github.com/686f6c61/prompt-engineering-frameworks",
     demo: null,
+    web: null,
     csv: null,
     featured: false,
     images: [
@@ -261,6 +273,7 @@ export const projectsData: Project[] = [
     tech: ["Python", "RapidAPI", "CSV", "LinkedIn", "Job Search"],
     link: "https://github.com/686f6c61/linkedIN-Jobs-Scrapper",
     demo: null,
+    web: null,
     csv: null,
     featured: false,
     images: null
@@ -277,6 +290,7 @@ export const projectsData: Project[] = [
     tech: ["Google Apps Script", "Gmail API", "JavaScript", "Automation"],
     link: "https://github.com/686f6c61/organizador-etiquetas-gmail-google-script",
     demo: null,
+    web: null,
     csv: null,
     featured: false,
     images: [
@@ -296,6 +310,7 @@ export const projectsData: Project[] = [
     tech: ["Python", "Mathematics", "Logic", "Scientific Method"],
     link: "https://github.com/686f6c61/conjetura-falso-7",
     demo: null,
+    web: null,
     csv: null,
     featured: false,
     images: null
@@ -312,6 +327,7 @@ export const projectsData: Project[] = [
     tech: ["Chrome Extension", "JavaScript", "Web Scraping", "Lovable"],
     link: "https://github.com/686f6c61/lovable-detector-extension",
     demo: null,
+    web: null,
     csv: null,
     featured: false,
     images: null

@@ -16,6 +16,7 @@ export interface Translations {
   projectsFeatured: string;
   projectsDemo: string;
   projectsCode: string;
+  projectsWeb: string;
   projectsImages: string;
   projectsExplanation: string;
   projectsCsv: string;
@@ -46,6 +47,7 @@ export const translations: Record<string, Translations> = {
     projectsFeatured: "PINNED",
     projectsDemo: "[demo]",
     projectsCode: "[code]",
+    projectsWeb: "[web]",
     projectsImages: "[images]",
     projectsExplanation: "[explicación]",
     projectsCsv: "[csv]",
@@ -73,6 +75,7 @@ export const translations: Record<string, Translations> = {
     projectsFeatured: "PINNED",
     projectsDemo: "[demo]",
     projectsCode: "[code]",
+    projectsWeb: "[web]",
     projectsImages: "[images]",
     projectsExplanation: "[explanation]",
     projectsCsv: "[csv]",

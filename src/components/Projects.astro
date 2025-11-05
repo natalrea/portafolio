@@ -75,6 +75,17 @@ const projects = getAllProjects();
                 <span class="mono">{t.projectsCode}</span>
               </a>
             )}
+            {project.web && (
+              <a
+                href={project.web}
+                target="_blank"
+                rel="noopener"
+                data-event="click_web"
+                data-project={project.title[lang]}
+              >
+                <span class="mono">{t.projectsWeb}</span>
+              </a>
+            )}
             {project.images && (
               <button
                 class="btn-images mono"
