@@ -171,6 +171,14 @@ const socialLinks = [
 
     if (revealButton && emailDisplay && emailText) {
       revealButton.addEventListener('click', () => {
+        // Track email revelation
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'reveal_email', {
+            event_category: 'contact',
+            event_label: 'email_revealed'
+          });
+        }
+
         // Construir email de forma ofuscada
         const user = atob('Njg2ZjZjNjE='); // Base64 de "686f6c61"
         const domain = atob('MDBiLnRlY2g='); // Base64 de "00b.tech"

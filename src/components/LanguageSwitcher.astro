@@ -23,14 +23,38 @@ const alternatePath = getAlternatePath(currentPath, alternateLang);
 ---
 
 <div class="language-switcher mono">
-  <a 
-    href={alternatePath} 
+  <a
+    href={alternatePath}
     class="lang-link"
     title={currentLang === 'es' ? 'Switch to English' : 'Cambiar a español'}
+    data-event="change_language"
+    data-from-lang={currentLang}
+    data-to-lang={alternateLang}
   >
     {currentLang === 'es' ? 'EN' : 'ES'}
   </a>
 </div>
+
+<script>
+  // Track language changes
+  document.addEventListener('DOMContentLoaded', () => {
+    const langLink = document.querySelector('.lang-link');
+
+    langLink?.addEventListener('click', (e) => {
+      const fromLang = langLink.getAttribute('data-from-lang');
+      const toLang = langLink.getAttribute('data-to-lang');
+
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'change_language', {
+          event_category: 'user_preferences',
+          from_language: fromLang,
+          to_language: toLang,
+          event_label: `${fromLang}_to_${toLang}`
+        });
+      }
+    });
+  });
+</script>
 
 <style>
   .language-switcher {

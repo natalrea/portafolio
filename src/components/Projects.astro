@@ -47,27 +47,55 @@ const projects = getAllProjects();
           </div>
           <div class="project-links">
             {project.demo && (
-              <a href={project.demo} target="_blank" rel="noopener">
+              <a
+                href={project.demo}
+                target="_blank"
+                rel="noopener"
+                data-event="click_demo"
+                data-project={project.title[lang]}
+              >
                 <span class="mono">{t.projectsDemo}</span>
               </a>
             )}
             {project.link && (
-              <a href={project.link} target="_blank" rel="noopener">
+              <a
+                href={project.link}
+                target="_blank"
+                rel="noopener"
+                data-event="click_code"
+                data-project={project.title[lang]}
+              >
                 <span class="mono">{t.projectsCode}</span>
               </a>
             )}
             {project.images && (
-              <button class="btn-images mono" data-gallery={`gallery-${project.title[lang].toLowerCase().replace(/\s+/g, '-')}`}>
+              <button
+                class="btn-images mono"
+                data-gallery={`gallery-${project.title[lang].toLowerCase().replace(/\s+/g, '-')}`}
+                data-event="view_images"
+                data-project={project.title[lang]}
+              >
                 {t.projectsImages}
               </button>
             )}
             {project.explanation && (
-              <button class="btn-explanation mono" data-explanation={`explanation-${project.title[lang].toLowerCase().replace(/\s+/g, '-')}`}>
+              <button
+                class="btn-explanation mono"
+                data-explanation={`explanation-${project.title[lang].toLowerCase().replace(/\s+/g, '-')}`}
+                data-event="view_explanation"
+                data-project={project.title[lang]}
+              >
                 {t.projectsExplanation}
               </button>
             )}
             {project.csv && (
-              <a href={project.csv} target="_blank" rel="noopener">
+              <a
+                href={project.csv}
+                target="_blank"
+                rel="noopener"
+                data-event="download_csv"
+                data-project={project.title[lang]}
+              >
                 <span class="mono">{t.projectsCsv}</span>
               </a>
             )}
@@ -388,10 +416,39 @@ const projects = getAllProjects();
     const projectCards = document.querySelectorAll('.project-card');
     let lastFocusedElement = null;
 
+    // Google Analytics Event Tracking
+    function trackEvent(eventName, eventParams) {
+      if (typeof gtag !== 'undefined') {
+        gtag('event', eventName, eventParams);
+      }
+    }
+
+    // Track all clicks with data-event attribute
+    document.addEventListener('click', (e) => {
+      const element = e.target.closest('[data-event]');
+      if (element) {
+        const eventName = element.getAttribute('data-event');
+        const projectName = element.getAttribute('data-project');
+
+        trackEvent(eventName, {
+          event_category: 'project_interaction',
+          project_name: projectName,
+          event_label: projectName
+        });
+      }
+    });
+
     // Handle project filtering
     filterButtons.forEach(button => {
       button.addEventListener('click', () => {
         const filter = button.getAttribute('data-filter');
+
+        // Track filter usage
+        trackEvent('filter_technology', {
+          event_category: 'project_filtering',
+          technology: filter,
+          event_label: filter
+        });
 
         // Update active button
         filterButtons.forEach(btn => btn.classList.remove('active'));

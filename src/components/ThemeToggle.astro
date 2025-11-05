@@ -99,9 +99,18 @@ const { lang = 'es' } = Astro.props;
   }
 
   // Set theme
-  function setTheme(theme) {
+  function setTheme(theme, trackChange = false) {
     html.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
+
+    // Track theme change if it's a manual change
+    if (trackChange && typeof gtag !== 'undefined') {
+      gtag('event', 'change_theme', {
+        event_category: 'user_preferences',
+        theme: theme,
+        event_label: theme
+      });
+    }
   }
 
   // Initialize theme
@@ -112,7 +121,7 @@ const { lang = 'es' } = Astro.props;
   themeToggle?.addEventListener('click', () => {
     const currentTheme = html.getAttribute('data-theme');
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    setTheme(newTheme);
+    setTheme(newTheme, true);
   });
 
   // Listen for system theme changes
