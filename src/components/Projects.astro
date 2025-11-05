@@ -20,16 +20,16 @@ const projects = getAllProjects();
     <div class="filter-wrapper">
       <button class="filter-toggle mono" id="filter-toggle">
         <span class="prompt">$</span>
-        <span class="command">grep --tech</span>
+        <span class="command">ls technologies/</span>
         <span class="cursor">_</span>
       </button>
       <div class="filter-output" id="filter-container" style="display: none;">
         <button class="filter-btn active mono" data-filter="all">
-          <span class="prompt-mini">$</span> {lang === 'es' ? 'all' : 'all'}
+          {lang === 'es' ? 'all' : 'all'}
         </button>
         {Array.from(new Set(projects.flatMap(p => p.tech))).sort().map(tech => (
           <button class="filter-btn mono" data-filter={tech}>
-            <span class="prompt-mini">$</span> {tech}
+            {tech}
           </button>
         ))}
       </div>
@@ -193,8 +193,8 @@ const projects = getAllProjects();
   }
 
   .filter-output {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 0.5rem;
     margin-top: 1rem;
     padding: 1.5rem;
@@ -235,39 +235,40 @@ const projects = getAllProjects();
     background: transparent;
     border: none;
     color: var(--text);
-    padding: 0.5rem 1rem;
+    padding: 0.5rem;
     cursor: pointer;
     transition: all 0.2s;
     font-family: var(--mono);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     text-align: left;
     width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
     opacity: 0.7;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .filter-btn:hover {
     opacity: 1;
     background: rgba(255, 255, 255, 0.05);
-    padding-left: 1.5rem;
   }
 
   .filter-btn.active {
     opacity: 1;
-    background: rgba(255, 255, 255, 0.05);
-    border-left: 3px solid var(--text);
-    padding-left: 1rem;
+    color: var(--text);
+    text-decoration: underline;
   }
 
-  .filter-btn .prompt-mini {
-    opacity: 0.5;
-    font-size: 0.8rem;
+  @media (max-width: 768px) {
+    .filter-output {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
-  .filter-btn.active .prompt-mini {
-    opacity: 1;
+  @media (max-width: 480px) {
+    .filter-output {
+      grid-template-columns: 1fr;
+    }
   }
 
   .projects-grid {
