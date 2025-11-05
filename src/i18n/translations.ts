@@ -19,16 +19,7 @@ export interface Translations {
   projectsImages: string;
   projectsExplanation: string;
   projectsCsv: string;
-  
-  // Skills Section
-  skillsTitle: string;
-  skillsFrontend: string;
-  skillsBackend: string;
-  skillsMobile: string;
-  skillsAI: string;
-  skillsTools: string;
-  skillsOther: string;
-  
+
   // Contact Section
   contactTitle: string;
   contactEmailButton: string;
@@ -58,15 +49,7 @@ export const translations: Record<string, Translations> = {
     projectsImages: "[images]",
     projectsExplanation: "[explicación]",
     projectsCsv: "[csv]",
-    
-    skillsTitle: "$ cat skills.json",
-    skillsFrontend: "Frontend",
-    skillsBackend: "Backend",
-    skillsMobile: "Mobile",
-    skillsAI: "DevOps & Tools",
-    skillsTools: "Otros",
-    skillsOther: "Otros",
-    
+
     contactTitle: "$ contact --me",
     contactEmailButton: "cat email.txt",
     contactLinks: "Links",
@@ -93,15 +76,7 @@ export const translations: Record<string, Translations> = {
     projectsImages: "[images]",
     projectsExplanation: "[explanation]",
     projectsCsv: "[csv]",
-    
-    skillsTitle: "$ cat skills.json",
-    skillsFrontend: "Frontend",
-    skillsBackend: "Backend",
-    skillsMobile: "Mobile",
-    skillsAI: "DevOps & Tools",
-    skillsTools: "Tools",
-    skillsOther: "Other",
-    
+
     contactTitle: "$ contact --me",
     contactEmailButton: "cat email.txt",
     contactLinks: "Links",

@@ -15,9 +15,26 @@ const projects = getAllProjects();
 <section id="projects" class="projects border-top">
   <div class="container">
     <h2 class="mono">{t.projectsTitle}</h2>
+
+    <!-- Tech Filter -->
+    <div class="filter-container">
+      <button class="filter-btn active mono" data-filter="all">
+        {lang === 'es' ? 'Todos' : 'All'}
+      </button>
+      {Array.from(new Set(projects.flatMap(p => p.tech))).sort().map(tech => (
+        <button class="filter-btn mono" data-filter={tech}>
+          {tech}
+        </button>
+      ))}
+    </div>
+
     <div class="projects-grid">
       {projects.map((project, index) => (
-        <article class={`project-card ${project.featured ? 'featured' : ''} fade-in`} style={`animation-delay: ${index * 0.1}s`}>
+        <article
+          class={`project-card ${project.featured ? 'featured' : ''} fade-in`}
+          style={`animation-delay: ${index * 0.1}s`}
+          data-tech={project.tech.join(',')}
+        >
           {project.featured && (
             <span class="featured-badge mono">{t.projectsFeatured}</span>
           )}
@@ -68,12 +85,18 @@ const projects = getAllProjects();
   
   {projects.map(project =>
     project.explanation && (
-      <div class="explanation-modal" id={`explanation-${project.title[lang].toLowerCase().replace(/\s+/g, '-')}`}>
-        <div class="modal-overlay"></div>
+      <div
+        class="explanation-modal"
+        id={`explanation-${project.title[lang].toLowerCase().replace(/\s+/g, '-')}`}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={`modal-title-${project.title[lang].toLowerCase().replace(/\s+/g, '-')}`}
+      >
+        <div class="modal-overlay" aria-hidden="true"></div>
         <div class="modal-content">
-          <button class="modal-close" aria-label="Cerrar">×</button>
+          <button class="modal-close" aria-label={lang === 'es' ? 'Cerrar modal' : 'Close modal'}>×</button>
           <div class="modal-body">
-            <h3 class="mono">{project.title[lang]}</h3>
+            <h3 class="mono" id={`modal-title-${project.title[lang].toLowerCase().replace(/\s+/g, '-')}`}>{project.title[lang]}</h3>
             <div class="explanation-text" set:html={project.explanation ? project.explanation[lang] : ''}>
             </div>
           </div>
@@ -88,11 +111,45 @@ const projects = getAllProjects();
     padding: 6rem 0;
   }
 
+  .filter-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .filter-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+  }
+
+  .filter-btn:hover {
+    border-color: var(--text);
+    transform: translateY(-2px);
+  }
+
+  .filter-btn.active {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+  }
+
   .projects-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
     margin-top: 3rem;
+  }
+
+  .project-card.hidden {
+    display: none;
   }
 
   .project-card {
@@ -116,9 +173,13 @@ const projects = getAllProjects();
   }
 
   @media (prefers-color-scheme: dark) {
-    .project-card.featured {
+    :root:not([data-theme="light"]) .project-card.featured {
       background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.02) 100%);
     }
+  }
+
+  [data-theme="dark"] .project-card.featured {
+    background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.02) 100%);
   }
 
   .featured-badge {
@@ -323,13 +384,41 @@ const projects = getAllProjects();
   document.addEventListener('DOMContentLoaded', () => {
     const imageButtons = document.querySelectorAll('.btn-images');
     const explanationButtons = document.querySelectorAll('.btn-explanation');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.project-card');
+    let lastFocusedElement = null;
+
+    // Handle project filtering
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const filter = button.getAttribute('data-filter');
+
+        // Update active button
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+
+        // Filter projects
+        projectCards.forEach(card => {
+          if (filter === 'all') {
+            card.classList.remove('hidden');
+          } else {
+            const cardTechs = card.getAttribute('data-tech')?.split(',') || [];
+            if (cardTechs.includes(filter)) {
+              card.classList.remove('hidden');
+            } else {
+              card.classList.add('hidden');
+            }
+          }
+        });
+      });
+    });
 
     // Handle image gallery buttons
     imageButtons.forEach(button => {
       button.addEventListener('click', () => {
         const galleryId = button.getAttribute('data-gallery');
         if (!galleryId) return;
-        
+
         // Call the gallery's open function
         const openFunction = window[`open_${galleryId}`];
         if (openFunction) {
@@ -343,23 +432,43 @@ const projects = getAllProjects();
       button.addEventListener('click', () => {
         const explanationId = button.getAttribute('data-explanation');
         if (!explanationId) return;
-        
+
         const modal = document.getElementById(explanationId);
         if (modal) {
+          lastFocusedElement = document.activeElement;
           modal.classList.add('active');
           document.body.style.overflow = 'hidden';
+
+          // Focus close button for accessibility
+          const closeBtn = modal.querySelector('.modal-close');
+          if (closeBtn) {
+            setTimeout(() => closeBtn.focus(), 100);
+          }
+
+          // Trap focus within modal
+          trapFocus(modal);
         }
       });
     });
 
     // Handle explanation modal close
+    function closeModal(modal) {
+      if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+
+        // Restore focus to element that opened the modal
+        if (lastFocusedElement) {
+          lastFocusedElement.focus();
+          lastFocusedElement = null;
+        }
+      }
+    }
+
     document.addEventListener('click', (e) => {
       if (e.target.classList.contains('modal-close') || e.target.classList.contains('modal-overlay')) {
         const modal = e.target.closest('.explanation-modal');
-        if (modal) {
-          modal.classList.remove('active');
-          document.body.style.overflow = '';
-        }
+        closeModal(modal);
       }
     });
 
@@ -367,11 +476,33 @@ const projects = getAllProjects();
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         const activeModal = document.querySelector('.explanation-modal.active');
-        if (activeModal) {
-          activeModal.classList.remove('active');
-          document.body.style.overflow = '';
-        }
+        closeModal(activeModal);
       }
     });
+
+    // Focus trap utility
+    function trapFocus(element) {
+      const focusableElements = element.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      const firstFocusable = focusableElements[0];
+      const lastFocusable = focusableElements[focusableElements.length - 1];
+
+      element.addEventListener('keydown', function(e) {
+        if (e.key !== 'Tab') return;
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstFocusable) {
+            lastFocusable.focus();
+            e.preventDefault();
+          }
+        } else {
+          if (document.activeElement === lastFocusable) {
+            firstFocusable.focus();
+            e.preventDefault();
+          }
+        }
+      });
+    }
   });
 </script>

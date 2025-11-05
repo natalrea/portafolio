@@ -1,0 +1,125 @@
+---
+interface Props {
+  lang?: string;
+}
+
+const { lang = 'es' } = Astro.props;
+---
+
+<button id="theme-toggle" aria-label={lang === 'es' ? 'Cambiar tema' : 'Toggle theme'} title={lang === 'es' ? 'Cambiar tema' : 'Toggle theme'}>
+  <svg class="sun-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="2"/>
+    <line x1="10" y1="2" x2="10" y2="4" stroke="currentColor" stroke-width="2"/>
+    <line x1="10" y1="16" x2="10" y2="18" stroke="currentColor" stroke-width="2"/>
+    <line x1="18" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="2"/>
+    <line x1="4" y1="10" x2="2" y2="10" stroke="currentColor" stroke-width="2"/>
+    <line x1="15.5" y1="4.5" x2="14.5" y2="5.5" stroke="currentColor" stroke-width="2"/>
+    <line x1="5.5" y1="14.5" x2="4.5" y2="15.5" stroke="currentColor" stroke-width="2"/>
+    <line x1="15.5" y1="15.5" x2="14.5" y2="14.5" stroke="currentColor" stroke-width="2"/>
+    <line x1="5.5" y1="5.5" x2="4.5" y2="4.5" stroke="currentColor" stroke-width="2"/>
+  </svg>
+  <svg class="moon-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17 10.5C17 14.6421 13.6421 18 9.5 18C5.35786 18 2 14.6421 2 10.5C2 6.35786 5.35786 3 9.5 3C9.67793 3 9.85464 3.00696 10.0297 3.02063C9.38507 3.93644 9 5.06876 9 6.29032C9 9.43248 11.5675 12 14.7097 12C15.9312 12 17.0636 11.6149 17.9794 10.9703C17.993 11.1454 18 11.322 18 11.5" stroke="currentColor" stroke-width="2"/>
+  </svg>
+</button>
+
+<style>
+  #theme-toggle {
+    position: fixed;
+    top: 2rem;
+    right: 7rem;
+    z-index: 999;
+    background: transparent;
+    border: 1px solid var(--border);
+    padding: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    width: 40px;
+    height: 40px;
+  }
+
+  #theme-toggle:hover {
+    border-color: var(--text);
+    transform: translateY(-2px);
+  }
+
+  .sun-icon,
+  .moon-icon {
+    color: var(--text);
+  }
+
+  .sun-icon {
+    display: none;
+  }
+
+  .moon-icon {
+    display: block;
+  }
+
+  [data-theme="light"] .sun-icon {
+    display: block;
+  }
+
+  [data-theme="light"] .moon-icon {
+    display: none;
+  }
+
+  [data-theme="dark"] .sun-icon {
+    display: none;
+  }
+
+  [data-theme="dark"] .moon-icon {
+    display: block;
+  }
+
+  @media (max-width: 768px) {
+    #theme-toggle {
+      top: 1rem;
+      right: 4rem;
+      width: 36px;
+      height: 36px;
+    }
+  }
+</style>
+
+<script>
+  // Theme toggle functionality
+  const themeToggle = document.getElementById('theme-toggle');
+  const html = document.documentElement;
+
+  // Get theme from localStorage or system preference
+  function getTheme() {
+    const stored = localStorage.getItem('theme');
+    if (stored) return stored;
+
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
+  // Set theme
+  function setTheme(theme) {
+    html.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }
+
+  // Initialize theme
+  const initialTheme = getTheme();
+  setTheme(initialTheme);
+
+  // Toggle theme on button click
+  themeToggle?.addEventListener('click', () => {
+    const currentTheme = html.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+  });
+
+  // Listen for system theme changes
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    // Only update if user hasn't manually set a preference
+    if (!localStorage.getItem('theme')) {
+      setTheme(e.matches ? 'dark' : 'light');
+    }
+  });
+</script>

@@ -5,6 +5,16 @@ interface Props {
 }
 
 const { images, projectTitle } = Astro.props;
+
+// Validate props
+if (!images || !Array.isArray(images) || images.length === 0) {
+  throw new Error(`ImageGallery: 'images' prop must be a non-empty array. Received: ${images}`);
+}
+
+if (!projectTitle || typeof projectTitle !== 'string') {
+  throw new Error(`ImageGallery: 'projectTitle' prop must be a non-empty string. Received: ${projectTitle}`);
+}
+
 const galleryId = `gallery-${projectTitle.toLowerCase().replace(/\s+/g, '-')}`;
 
 // Convert images to WebP format for better performance
@@ -25,22 +35,33 @@ const thumbnailImages = images.map(img => {
 });
 ---
 
-<div class="gallery-modal" id={galleryId}>
-  <div class="modal-overlay"></div>
+<div
+  class="gallery-modal"
+  id={galleryId}
+  role="dialog"
+  aria-modal="true"
+  aria-label={`${projectTitle} image gallery`}
+>
+  <div class="modal-overlay" aria-hidden="true"></div>
   <div class="modal-content">
-    <button class="modal-close" aria-label="Cerrar">×</button>
+    <button class="modal-close" aria-label="Close gallery">×</button>
     <div class="modal-body">
-      <button class="nav-btn prev" aria-label="Anterior">‹</button>
+      <button class="nav-btn prev" aria-label="Previous image">‹</button>
       <div class="image-container">
         <img src="" alt={`${projectTitle} screenshot`} />
       </div>
-      <button class="nav-btn next" aria-label="Siguiente">›</button>
+      <button class="nav-btn next" aria-label="Next image">›</button>
     </div>
-    <div class="thumbnail-strip">
+    <div class="thumbnail-strip" role="tablist" aria-label="Image thumbnails">
       {images.map((img, index) => (
-        <button class="thumbnail" data-index={index}>
-          <img 
-            src={thumbnailImages[index]} 
+        <button
+          class="thumbnail"
+          data-index={index}
+          role="tab"
+          aria-label={`View image ${index + 1} of ${images.length}`}
+        >
+          <img
+            src={thumbnailImages[index]}
             alt={`${projectTitle} thumbnail ${index + 1}`}
             loading="lazy"
             decoding="async"
@@ -228,6 +249,11 @@ const thumbnailImages = images.map(img => {
 
 <script define:vars={{ galleryId, images, webpImages }}>
   const modal = document.getElementById(galleryId);
+  if (!modal) {
+    console.error(`Gallery modal with id "${galleryId}" not found`);
+    return;
+  }
+
   const overlay = modal.querySelector('.modal-overlay');
   const closeBtn = modal.querySelector('.modal-close');
   const prevBtn = modal.querySelector('.prev');
@@ -237,7 +263,18 @@ const thumbnailImages = images.map(img => {
 
   let currentIndex = 0;
 
+  // Handle image load errors
+  img.addEventListener('error', () => {
+    console.error(`Failed to load image: ${img.src}`);
+    img.alt = 'Image failed to load';
+  });
+
   function showImage(index) {
+    if (index < 0 || index >= webpImages.length) {
+      console.error(`Invalid image index: ${index}`);
+      return;
+    }
+
     currentIndex = index;
     img.src = webpImages[index];
 
@@ -268,10 +305,10 @@ const thumbnailImages = images.map(img => {
   }
 
   // Event listeners
-  closeBtn.addEventListener('click', closeGallery);
-  overlay.addEventListener('click', closeGallery);
-  prevBtn.addEventListener('click', prevImage);
-  nextBtn.addEventListener('click', nextImage);
+  closeBtn?.addEventListener('click', closeGallery);
+  overlay?.addEventListener('click', closeGallery);
+  prevBtn?.addEventListener('click', prevImage);
+  nextBtn?.addEventListener('click', nextImage);
 
   thumbnails.forEach((thumb, index) => {
     thumb.addEventListener('click', () => showImage(index));
