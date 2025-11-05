@@ -10,12 +10,17 @@ const galleryId = `gallery-${projectTitle.toLowerCase().replace(/\s+/g, '-')}`;
 // Convert images to WebP format for better performance
 const webpImages = images.map(img => {
   if (img.endsWith('.gif')) return img; // Keep GIF as is
-  return img + '.webp'; // Append .webp since files are named like image.png.webp
+  if (img.endsWith('.webp')) return img; // Already WebP
+  return img + '.webp'; // Append .webp for files like image.png
 });
 
 // Create thumbnail paths for faster loading
 const thumbnailImages = images.map(img => {
   if (img.endsWith('.gif')) return img; // Keep GIF as is
+  if (img.endsWith('.webp')) {
+    // For WebP files, replace .webp with _thumb.webp
+    return img.replace(/^\/screenshots\//, '/thumbnails/screenshots/').replace(/\.webp$/, '_thumb.webp');
+  }
   return img.replace(/^\/screenshots\//, '/thumbnails/screenshots/') + '_thumb.webp';
 });
 ---

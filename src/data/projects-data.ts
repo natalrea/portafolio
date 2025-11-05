@@ -148,14 +148,17 @@ export const projectsData: Project[] = [
     },
 
     tech: ["Python", "Requests", "Concurrent Processing", "CSV Export", "Security Analytics"],
-    link: "https://github.com/686f6c61/domain-scraper-alerts",
+    link: null,
     demo: null,
     csv: "/assets/domain-scraper/15-dias-1M-dominios-com.csv",
     featured: false,
     images: [
-      "/screenshots/domain-scraper/Domain-Scraper01",
-      "/screenshots/domain-scraper/Domain-Scraper02",
-      "/screenshots/domain-scraper/Domain-Scraper03"
+      "/screenshots/domain-scraper/Captura desde 2025-11-05 16-01-09.webp",
+      "/screenshots/domain-scraper/Captura desde 2025-11-05 16-01-23.webp",
+      "/screenshots/domain-scraper/Captura desde 2025-11-05 16-01-38.webp",
+      "/screenshots/domain-scraper/Captura desde 2025-11-05 16-10-31.webp",
+      "/screenshots/domain-scraper/Captura desde 2025-11-05 16-15-32.webp",
+      "/screenshots/domain-scraper/Captura desde 2025-11-05 16-20-22.webp"
     ]
   },
   {
