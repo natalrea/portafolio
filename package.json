@@ -12,6 +12,7 @@
     "astro": "^5.15.3"
   },
   "devDependencies": {
+    "serve": "^14.2.5",
     "terser": "^5.44.0"
   }
 }
