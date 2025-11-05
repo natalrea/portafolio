@@ -169,23 +169,3 @@ section {
   outline: 2px solid var(--text);
   outline-offset: 2px;
 }
-
-/* Skip to content link */
-.skip-to-content {
-  position: absolute;
-  top: -40px;
-  left: 0;
-  background: var(--text);
-  color: var(--bg);
-  padding: 0.75rem 1.5rem;
-  text-decoration: none;
-  font-family: var(--mono);
-  z-index: 9999;
-  border: none;
-}
-
-.skip-to-content:focus {
-  top: 0;
-  outline: 3px solid var(--accent);
-  outline-offset: 2px;
-}
