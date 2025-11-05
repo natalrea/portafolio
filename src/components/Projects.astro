@@ -19,18 +19,17 @@ const projects = getAllProjects();
     <!-- Tech Filter -->
     <div class="filter-wrapper">
       <button class="filter-toggle mono" id="filter-toggle">
-        <span>{lang === 'es' ? 'Filtrar por tecnología' : 'Filter by technology'}</span>
-        <svg class="chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+        <span class="prompt">$</span>
+        <span class="command">grep --tech</span>
+        <span class="cursor">_</span>
       </button>
-      <div class="filter-container" id="filter-container" style="display: none;">
+      <div class="filter-output" id="filter-container" style="display: none;">
         <button class="filter-btn active mono" data-filter="all">
-          {lang === 'es' ? 'Todos' : 'All'}
+          <span class="prompt-mini">$</span> {lang === 'es' ? 'all' : 'all'}
         </button>
         {Array.from(new Set(projects.flatMap(p => p.tech))).sort().map(tech => (
           <button class="filter-btn mono" data-filter={tech}>
-            {tech}
+            <span class="prompt-mini">$</span> {tech}
           </button>
         ))}
       </div>
@@ -160,13 +159,12 @@ const projects = getAllProjects();
     cursor: pointer;
     transition: all 0.3s;
     font-family: var(--mono);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    width: 100%;
-    max-width: 300px;
-    justify-content: space-between;
+    gap: 0.5rem;
+    width: fit-content;
+    text-align: left;
   }
 
   .filter-toggle:hover {
@@ -174,54 +172,102 @@ const projects = getAllProjects();
     transform: translateY(-2px);
   }
 
-  .filter-toggle .chevron {
-    transition: transform 0.3s;
+  .filter-toggle .prompt {
+    color: var(--text);
+    opacity: 0.7;
   }
 
-  .filter-toggle.active .chevron {
-    transform: rotate(180deg);
+  .filter-toggle .command {
+    color: var(--text);
   }
 
-  .filter-container {
+  .filter-toggle .cursor {
+    display: inline-block;
+    animation: blink 1s infinite;
+    opacity: 0.8;
+  }
+
+  @keyframes blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+
+  .filter-output {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
+    flex-direction: column;
+    gap: 0.5rem;
     margin-top: 1rem;
-    padding: 1rem;
+    padding: 1.5rem;
     border: 1px solid var(--border);
     background: rgba(0, 0, 0, 0.02);
+    max-height: 400px;
+    overflow-y: auto;
   }
 
   @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) .filter-container {
+    :root:not([data-theme="light"]) .filter-output {
       background: rgba(255, 255, 255, 0.02);
     }
   }
 
-  [data-theme="dark"] .filter-container {
+  [data-theme="dark"] .filter-output {
     background: rgba(255, 255, 255, 0.02);
+  }
+
+  .filter-output::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .filter-output::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .filter-output::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 0;
+  }
+
+  .filter-output::-webkit-scrollbar-thumb:hover {
+    background: var(--text);
   }
 
   .filter-btn {
     background: transparent;
-    border: 1px solid var(--border);
+    border: none;
     color: var(--text);
     padding: 0.5rem 1rem;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.2s;
     font-family: var(--mono);
-    font-size: 0.85rem;
+    font-size: 0.9rem;
+    text-align: left;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0.7;
   }
 
   .filter-btn:hover {
-    border-color: var(--text);
-    transform: translateY(-2px);
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.05);
+    padding-left: 1.5rem;
   }
 
   .filter-btn.active {
-    background: var(--text);
-    color: var(--bg);
-    border-color: var(--text);
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border-left: 3px solid var(--text);
+    padding-left: 1rem;
+  }
+
+  .filter-btn .prompt-mini {
+    opacity: 0.5;
+    font-size: 0.8rem;
+  }
+
+  .filter-btn.active .prompt-mini {
+    opacity: 1;
   }
 
   .projects-grid {
