@@ -82,9 +82,31 @@ export const projectsData: Project[] = [
   },
   {
     title: {
+      es: "Domain Finder",
+      en: "Domain Finder"
+    },
+    description: {
+      es: "<strong>Procesamiento ultra-rápido mediante múltiples workers con múltiples estrategias.</strong><br><br>50+ TLDs soportados organizados por categorías.<br>Soporte para 3 y 4 letras (17,576 - 456,976 combinaciones).<br>Benchmark automático para encontrar la mejor estrategia.<br>Estadísticas en tiempo real y progreso detallado.<br>Resultados guardados en archivos organizados.",
+      en: "<strong>Ultra-fast processing through multiple workers with multiple strategies.</strong><br><br>50+ supported TLDs organized by categories.<br>Support for 3 and 4 letters (17,576 - 456,976 combinations).<br>Automatic benchmark to find the best strategy.<br>Real-time statistics and detailed progress.<br>Results saved in organized files."
+    },
+    tech: ["Python", "Domain Search", "Benchmarking"],
+    link: "https://github.com/686f6c61/Domain-Finder",
+    demo: null,
+    web: null,
+    csv: null,
+    featured: false,
+    images: [
+      "/screenshots/domain-finder/686f6c61-domain-finder-01",
+      "/screenshots/domain-finder/686f6c61-domain-finder-02",
+      "/screenshots/domain-finder/686f6c61-domain-finder-03",
+      "/screenshots/domain-finder/686f6c61-domain-finder-04"
+    ]
+  },
+  {
+    title: {
       es: "Open Mood",
       en: "Open Mood"
-    },
+  },
     description: {
       es: "<strong>App iOS de red social para Gen Z.</strong><br><br>Comparte estados de ánimo con emojis y ubicación. App en Swift + Supabase. Backend de gestión y control para administradores en Next.js.",
       en: "<strong>iOS social networking app for Gen Z.</strong><br><br>Share moods with emojis and location. Swift + Supabase app. Management and control backend for administrators in Next.js."
