@@ -1,357 +1,328 @@
+/**
+ * ARCHIVO DE DATOS DE PROYECTOS
+ * ==============================
+ *
+ * Este archivo centraliza todos los proyectos que aparecen en tu portfolio.
+ * Es la fuente de datos principal para la sección de proyectos.
+ *
+ * PROPÓSITO:
+ * - Define la estructura de datos de cada proyecto
+ * - Almacena información bilingüe (español/inglés)
+ * - Soporta múltiples tipos de enlaces y contenido multimedia
+ * - Permite marcar proyectos como destacados (PINNED)
+ *
+ * ARQUITECTURA:
+ * - TypeScript para type-safety y validación
+ * - Soporte bilingüe completo en todos los campos de texto
+ * - Propiedades opcionales (demo, web, images, etc.) para flexibilidad
+ * - Sistema de filtrado por tecnologías (tech array)
+ *
+ * CÓMO AÑADIR UN PROYECTO:
+ * 1. Copia uno de los ejemplos existentes
+ * 2. Modifica los campos según tu proyecto
+ * 3. Añádelo al array projectsData
+ * 4. Guarda - Astro recargará automáticamente
+ *
+ * CÓMO ELIMINAR UN PROYECTO:
+ * 1. Localiza el objeto del proyecto en el array
+ * 2. Elimina desde { hasta }, (incluyendo la coma)
+ * 3. Guarda el archivo
+ */
+
+/**
+ * INTERFAZ: Project
+ * -----------------
+ * Define la estructura de datos que debe tener cada proyecto.
+ * TypeScript usa esta interfaz para validar que no falten campos obligatorios.
+ *
+ * PROPIEDADES OBLIGATORIAS:
+ * - title: Título del proyecto (bilingüe)
+ * - description: Descripción breve que aparece en la tarjeta (bilingüe, soporta HTML)
+ * - tech: Array de tecnologías/skills usadas
+ * - featured: Boolean que indica si es proyecto destacado (PINNED)
+ *
+ * PROPIEDADES OPCIONALES:
+ * - explanation: Descripción extendida para modal (bilingüe, soporta HTML)
+ * - link: URL al código fuente (GitHub)
+ * - demo: URL a demo en vivo
+ * - web: URL al sitio web oficial
+ * - csv: Ruta a archivo descargable (CSV o cualquier formato)
+ * - images: Array de rutas a screenshots para galería
+ *
+ * TIPOS DE BOTONES QUE SE MUESTRAN:
+ * - [demo] - Si demo !== null
+ * - [code] - Si link !== null
+ * - [web] - Si web !== null
+ * - [images] - Si images !== null y images.length > 0
+ * - [explicación] - Si explanation !== undefined
+ * - [csv] - Si csv !== null
+ */
 export interface Project {
+  // TÍTULO (Obligatorio)
+  // Aparece como encabezado principal del proyecto
   title: {
-    es: string;
-    en: string;
+    es: string;  // Título en español
+    en: string;  // Título en inglés
   };
+
+  // DESCRIPCIÓN (Obligatorio)
+  // Texto que aparece en la tarjeta del proyecto
+  // SOPORTA HTML: Puedes usar <strong>, <br>, <span>, etc.
   description: {
-    es: string;
-    en: string;
+    es: string;  // Descripción en español
+    en: string;  // Descripción en inglés
   };
+
+  // EXPLICACIÓN EXTENDIDA (Opcional)
+  // Si se define, aparece botón [explicación] que abre modal con este contenido
+  // Útil para proyectos complejos que necesitan más contexto
   explanation?: {
-    es: string;
-    en: string;
+    es: string;  // Explicación en español
+    en: string;  // Explicación en inglés
   };
+
+  // TECNOLOGÍAS (Obligatorio)
+  // Array de strings con las tecnologías/skills usadas
+  // Se muestra como etiquetas bajo el proyecto y permite filtrado
+  // Ejemplo: ["React", "Node.js", "PostgreSQL", "Docker"]
   tech: string[];
+
+  // CÓDIGO FUENTE (Opcional)
+  // URL al repositorio de GitHub (o similar)
+  // Si es null, no se muestra botón [code]
   link: string | null;
+
+  // DEMO EN VIVO (Opcional)
+  // URL a una versión funcional del proyecto
+  // Si es null, no se muestra botón [demo]
   demo: string | null;
+
+  // SITIO WEB (Opcional)
+  // URL al sitio web oficial del proyecto
+  // Si es null, no se muestra botón [web]
   web: string | null;
+
+  // ARCHIVO DESCARGABLE (Opcional)
+  // Ruta a archivo CSV u otro formato descargable
+  // Debe estar en public/assets/ para ser accesible
+  // Si es null, no se muestra botón [csv]
   csv: string | null;
+
+  // DESTACADO (Obligatorio)
+  // true = aparece con badge "PINNED" al inicio de la lista
+  // false = aparece en orden normal
   featured: boolean;
+
+  // GALERÍA DE IMÁGENES (Opcional)
+  // Array de rutas a screenshots del proyecto
+  // NO incluir extensión (.png, .jpg) - se añade automáticamente
+  // Si es null o array vacío, no se muestra botón [images]
+  // Rutas relativas a public/ (ejemplo: "/screenshots/proyecto/img-01")
   images: string[] | null;
 }
 
+/**
+ * ARRAY: projectsData
+ * -------------------
+ * Contiene todos los proyectos del portfolio.
+ * Se exporta para uso en componentes y utilidades.
+ *
+ * ORDEN:
+ * - Los proyectos con featured: true aparecen primero
+ * - Luego los demás en el orden que los defines aquí
+ *
+ * EJEMPLOS INCLUIDOS:
+ * 1. Proyecto Completo: Muestra TODAS las opciones disponibles
+ * 2. Proyecto Destacado: Solo algunas opciones, featured: true
+ * 3. Proyecto Regular: Configuración básica estándar
+ * 4. Proyecto Simple: Mínimo necesario
+ *
+ * REEMPLAZA ESTOS EJEMPLOS CON TUS PROYECTOS REALES
+ */
 export const projectsData: Project[] = [
+  /**
+   * TIPO 1: PROYECTO COMPLETO
+   * --------------------------
+   * Este ejemplo muestra TODAS las opciones disponibles.
+   * Tiene: featured, demo, code, web, images, explanation, csv
+   *
+   * USA ESTE COMO PLANTILLA para proyectos con muchas características.
+   *
+   * BOTONES QUE MUESTRA:
+   * [demo] [code] [web] [images] [explicación] [csv] + badge PINNED
+   */
   {
     title: {
-      es: "SPARRING",
-      en: "SPARRING"
+      es: "Proyecto Completo Ejemplo", // CAMBIAR: Nombre de tu proyecto
+      en: "Complete Example Project"
     },
     description: {
-      es: "<strong>Platforma SaaS de entrevistas técnicas automatizadas.</strong><br><br>IA que evalúa talentos tech. Reduce tiempo de hiring en 85% y elimina 95% de costes y bias humano. Informes ejecutivos y de profundidad (+20pgs). <strong>Preguntas desarrollo</strong>, <strong>Preguntas test</strong>, <strong>Realización de código</strong>, <strong>Complejidad algorítmica</strong>, <strong>Errores</strong>, <strong>Completado</strong>, <strong>PR</strong>, <strong>Lógica matemática</strong>, <strong>Clean code</strong>.",
-      en: "<strong>SaaS platform for automated technical interviews.</strong><br><br>AI that evaluates tech talent. Reduces hiring time by 85% and eliminates 95% of costs and human bias. Executive and in-depth reports (+20 pages). <strong>Development questions</strong>, <strong>Test questions</strong>, <strong>Code completion</strong>, <strong>Algorithmic complexity</strong>, <strong>Errors</strong>, <strong>Completion</strong>, <strong>PR</strong>, <strong>Mathematical logic</strong>, <strong>Clean code</strong>."
-    },
-    tech: ["React", "Node.js", "MongoDB", "AWS", "IA Models +9", "Resend"],
-    link: null,
-    demo: "https://www.sparring.dev",
-    web: null,
-    csv: null,
-    featured: true,
-    images: null
-  },
-  {
-    title: {
-      es: "LLM Synthetic Personality Review",
-      en: "LLM Synthetic Personality Review"
-    },
-    description: {
-      es: "<strong>Análisis de literatura sobre personalidad en LLMs.</strong><br><br>Compilación de 119 artículos científicos (2022-2025). Manifestación de rasgos de personalidad en LLMs.",
-      en: "<strong>Literature review on personality in LLMs.</strong><br><br>Compilation of 119 scientific papers (2022-2025). Personality trait manifestation in LLMs."
-    },
-    tech: ["Research", "Python", "Data Analysis", "LLMs", "Psychology"],
-    link: "https://github.com/686f6c61/llm-synthetic-personality-review",
-    demo: null,
-    web: "https://syntheticpersonality.com",
-    csv: null,
-    featured: true,
-    images: null
-  },
-  {
-    title: {
-      es: "Red de Agentes IA errores JAVA - COBOL",
-      en: "AI Agent Network for JAVA-COBOL Errors"
-    },
-    description: {
-      es: "<strong>SaaS de orquestación de agentes IA para debugging bancario.</strong><br><br>6 agentes especializados procesan errores de consola Java/Cobol. Identifican ubicación exacta del error y proporcionan soluciones accionables para equipos de desarrollo. Ahorro de 1-8 horas por error. Integración con Gemini 2.5 Pro.",
-      en: "<strong>SaaS platform for AI agent orchestration in banking debugging.</strong><br><br>6 specialised agents process Java/Cobol console errors. Identify exact error location and provide actionable solutions for development teams. Saves 1-8 hours per error. Integration with Gemini 2.5 Pro."
+      // SOPORTA HTML: <strong>, <br>, <span>, etc.
+      es: "<strong>Título destacado del proyecto.</strong><br><br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aquí describes brevemente tu proyecto. <strong>Característica 1</strong>, <strong>Característica 2</strong>, <strong>Característica 3</strong>.",
+      en: "<strong>Project featured title.</strong><br><br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Here you briefly describe your project. <strong>Feature 1</strong>, <strong>Feature 2</strong>, <strong>Feature 3</strong>."
     },
     explanation: {
-      es: "Para una empresa tecnológica especializada en el sector bancario, se planteó el desafío de desarrollar un orquestador inteligente capaz de gestionar el volumen masivo de errores que su cliente procesa diariamente.<br><br><strong>La solución implementada consiste en una arquitectura multiagente compuesta por:</strong><br>• 6 agentes especializados coordinados por 1 orquestador principal<br>• 4 agentes de análisis especializados en tipos específicos de errores y archivos de consola Java/Cobol<br>• 1 agente de validación que verifica consistencia de datos, líneas de código, paths y estructuras<br>• 1 agente de reporting que genera informes estructurados en múltiples formatos<br><br><strong>Escalabilidad y rendimiento:</strong><br>• Procesamiento de 1400 archivos con 10 niveles de profundidad anidada<br>• Generación de reporte accionable en menos de 5 minutos<br>• Reducción de tiempo: de hasta un día de trabajo por error a menos de 5 minutos totales<br><br><strong>Requisitos técnicos implementados:</strong><br>• Integración con partnership Google utilizando Gemini 2.5 Pro<br>• Arquitectura SaaS para despliegue inmediato<br>• Sistema de autenticación con gestión de usuarios y límites de acceso<br>• Procesamiento en paralelo de múltiples archivos de error desde ZIP",
-      en: "For a technology company specialising in the banking sector, the challenge was to develop an intelligent orchestrator capable of managing the massive volume of errors their client processes daily.<br><br><strong>The implemented solution consists of a multi-agent architecture composed of:</strong><br>• 6 specialised agents coordinated by 1 main orchestrator<br>• 4 analysis agents specialised in specific error types and Java/Cobol console files<br>• 1 validation agent that verifies data consistency, code lines, paths and structures<br>• 1 reporting agent that generates structured reports in multiple formats<br><br><strong>Scalability and performance:</strong><br>• Processing of 1400 files with 10 levels of nested depth<br>• Generation of actionable report in less than 5 minutes<br>• Time reduction: from up to a day's work per error to less than 5 minutes total<br><br><strong>Technical requirements implemented:</strong><br>• Integration with Google partnership using Gemini 2.5 Pro<br>• SaaS architecture for immediate deployment<br>• Authentication system with user management and access limits<br>• Parallel processing of multiple error files from ZIP"
+      // OPCIONAL: Descripción detallada que aparece en modal
+      // Útil para explicar contexto, arquitectura, resultados, métricas
+      es: "Aquí va la explicación EXTENDIDA del proyecto (opcional).<br><br><strong>Sección 1:</strong><br>• Punto 1<br>• Punto 2<br>• Punto 3<br><br><strong>Sección 2:</strong><br>• Detalle adicional<br>• Más información<br><br>Usa este campo para dar contexto detallado del proyecto.",
+      en: "Here goes the EXTENDED explanation of the project (optional).<br><br><strong>Section 1:</strong><br>• Point 1<br>• Point 2<br>• Point 3<br><br><strong>Section 2:</strong><br>• Additional detail<br>• More information<br><br>Use this field to give detailed context of the project."
     },
-    tech: ["React", "Python", "LLM Gemini 2.5 Pro", "Supabase", "SaaS", "Agent Architecture"],
-    link: null,
-    demo: null,
-    web: null,
-    csv: null,
-    featured: false,
-    images: [
-      "/screenshots/red-agentes-ia/686f6c61-red-agentes-ia-01",
-      "/screenshots/red-agentes-ia/686f6c61-red-agentes-ia-02",
-      "/screenshots/red-agentes-ia/686f6c61-red-agentes-ia-03"
+    tech: ["Skill 1", "Skill 2", "Skill 3", "Skill 4"], // CAMBIAR: Reemplaza con tecnologías reales (React, Node, etc.)
+    link: "https://github.com/yourusername/repo-name", // CAMBIAR: URL de tu repositorio GitHub
+    demo: "https://demo.yourproject.com", // CAMBIAR: URL de tu demo en vivo (Vercel, Netlify, etc.)
+    web: "https://www.yourproject.com", // CAMBIAR: URL del sitio web oficial
+    csv: "/assets/example-data/sample-data.csv", // CAMBIAR: Ruta a tu archivo CSV en public/assets/
+    featured: true, // true = aparece como "PINNED" al inicio
+    images: [ // CAMBIAR: Rutas a tus screenshots (sin extensión .png, .jpg)
+      "/screenshots/example-project/screenshot-01",
+      "/screenshots/example-project/screenshot-02",
+      "/screenshots/example-project/screenshot-03"
     ]
   },
-  {
-    title: {
-      es: "Domain Finder",
-      en: "Domain Finder"
-    },
-    description: {
-      es: "<strong>Procesamiento ultra-rápido mediante múltiples workers con múltiples estrategias.</strong><br><br>50+ TLDs soportados organizados por categorías.<br>Soporte para 3 y 4 letras (17,576 - 456,976 combinaciones).<br>Benchmark automático para encontrar la mejor estrategia.<br>Estadísticas en tiempo real y progreso detallado.<br>Resultados guardados en archivos organizados.",
-      en: "<strong>Ultra-fast processing through multiple workers with multiple strategies.</strong><br><br>50+ supported TLDs organized by categories.<br>Support for 3 and 4 letters (17,576 - 456,976 combinations).<br>Automatic benchmark to find the best strategy.<br>Real-time statistics and detailed progress.<br>Results saved in organized files."
-    },
-    tech: ["Python", "Domain Search", "Benchmarking"],
-    link: "https://github.com/686f6c61/Domain-Finder",
-    demo: null,
-    web: null,
-    csv: null,
-    featured: false,
-    images: [
-      "/screenshots/domain-finder/686f6c61-domain-finder-01",
-      "/screenshots/domain-finder/686f6c61-domain-finder-02",
-      "/screenshots/domain-finder/686f6c61-domain-finder-03",
-      "/screenshots/domain-finder/686f6c61-domain-finder-04"
-    ]
-  },
-  {
-    title: {
-      es: "Open Mood",
-      en: "Open Mood"
-  },
-    description: {
-      es: "<strong>App iOS de red social para Gen Z.</strong><br><br>Comparte estados de ánimo con emojis y ubicación. App en Swift + Supabase. Backend de gestión y control para administradores en Next.js.",
-      en: "<strong>iOS social networking app for Gen Z.</strong><br><br>Share moods with emojis and location. Swift + Supabase app. Management and control backend for administrators in Next.js."
-    },
-    tech: ["iOS", "Swift", "Supabase", "Real-time", "Next.js", "Backend", "Analytics"],
-    link: null,
-    demo: null,
-    web: null,
-    csv: null,
-    featured: false,
-    images: [
-      "/screenshots/open-mood/686f6c61-open-mood-01",
-      "/screenshots/open-mood/686f6c61-open-mood-02",
-      "/screenshots/open-mood/686f6c61-open-mood-03",
-      "/screenshots/open-mood/686f6c61-open-mood-04",
-      "/screenshots/open-mood/686f6c61-open-mood-05",
-      "/screenshots/open-mood/686f6c61-open-mood-06",
-      "/screenshots/open-mood/686f6c61-open-mood-07",
-      "/screenshots/open-mood/686f6c61-open-mood-08",
-      "/screenshots/open-mood/686f6c61-open-mood-09",
-      "/screenshots/open-mood/686f6c61-open-mood-10",
-      "/screenshots/open-mood/686f6c61-open-mood-11",
-      "/screenshots/open-mood/686f6c61-open-mood-12",
-      "/screenshots/open-mood/686f6c61-open-mood-13",
-      "/screenshots/open-mood/686f6c61-open-mood-14",
-      "/screenshots/open-mood/686f6c61-open-mood-15",
-      "/screenshots/open-mood/686f6c61-open-mood-16",
-      "/screenshots/open-mood/686f6c61-open-mood-17",
-      "/screenshots/open-mood/686f6c61-open-mood-18"
-    ]
-  },
-  {
-    title: {
-      es: "IA Gota",
-      en: "AI Gota"
-    },
-    description: {
-      es: "<strong>App iOS de análisis nutricional.</strong><br><br>Escanea cartas de restaurantes con una foto y calcula niveles de purinas. Fichas nutricionales detalladas de alimentos o platos concretos. Agrega un ingrediente o un plato para saber el nivel de purinas y establecer el semáforo de las mismas.",
-      en: "<strong>iOS nutritional analysis app.</strong><br><br>Scan restaurant menus with a photo and calculate purine levels. Detailed nutritional cards for specific foods or dishes. Add an ingredient or dish to know purine level and establish traffic light system."
-    },
-    tech: ["iOS", "Swift", "IA", "Computer Vision"],
-    link: "https://github.com/686f6c61/IAGota",
-    demo: null,
-    web: null,
-    csv: null,
-    featured: false,
-    images: [
-      "/screenshots/ia-gota/686f6c61-ia-gota-01",
-      "/screenshots/ia-gota/686f6c61-ia-gota-02",
-      "/screenshots/ia-gota/686f6c61-ia-gota-03",
-      "/screenshots/ia-gota/686f6c61-ia-gota-04",
-      "/screenshots/ia-gota/686f6c61-ia-gota-05",
-      "/screenshots/ia-gota/686f6c61-ia-gota-06",
-      "/screenshots/ia-gota/686f6c61-ia-gota-07",
-      "/screenshots/ia-gota/686f6c61-ia-gota-08",
-      "/screenshots/ia-gota/686f6c61-ia-gota-09",
-      "/screenshots/ia-gota/686f6c61-ia-gota-10.gif"
-    ]
-  },
-  {
-    title: {
-      es: "Scrapper Dominios y Alertas [.com/.net/.org]",
-      en: "Domain Scraper & Alert System [.com/.net/.org]"
-    },
-    description: {
-      es: "<strong>Sistema de detección de phishing bancario mediante scraping de dominios.</strong><br><br>POC que escanea dominios .com, .net y .org para prevenir ataques de phishing. Genera variaciones con diccionario bancario y genera alertas automáticas con CSV de resultados.",
-      en: "<strong>Banking phishing detection system through domain scraping.</strong><br><br>POC that scans .com, .net and .org domains to prevent phishing attacks. Generates variations with banking dictionary and generates automatic alerts with CSV results."
-    },
 
-    tech: ["Python", "Requests", "Concurrent Processing", "CSV Export", "Security Analytics"],
-    link: null,
-    demo: null,
-    web: null,
-    csv: "/assets/domain-scraper/15-dias-1M-dominios-com.csv",
-    featured: false,
-    images: [
-      "/screenshots/domain-scraper/686f6c61-domain-scraper-01",
-      "/screenshots/domain-scraper/686f6c61-domain-scraper-02",
-      "/screenshots/domain-scraper/686f6c61-domain-scraper-03",
-      "/screenshots/domain-scraper/686f6c61-domain-scraper-04",
-      "/screenshots/domain-scraper/686f6c61-domain-scraper-05",
-      "/screenshots/domain-scraper/686f6c61-domain-scraper-06"
-    ]
-  },
+  /**
+   * TIPO 2: PROYECTO DESTACADO
+   * ---------------------------
+   * Proyecto importante pero con menos opciones que el completo.
+   * Tiene: featured, code, web (sin demo, csv, images, explanation)
+   *
+   * USA ESTE COMO PLANTILLA para proyectos destacados simples.
+   *
+   * BOTONES QUE MUESTRA:
+   * [code] [web] + badge PINNED
+   */
   {
     title: {
-      es: "Astro Portfolio Template",
-      en: "Astro Portfolio Template"
+      es: "Proyecto Destacado",
+      en: "Featured Project"
     },
     description: {
-      es: "<strong>Template portfolio minimalista.</strong><br><br>Diseño terminal-inspired con estética monospace, modo oscuro/claro automático, galería de imágenes para proyectos y protección anti-spam de email. Template open source disponible para uso público.",
-      en: "<strong>Minimalist portfolio template.</strong><br><br>Terminal-inspired design with monospace aesthetic, automatic dark/light mode, project image gallery and email anti-spam protection. Open source template available for public use."
+      es: "<strong>Otro proyecto importante.</strong><br><br>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. <strong>Funcionalidad A</strong>, <strong>Funcionalidad B</strong>, <strong>Funcionalidad C</strong>.",
+      en: "<strong>Another important project.</strong><br><br>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. <strong>Functionality A</strong>, <strong>Functionality B</strong>, <strong>Functionality C</strong>."
     },
-    tech: ["Astro", "TypeScript", "CSS", "JavaScript", "Open Source"],
-    link: "https://github.com/686f6c61/astro-portfolio-template-686f6c61",
-    demo: null,
+    // Sin explanation = no aparece botón [explicación]
+    tech: ["Skill 1", "Skill 2", "Skill 3"],
+    link: "https://github.com/yourusername/another-repo",
+    demo: null, // null = no mostrar botón [demo]
+    web: "https://www.anotherproject.com",
+    csv: null, // null = no mostrar botón [csv]
+    featured: true, // PINNED
+    images: null // null = no mostrar botón [images]
+  },
+
+  /**
+   * TIPO 3: PROYECTO REGULAR
+   * -------------------------
+   * Proyecto estándar sin destacar.
+   * Tiene: code, demo (sin featured, web, images, explanation, csv)
+   *
+   * USA ESTE COMO PLANTILLA para proyectos normales.
+   *
+   * BOTONES QUE MUESTRA:
+   * [demo] [code]
+   */
+  {
+    title: {
+      es: "Proyecto Regular",
+      en: "Regular Project"
+    },
+    description: {
+      es: "<strong>Descripción breve.</strong><br><br>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Este es un proyecto estándar.",
+      en: "<strong>Brief description.</strong><br><br>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. This is a standard project."
+    },
+    tech: ["Skill A", "Skill B"],
+    link: "https://github.com/yourusername/project-repo",
+    demo: "https://project-demo.com",
     web: null,
     csv: null,
-    featured: false,
+    featured: false, // false = NO aparece como destacado
     images: null
   },
+
+  /**
+   * TIPO 4: PROYECTO SIMPLE
+   * ------------------------
+   * Configuración mínima: solo código y tecnologías.
+   * Tiene: code (todo lo demás null/false)
+   *
+   * USA ESTE COMO PLANTILLA para proyectos básicos o en desarrollo.
+   *
+   * BOTONES QUE MUESTRA:
+   * [code] solamente
+   */
   {
     title: {
-      es: "X.com Analytics",
-      en: "X.com Analytics"
+      es: "Proyecto Simple",
+      en: "Simple Project"
     },
     description: {
-      es: "<strong>Sistema profesional de análisis de redes sociales para X.com (Twitter).</strong><br><br>Procesa datos scrapeados mediante grafos interactivos. Detecta comunidades, calcula métricas de red avanzadas, identifica influencers y bots con optimizaciones de rendimiento. Beta v0.6.8",
-      en: "<strong>Professional social media analytics system for X.com (Twitter).</strong><br><br>Processes scraped data through interactive graphs. Detects communities, calculates advanced network metrics, identifies influencers and bots with performance optimizations. Beta v0.6.8"
+      es: "<strong>Proyecto básico.</strong><br><br>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.",
+      en: "<strong>Basic project.</strong><br><br>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore."
     },
-    tech: ["Python", "Twitter Graph", "X.com", "Gephi Visualizations"],
-    link: "https://github.com/686f6c61/x-twitter-community-analysis",
-    demo: null,
-    web: null,
-    csv: null,
-    featured: false,
-    images: null
-  },
-  {
-    title: {
-      es: "Módulo Automático de Albaranes para Farmacias",
-      en: "Automated Delivery Note Module for Pharmacies"
-    },
-    description: {
-      es: "<strong>Sistema automatizado de gestión de albaranes.</strong><br><br>Procesamiento CSV de listado de pedidos mensuales de laboratorio farmacéutico. Creación de albaranes en Excel/PDF. Validación de datos con reportes de errores. Login por magic link. Interfaz intuitiva. Desplegado en Render. Reduce carga de trabajo de 5 días a 3 minutos. Personalización de albaranes.",
-      en: "<strong>Automated delivery note management system.</strong><br><br>CSV processing of monthly order lists from pharmaceutical laboratory. Creation of delivery notes in Excel/PDF. Data validation with error reports. Magic link login. Intuitive interface. Deployed on Render. Reduces workload from 5 days to 3 minutes. Customizable delivery notes."
-    },
-    tech: ["Python", "Excel", "PDF", "CSV", "MVC", "Render"],
-    link: null,
-    demo: null,
-    web: null,
-    csv: null,
-    featured: false,
-    images: null
-  },
-  {
-    title: {
-      es: "AI Unicode Detector",
-      en: "AI Unicode Detector"
-    },
-    description: {
-      es: "<strong>Herramienta para detectar Unicode invisible.</strong><br><br>Analiza caracteres sin representación visual generados por IA que pueden causar problemas en datos. Detecta textos realizados con IA.",
-      en: "<strong>Tool to detect invisible Unicode.</strong><br><br>Analyses visually unrepresentable characters generated by AI that can cause data problems. Detects AI-generated texts."
-    },
-    tech: ["HTML", "JavaScript", "Unicode", "AI"],
-    link: "https://github.com/686f6c61/ai-unicode-detector",
-    demo: "https://686f6c61.github.io/ai-unicode-detector/",
-    web: null,
-    csv: null,
-    featured: false,
-    images: null
-  },
-  {
-    title: {
-      es: "Prompt Engineering Framework Generator",
-      en: "Prompt Engineering Framework Generator"
-    },
-    description: {
-      es: "<strong>Aplicación web para generar prompts efectivos.</strong><br><br>Utiliza 75 frameworks especializados de prompt engineering para crear prompts optimizados con las mejores prácticas de IA.",
-      en: "<strong>Web application for generating effective prompts.</strong><br><br>Uses 75 specialised prompt engineering frameworks to create optimised prompts with AI best practices."
-    },
-    tech: ["Python", "Flask", "OpenAI", "Claude", "Prompt Engineering"],
-    link: "https://github.com/686f6c61/prompt-engineering-frameworks",
-    demo: null,
-    web: null,
-    csv: null,
-    featured: false,
-    images: [
-      "/screenshots/prompt-framework/686f6c61-prompt-framework-01",
-      "/screenshots/prompt-framework/686f6c61-prompt-framework-02",
-      "/screenshots/prompt-framework/686f6c61-prompt-framework-03",
-      "/screenshots/prompt-framework/686f6c61-prompt-framework-04",
-      "/screenshots/prompt-framework/686f6c61-prompt-framework-05",
-      "/screenshots/prompt-framework/686f6c61-prompt-framework-06"
-    ]
-  },
-  {
-    title: {
-      es: "LinkedIn Job Scraper",
-      en: "LinkedIn Job Scraper"
-    },
-    description: {
-      es: "<strong>Script interactivo para búsqueda de trabajos en LinkedIn.</strong><br><br>Integración con RapidAPI JSearch. Permite búsquedas personalizadas y predefinidas con exportación a CSV.",
-      en: "<strong>Interactive script for LinkedIn job searching.</strong><br><br>Integration with RapidAPI JSearch. Allows custom and predefined searches with CSV export."
-    },
-    tech: ["Python", "RapidAPI", "CSV", "LinkedIn", "Job Search"],
-    link: "https://github.com/686f6c61/linkedIN-Jobs-Scrapper",
-    demo: null,
-    web: null,
-    csv: null,
-    featured: false,
-    images: null
-  },
-  {
-    title: {
-      es: "Organizador Automático de Gmail",
-      en: "Automatic Gmail Organizer"
-    },
-    description: {
-      es: "<strong>Script automatizado para organización de correos electrónicos.</strong><br><br>Clasifica automáticamente emails según el dominio del remitente, creando etiquetas dinámicas y agrupando dominios genéricos.",
-      en: "<strong>Automated script for email organisation.</strong><br><br>Automatically classifies emails by sender domain, creating dynamic labels and grouping generic domains."
-    },
-    tech: ["Google Apps Script", "Gmail API", "JavaScript", "Automation"],
-    link: "https://github.com/686f6c61/organizador-etiquetas-gmail-google-script",
-    demo: null,
-    web: null,
-    csv: null,
-    featured: false,
-    images: [
-      "/screenshots/gmail-organizer/686f6c61-gmail-organizer-01",
-      "/screenshots/gmail-organizer/686f6c61-gmail-organizer-02"
-    ]
-  },
-  {
-    title: {
-      es: "Refutación Matemática de la Numerología",
-      en: "Mathematical Refutation of Numerology"
-    },
-    description: {
-      es: "<strong>Demostración matemática contra pretensiones numerológicas.</strong><br><br>Sistema diseñado donde todos los números convergen al 7 por diseño arbitrario, no por propiedades místicas, demostrando la falacia del razonamiento numerológico.",
-      en: "<strong>Mathematical demonstration against numerological claims.</strong><br><br>System designed where all numbers converge to 7 by arbitrary design, not mystical properties, demonstrating the fallacy of numerological reasoning."
-    },
-    tech: ["Python", "Mathematics", "Logic", "Scientific Method"],
-    link: "https://github.com/686f6c61/conjetura-falso-7",
-    demo: null,
-    web: null,
-    csv: null,
-    featured: false,
-    images: null
-  },
-  {
-    title: {
-      es: "Extensión Detector de Lovable",
-      en: "Lovable Detector Extension"
-    },
-    description: {
-      es: "<strong>Extensión de Chrome para detectar sitios construidos con Lovable.</strong><br><br>Analiza el código fuente de páginas web buscando metaetiquetas que contengan palabras clave indicativas del framework Lovable.",
-      en: "<strong>Chrome extension to detect sites built with Lovable.</strong><br><br>Analyses web page source code searching for meta tags containing keywords indicative of the Lovable framework."
-    },
-    tech: ["Chrome Extension", "JavaScript", "Web Scraping", "Lovable"],
-    link: "https://github.com/686f6c61/lovable-detector-extension",
-    demo: null,
+    tech: ["Skill X", "Skill Y", "Skill Z"],
+    link: "https://github.com/yourusername/simple-project",
+    demo: null, // Todo null = solo muestra [code]
     web: null,
     csv: null,
     featured: false,
     images: null
   }
 ];
+
+/**
+ * GUÍA RÁPIDA DE PERSONALIZACIÓN
+ * ===============================
+ *
+ * PASO 1: ELIMINAR EJEMPLOS
+ * Borra los 4 proyectos de ejemplo de este archivo.
+ *
+ * PASO 2: AÑADIR TUS PROYECTOS
+ * Copia uno de los tipos de ejemplo según tus necesidades:
+ * - Tipo 1: Proyecto completo con todas las opciones
+ * - Tipo 2: Proyecto destacado simple
+ * - Tipo 3: Proyecto regular estándar
+ * - Tipo 4: Proyecto mínimo solo código
+ *
+ * PASO 3: PERSONALIZAR CAMPOS
+ * Cambia los valores de cada campo:
+ * - title: Nombre de tu proyecto (español e inglés)
+ * - description: Qué hace y por qué es interesante
+ * - tech: Tecnologías que usaste
+ * - link: URL de tu repo GitHub
+ * - demo/web/csv/images: URLs/rutas según disponibilidad
+ * - featured: true si quieres que aparezca como PINNED
+ *
+ * PASO 4: AÑADIR SCREENSHOTS (OPCIONAL)
+ * Si tu proyecto tiene imágenes:
+ * 1. Crea carpeta en public/screenshots/nombre-proyecto/
+ * 2. Añade imágenes numeradas: screenshot-01.png, screenshot-02.png, etc.
+ * 3. Crea thumbnails en public/thumbnails/screenshots/nombre-proyecto/
+ * 4. Añade rutas en el campo images (sin extensión)
+ *
+ * PASO 5: GUARDAR Y VERIFICAR
+ * Guarda el archivo y verifica en http://localhost:4321
+ *
+ * EJEMPLO REAL:
+ * {
+ *   title: {
+ *     es: "E-commerce de Zapatos",
+ *     en: "Shoe E-commerce"
+ *   },
+ *   description: {
+ *     es: "<strong>Tienda online completa.</strong><br><br>E-commerce con carrito, checkout y pasarela de pago. Incluye panel de administración, gestión de inventario y analytics. <strong>React</strong>, <strong>Stripe</strong>, <strong>MongoDB</strong>.",
+ *     en: "<strong>Complete online store.</strong><br><br>E-commerce with cart, checkout and payment gateway. Includes admin panel, inventory management and analytics. <strong>React</strong>, <strong>Stripe</strong>, <strong>MongoDB</strong>."
+ *   },
+ *   tech: ["React", "Node.js", "MongoDB", "Stripe", "Tailwind CSS"],
+ *   link: "https://github.com/tu-usuario/ecommerce-zapatos",
+ *   demo: "https://zapatos-demo.vercel.app",
+ *   web: "https://www.zapatosonline.com",
+ *   csv: null,
+ *   featured: true,
+ *   images: [
+ *     "/screenshots/ecommerce-zapatos/home",
+ *     "/screenshots/ecommerce-zapatos/producto",
+ *     "/screenshots/ecommerce-zapatos/carrito",
+ *     "/screenshots/ecommerce-zapatos/checkout"
+ *   ]
+ * }
+ */

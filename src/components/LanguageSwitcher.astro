@@ -1,27 +1,128 @@
 ---
+/**
+ * COMPONENTE: Language Switcher
+ * ==============================
+ *
+ * Botón flotante que permite cambiar entre español e inglés.
+ * Posición: Superior derecha de la pantalla (fijo)
+ *
+ * FUNCIONALIDAD:
+ * - Detecta el idioma actual de la página
+ * - Muestra el botón del idioma alternativo (si estás en ES → muestra EN)
+ * - Calcula automáticamente la ruta equivalente en el otro idioma
+ * - Incluye tracking analytics (opcional)
+ * - Sincroniza con el sistema de rutas de Astro
+ *
+ * ARQUITECTURA:
+ * - HTML: Botón/link que navega a la versión alternativa
+ * - CSS: Estilos con transiciones suaves y responsive
+ * - JavaScript: Tracking de cambios de idioma en Google Analytics
+ * - TypeScript: Función de cálculo de rutas alternativas
+ *
+ * INTEGRACIÓN:
+ * Se incluye automáticamente en Layout.astro
+ * No necesitas importarlo manualmente en páginas
+ *
+ * ACCESIBILIDAD:
+ * - title para tooltip descriptivo
+ * - Texto claro del idioma al que cambiarás (EN/ES)
+ * - Focus visible para navegación por teclado
+ * - Indicador visual del idioma disponible
+ *
+ * SISTEMA DE RUTAS:
+ * - Español (idioma por defecto): / , /about , /blog
+ * - Inglés (idioma alternativo): /en , /en/about , /en/blog
+ * El componente maneja automáticamente la conversión entre ambos formatos
+ */
+
+// PROPS
+// -----
 interface Props {
-  currentLang?: string;
-  currentPath?: string;
+  currentLang?: string;  // Idioma actual de la página ('es' o 'en')
+  currentPath?: string;  // Ruta actual (ej: '/', '/about', '/en/blog')
 }
 
+// Obtiene props con valores por defecto
+// Si no se especifica, asume español y página principal
 const { currentLang = 'es', currentPath = '/' } = Astro.props;
 
-// Function to get the alternate language path
+/**
+ * FUNCIÓN: getAlternatePath
+ * --------------------------
+ * Calcula la ruta equivalente en el idioma alternativo.
+ *
+ * PROPÓSITO:
+ * Dado una ruta en un idioma, devuelve la ruta correspondiente en el otro idioma.
+ *
+ * PARÁMETROS:
+ * @param path - Ruta actual (ej: '/', '/about', '/en', '/en/about')
+ * @param targetLang - Idioma de destino ('es' o 'en')
+ *
+ * RETORNA:
+ * String con la ruta en el idioma de destino
+ *
+ * EJEMPLOS:
+ * - path='/', targetLang='en' → '/en'
+ * - path='/en', targetLang='es' → '/'
+ * - path='/about', targetLang='en' → '/en/about'
+ * - path='/en/about', targetLang='es' → '/about'
+ *
+ * LÓGICA:
+ * 1. Si el idioma de destino es inglés:
+ *    - Añade /en al inicio de la ruta
+ *    - Caso especial: / se convierte en /en
+ * 2. Si el idioma de destino es español:
+ *    - Elimina /en del inicio de la ruta
+ *    - Caso especial: /en se convierte en /
+ */
 function getAlternatePath(path: string, targetLang: string): string {
+  // CASO 1: Cambiar A inglés (añadir /en)
   if (targetLang === 'en') {
     return path === '/' ? '/en' : `/en${path}`;
-  } else {
+  }
+  // CASO 2: Cambiar A español (eliminar /en)
+  else {
     if (path.startsWith('/en')) {
       return path === '/en' ? '/' : path.replace('/en', '');
     }
-    return path;
+    return path;  // Ya está en español, no cambiar
   }
 }
 
+// CÁLCULOS
+// --------
+// Determina el idioma alternativo al actual
+// Si estás en español → alternativo es inglés
+// Si estás en inglés → alternativo es español
 const alternateLang = currentLang === 'es' ? 'en' : 'es';
+
+// Calcula la ruta a la que debe navegar el botón
+// Usa la función getAlternatePath para obtener la ruta equivalente
 const alternatePath = getAlternatePath(currentPath, alternateLang);
 ---
 
+<!--
+  BOTÓN DE CAMBIO DE IDIOMA
+  ==========================
+
+  ESTRUCTURA:
+  - Contenedor div con posición fija
+  - Link <a> que navega a la versión alternativa
+  - Muestra el código del idioma AL QUE CAMBIARÁS (no el actual)
+
+  LÓGICA DE VISUALIZACIÓN:
+  - Si estás en español (ES) → muestra botón "EN"
+  - Si estás en inglés (EN) → muestra botón "ES"
+
+  ATRIBUTOS:
+  - href: Ruta calculada automáticamente por getAlternatePath()
+  - title: Tooltip descriptivo según idioma actual
+  - data-*: Atributos para tracking de Google Analytics
+
+  FUENTES MONOSPACE:
+  La clase "mono" aplica fuente monoespaciada para código de idioma
+  (definida en global.css)
+-->
 <div class="language-switcher mono">
   <a
     href={alternatePath}
@@ -36,20 +137,64 @@ const alternatePath = getAlternatePath(currentPath, alternateLang);
 </div>
 
 <script>
-  // Track language changes
+  /**
+   * SCRIPT: Tracking de Cambios de Idioma
+   * ======================================
+   *
+   * Este script registra los cambios de idioma en Google Analytics.
+   * Se ejecuta en el navegador (client-side) después de cargar la página.
+   *
+   * PROPÓSITO:
+   * Capturar métricas de uso del selector de idioma para analytics.
+   * Ayuda a entender qué idiomas prefieren los visitantes.
+   *
+   * FLUJO:
+   * 1. Espera a que el DOM esté completamente cargado
+   * 2. Encuentra el botón de cambio de idioma
+   * 3. Añade listener al evento click
+   * 4. Lee los atributos data-* del botón
+   * 5. Envía evento a Google Analytics (si está configurado)
+   *
+   * DATOS CAPTURADOS:
+   * - from_language: Idioma actual antes del cambio
+   * - to_language: Idioma al que se cambiará
+   * - event_label: Combinación legible (ej: "es_to_en")
+   *
+   * COMPATIBILIDAD:
+   * - Funciona solo si Google Analytics (gtag) está configurado
+   * - Si no está configurado, no hace nada (no rompe el sitio)
+   */
+
+  // EVENT LISTENER: DOMContentLoaded
+  // ---------------------------------
+  // Espera a que todo el HTML esté cargado antes de ejecutar
   document.addEventListener('DOMContentLoaded', () => {
+    // REFERENCIA AL DOM
+    // -----------------
+    // Encuentra el link de cambio de idioma por su clase CSS
     const langLink = document.querySelector('.lang-link');
 
+    // EVENT LISTENER: Click en botón de idioma
+    // -----------------------------------------
+    // Se ejecuta cuando el usuario hace clic en el botón
     langLink?.addEventListener('click', (e) => {
-      const fromLang = langLink.getAttribute('data-from-lang');
-      const toLang = langLink.getAttribute('data-to-lang');
+      // LECTURA DE ATRIBUTOS
+      // --------------------
+      // Lee los idiomas desde los atributos data-* del HTML
+      // Estos fueron configurados en el template de Astro arriba
+      const fromLang = langLink.getAttribute('data-from-lang');  // Idioma actual
+      const toLang = langLink.getAttribute('data-to-lang');      // Idioma destino
 
+      // GOOGLE ANALYTICS
+      // ----------------
+      // Envía evento solo si Google Analytics está configurado
+      // typeof gtag !== 'undefined' verifica que gtag exista
       if (typeof gtag !== 'undefined') {
         gtag('event', 'change_language', {
-          event_category: 'user_preferences',
-          from_language: fromLang,
-          to_language: toLang,
-          event_label: `${fromLang}_to_${toLang}`
+          event_category: 'user_preferences',  // Categoría: Preferencias del usuario
+          from_language: fromLang,             // Parámetro personalizado: idioma origen
+          to_language: toLang,                 // Parámetro personalizado: idioma destino
+          event_label: `${fromLang}_to_${toLang}`  // Etiqueta: "es_to_en" o "en_to_es"
         });
       }
     });
@@ -57,34 +202,130 @@ const alternatePath = getAlternatePath(currentPath, alternateLang);
 </script>
 
 <style>
+  /**
+   * ESTILOS: Selector de Idioma
+   * ----------------------------
+   *
+   * POSICIONAMIENTO:
+   * - fixed: Se mantiene visible al hacer scroll
+   * - top/right: Posición en esquina superior derecha
+   * - z-index: 1000 para estar sobre casi todo (ThemeToggle tiene 999)
+   *
+   * DISEÑO:
+   * - Estilo minimalista que se integra con cualquier tema
+   * - Usa variables CSS que se adaptan automáticamente a light/dark
+   * - Fuente pequeña y monoespaciada para códigos de idioma
+   *
+   * COORDINACIÓN CON OTROS COMPONENTES:
+   * - ThemeToggle está en right: 7rem (para dejar espacio)
+   * - LanguageSwitcher está en right: 2rem (más a la derecha)
+   * - Ambos usan el mismo diseño visual para coherencia
+   *
+   * PERSONALIZACIÓN:
+   * Cambia top/right para mover la posición
+   * Cambia padding para ajustar el tamaño del botón
+   */
+
+  /**
+   * CONTENEDOR: .language-switcher
+   * -------------------------------
+   * Posiciona el botón en la esquina superior derecha
+   */
   .language-switcher {
-    position: fixed;
-    top: 2rem;
-    right: 2rem;
-    z-index: 1000;
+    position: fixed;        /* Fijo en pantalla, no se mueve al scrollear */
+    top: 2rem;              /* 32px desde arriba */
+    right: 2rem;            /* 32px desde derecha */
+    z-index: 1000;          /* Sobre casi todo (1 más que ThemeToggle) */
   }
 
+  /**
+   * BOTÓN: .lang-link
+   * -----------------
+   * Estilos del botón/link de cambio de idioma
+   *
+   * VARIABLES CSS USADAS:
+   * - var(--border): Color del borde (se adapta al tema)
+   * - var(--bg): Color de fondo (se adapta al tema)
+   * - var(--text): Color del texto (se adapta al tema)
+   *
+   * TRANSICIONES:
+   * - all 0.3s: Animación suave de 300ms en todos los cambios
+   * - Afecta: border-color, transform, etc.
+   */
   .lang-link {
     display: inline-block;
-    padding: 0.5rem 1rem;
-    border: 1px solid var(--border);
-    background: var(--bg);
-    color: var(--text);
-    text-decoration: none;
-    font-size: 0.8rem;
-    transition: all 0.3s;
-    cursor: pointer;
+    padding: 0.5rem 1rem;  /* 8px vertical, 16px horizontal */
+    border: 1px solid var(--border);  /* Borde sutil adaptable al tema */
+    background: var(--bg);            /* Fondo adaptable al tema */
+    color: var(--text);               /* Texto adaptable al tema */
+    text-decoration: none;            /* Sin subrayado (es un link) */
+    font-size: 0.8rem;                /* Texto pequeño (12.8px) */
+    transition: all 0.3s;             /* Animación suave */
+    cursor: pointer;                  /* Indica que es clickeable */
   }
 
+  /**
+   * ESTADO: Hover
+   * -------------
+   * Efectos visuales cuando el usuario pasa el mouse
+   * - Borde más visible (color del texto)
+   * - Ligero movimiento hacia arriba (efecto "lift")
+   */
   .lang-link:hover {
-    border-color: var(--text);
-    transform: translateY(-2px);
+    border-color: var(--text);        /* Borde más prominente */
+    transform: translateY(-2px);      /* Levanta 2px hacia arriba */
   }
 
+  /**
+   * RESPONSIVE: Mobile
+   * ------------------
+   * En pantallas pequeñas:
+   * - Se reduce el margen para aprovechar espacio
+   * - Se acerca más a las esquinas
+   * - El tamaño del botón se mantiene igual (legible)
+   */
   @media (max-width: 768px) {
     .language-switcher {
-      top: 1rem;
-      right: 1rem;
+      top: 1rem;      /* 16px desde arriba (menos que desktop) */
+      right: 1rem;    /* 16px desde derecha (menos que desktop) */
     }
   }
 </style>
+
+<!--
+  CÓMO FUNCIONA EL CAMBIO DE IDIOMA
+  ==================================
+
+  1. SISTEMA DE RUTAS:
+     - Español (default): / , /about , /blog
+     - Inglés: /en , /en/about , /en/blog
+     El botón calcula automáticamente la ruta equivalente
+
+  2. NAVEGACIÓN:
+     - Al hacer clic, navegas a la versión equivalente en otro idioma
+     - Astro genera ambas versiones como páginas estáticas (SSG)
+     - No hay JavaScript necesario para el contenido (solo para analytics)
+
+  3. PERSISTENCIA:
+     - NO se guarda preferencia de idioma en localStorage
+     - La URL es la única fuente de verdad del idioma actual
+     - Esto permite compartir links específicos de un idioma
+
+  4. SEO MULTIIDIOMA:
+     - Layout.astro incluye <link rel="alternate"> en <head>
+     - Esto indica a Google que existen versiones en otros idiomas
+     - Mejora el ranking en búsquedas por idioma
+
+  5. TRACKING:
+     - Google Analytics captura cada cambio de idioma
+     - Ayuda a entender qué idiomas prefieren los visitantes
+     - Datos disponibles en Analytics > Events > change_language
+
+  AÑADIR MÁS IDIOMAS:
+  Si quieres añadir más idiomas (ej: francés):
+  1. Crea carpeta: src/pages/fr/
+  2. Duplica páginas: src/pages/fr/index.astro
+  3. Añade traducciones: src/i18n/translations.ts
+  4. Actualiza getAlternatePath() para soportar 'fr'
+  5. Actualiza la lógica de visualización del botón
+-->

@@ -1,21 +1,129 @@
 ---
+/**
+ * MAIN PAGE (ENGLISH)
+ * ===================
+ *
+ * This is the portfolio homepage in English.
+ * Route: /en
+ * URL: https://your-domain.com/en
+ *
+ * PURPOSE:
+ * - English version of the portfolio homepage
+ * - Assembles all portfolio components
+ * - Configures meta tags and SEO for English
+ * - Alternative language entry point
+ *
+ * STRUCTURE:
+ * - Layout: Main container with HTML, head and meta tags
+ * - Hero: Personal presentation section
+ * - Projects: Project gallery with filters
+ * - Footer: Contact information and social media
+ *
+ * HOW IT WORKS:
+ * - Code between --- --- executes on server (SSG)
+ * - Generates static HTML at build time
+ * - Generated HTML includes all rendered components
+ *
+ * CUSTOMIZATION:
+ * - NO need to modify this file to customize content
+ * - Content is managed from:
+ *   - src/i18n/translations.ts (texts)
+ *   - src/data/projects-data.ts (projects)
+ *   - src/components/ (visual design)
+ *
+ * SPANISH VERSION:
+ * The Spanish version is at: src/pages/index.astro
+ */
+
+// IMPORTS
+// -------
+// Layout: Main HTML container with meta tags
 import Layout from '../../layouts/Layout.astro';
-import Hero from '../../components/Hero.astro';
-import Projects from '../../components/Projects.astro';
-import Footer from '../../components/Footer.astro';
+
+// Page components
+import Hero from '../../components/Hero.astro';      // Main presentation section
+import Projects from '../../components/Projects.astro';  // Project gallery
+import Footer from '../../components/Footer.astro';     // Footer with contact
+
+// Internationalization utility to get translations
 import { useI18n } from '../../lib/i18n.js';
 
+// LANGUAGE CONFIGURATION
+// ----------------------
+// Gets English translations from translations.ts
+// The 't' const contains all English texts
 const { t } = useI18n('en');
 ---
 
+<!--
+  HTML STRUCTURE
+  ==============
+  Layout: Wrapper component that generates <html>, <head> and <body>
+
+  LAYOUT PROPS:
+  - title: Title appearing in browser tab
+  - description: Meta description for SEO (Google, Bing, etc.)
+  - lang: Language code for <html lang=""> attribute
+
+  SEO BENEFITS:
+  - Localized title improves ranking
+  - Optimized description increases CTR in search results
+  - Correct lang helps search engines index properly
+-->
 <Layout
   title={t.siteTitle}
   description={t.siteDescription}
   lang="en"
 >
+  <!--
+    MAIN CONTENT
+    ============
+    Main container with id for accessibility
+    The id allows direct navigation with "skip to content"
+
+    INCLUDED COMPONENTS:
+    1. Hero: Welcome section with name, title and description
+    2. Projects: Project showcase with technology filtering
+    3. Footer: Contact information, social media and copyright
+
+    NOTE: All components receive lang="en" to render
+    English content from translations.ts
+  -->
   <main id="main-content">
     <Hero lang="en" />
     <Projects lang="en" />
     <Footer lang="en" />
   </main>
 </Layout>
+
+<!--
+  TECHNICAL NOTES
+  ===============
+
+  1. STATIC GENERATION (SSG):
+     This page is generated at build time, not runtime.
+     Command: npm run build
+     Output: dist/en/index.html
+
+  2. ALTERNATIVE LANGUAGE:
+     This page is at /en, so it's the alternative language version.
+     Visitors accessing https://your-domain.com/en see this version.
+
+  3. LANGUAGE SWITCHING:
+     The LanguageSwitcher component (included in Layout) allows
+     switching between Spanish (/index.html) and English (/en/index.html)
+
+  4. MULTILINGUAL SEO:
+     Layout.astro includes <link rel="alternate"> tags that tell
+     Google there's an alternative version in Spanish.
+
+  5. PERFORMANCE:
+     - Static HTML = instant loading
+     - No JavaScript needed to render content
+     - Minified CSS in production
+     - Images lazy-loaded automatically
+
+  HOW TO VERIFY:
+  - Development: npm run dev → http://localhost:4321/en
+  - Production: npm run build && npm run preview
+-->

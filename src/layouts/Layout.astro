@@ -1,123 +1,371 @@
 ---
+/**
+ * LAYOUT: Main HTML Wrapper
+ * ==========================
+ *
+ * Componente wrapper principal que genera la estructura HTML completa.
+ * Todas las páginas (.astro) usan este layout para tener estructura consistente.
+ *
+ * PROPÓSITO:
+ * - Generar estructura HTML (<html>, <head>, <body>)
+ * - Configurar meta tags para SEO
+ * - Configurar Open Graph para redes sociales
+ * - Incluir fuentes y recursos globales
+ * - Incluir componentes globales (ThemeToggle, LanguageSwitcher)
+ * - Importar estilos globales
+ * - Configurar JSON-LD para Rich Snippets de Google
+ *
+ * CARACTERÍSTICAS:
+ * - SEO completo: title, description, canonical, alternates
+ * - Open Graph: Facebook, Twitter cards
+ * - JSON-LD: Datos estructurados para Google
+ * - Multiidioma: hreflang tags para SEO internacional
+ * - Performance: Preconnect a Google Fonts
+ * - Analytics: Preparado para Google Analytics
+ *
+ * USO:
+ * <Layout title="Mi Página" description="Descripción" lang="es">
+ *   <YourContent />
+ * </Layout>
+ *
+ * PERSONALIZACIÓN:
+ * - Meta tags: Edita abajo en la sección correspondiente
+ * - JSON-LD: Actualiza tu información personal (línea 82-100)
+ * - Google Analytics: Descomenta y añade tu ID (línea 104-111)
+ * - Twitter: Actualiza @yourusername (línea 70)
+ * - OG Image: Crea /public/og-image.jpg (1200x630px recomendado)
+ */
+
+// IMPORTACIONES
+// -------------
+// Componentes globales que aparecen en todas las páginas
 import LanguageSwitcher from '../components/LanguageSwitcher.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
 
+// PROPS
+// -----
 interface Props {
-  title: string;
-  description?: string;
-  lang?: 'es' | 'en';
-  image?: string;
+  title: string;         // Título de la página (obligatorio)
+  description?: string;  // Meta description para SEO
+  lang?: 'es' | 'en';    // Idioma de la página
+  image?: string;        // Imagen Open Graph (redes sociales)
 }
 
+// Obtiene props con valores por defecto
 const {
   title,
-  description = "Portfolio tech de 686f6c61.dev",
+  description = "Tech portfolio - Full stack developer",  // CAMBIAR: Tu descripción
   lang = 'es',
-  image = '/og-image.jpg'
+  image = '/og-image.jpg'  // CAMBIAR: Crea esta imagen en public/
 } = Astro.props;
 
-// Get current path for language switcher
+// RUTAS Y URLs
+// ------------
+// Obtiene la ruta actual para el LanguageSwitcher
 const currentPath = Astro.url.pathname;
 
-// Build canonical URL
+/**
+ * CANONICAL URL:
+ * URL canónica de la página actual.
+ * Indica a Google cuál es la versión "oficial" de esta página.
+ * Previene problemas de contenido duplicado.
+ */
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-// Build alternate language URLs
+/**
+ * ALTERNATE URL:
+ * URL de la versión en el idioma alternativo.
+ * Para SEO multiidioma (hreflang tags).
+ *
+ * LÓGICA:
+ * - Si lang='es': alternate es /en o /en{path}
+ * - Si lang='en': alternate es / o {path sin /en}
+ */
 const alternateURL = lang === 'es'
   ? new URL(currentPath === '/' ? '/en' : `/en${currentPath}`, Astro.site)
   : new URL(currentPath.replace('/en', '') || '/', Astro.site);
 
-// Build full image URL
+/**
+ * OPEN GRAPH IMAGE:
+ * URL completa de la imagen para Open Graph.
+ * Necesaria para preview en Facebook, Twitter, etc.
+ *
+ * REQUISITOS:
+ * - Tamaño recomendado: 1200x630px
+ * - Formato: JPG o PNG
+ * - Ubicación: public/og-image.jpg
+ */
 const ogImage = new URL(image, Astro.site);
 ---
 
+<!--
+  ESTRUCTURA HTML
+  ===============
+
+  Este layout genera la estructura HTML completa de cada página.
+  Se usa en index.astro, en/index.astro y futuras páginas.
+
+  SECCIONES:
+  - <head>: Meta tags, estilos, fuentes, scripts
+  - <body>: Componentes globales + contenido de la página
+-->
 <!doctype html>
 <html lang={lang}>
   <head>
+    <!--
+      META TAGS BÁSICOS
+      -----------------
+      charset: UTF-8 para soportar todos los caracteres
+      viewport: Responsive design para móviles
+      generator: Indica que el sitio fue generado con Astro
+    -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
 
-    <!-- Primary Meta Tags -->
+    <!--
+      PRIMARY META TAGS (SEO)
+      -----------------------
+      Los más importantes para Google y otros motores de búsqueda.
+
+      title: Aparece en la pestaña del navegador y resultados de búsqueda
+      description: Resumen que aparece en resultados de Google
+    -->
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="description" content={description} />
 
-    <!-- Canonical URL -->
+    <!--
+      CANONICAL URL
+      -------------
+      Indica a Google cuál es la URL "oficial" de esta página.
+      Previene problemas de contenido duplicado.
+
+      BENEFICIO:
+      Si tienes example.com/ y example.com/index.html, canonical dice
+      cuál es la versión que debe indexar Google.
+    -->
     <link rel="canonical" href={canonicalURL} />
 
-    <!-- Alternate Language Links -->
+    <!--
+      ALTERNATE LANGUAGE LINKS (SEO MULTIIDIOMA)
+      ------------------------------------------
+      Indica a Google que existen versiones en otros idiomas.
+
+      hreflang: Código de idioma (es, en)
+      x-default: Versión por defecto si no coincide idioma del usuario
+
+      BENEFICIO:
+      Google muestra la versión correcta según idioma del usuario.
+      Mejora SEO internacional.
+    -->
     <link rel="alternate" hreflang={lang} href={canonicalURL} />
     <link rel="alternate" hreflang={lang === 'es' ? 'en' : 'es'} href={alternateURL} />
     <link rel="alternate" hreflang="x-default" href={Astro.site} />
 
-    <!-- Open Graph / Facebook -->
+    <!--
+      OPEN GRAPH (FACEBOOK)
+      ---------------------
+      Meta tags para preview cuando compartes en Facebook, LinkedIn, WhatsApp.
+
+      PERSONALIZAR:
+      - og:site_name: Nombre de tu portfolio (línea 132)
+      - og:image: Crear imagen en public/og-image.jpg (1200x630px)
+
+      BENEFICIO:
+      Preview atractivo al compartir en redes sociales.
+    -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
-    <meta property="og:site_name" content="686f6c61.dev" />
+    <meta property="og:site_name" content="Your Portfolio" />  <!-- CAMBIAR -->
     <meta property="og:locale" content={lang === 'es' ? 'es_ES' : 'en_US'} />
     <meta property="og:locale:alternate" content={lang === 'es' ? 'en_US' : 'es_ES'} />
 
-    <!-- Twitter -->
+    <!--
+      TWITTER CARD
+      ------------
+      Meta tags para preview cuando compartes en Twitter/X.
+
+      twitter:card: Tipo de card (summary_large_image = imagen grande)
+      twitter:creator: Tu usuario de Twitter
+
+      PERSONALIZAR:
+      - twitter:creator: @tu_usuario (línea 142)
+
+      BENEFICIO:
+      Preview atractivo al compartir en Twitter.
+    -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content={canonicalURL} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
-    <meta name="twitter:creator" content="@hex686f6c61" />
+    <meta name="twitter:creator" content="@yourusername" />  <!-- CAMBIAR -->
 
-    <!-- Favicons -->
+    <!--
+      FAVICONS
+      --------
+      Iconos que aparecen en la pestaña del navegador.
+
+      PERSONALIZAR:
+      Crear favicon.ico en public/
+      Tamaño recomendado: 32x32px o 16x16px
+      Herramienta: https://favicon.io/
+    -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="shortcut icon" href="/favicon.ico" />
 
-    <!-- Fonts with performance optimization -->
+    <!--
+      FONTS (GOOGLE FONTS)
+      --------------------
+      Carga la fuente JetBrains Mono (monoespaciada).
+
+      preconnect: Optimización para cargar más rápido
+      display=swap: Muestra texto inmediatamente con fuente del sistema
+                    hasta que cargue JetBrains Mono
+
+      CAMBIAR FUENTE:
+      1. Ve a https://fonts.google.com/
+      2. Selecciona tu fuente
+      3. Copia el <link> y reemplaza abajo
+      4. Actualiza --mono en global.css
+    -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
 
-    <!-- JSON-LD Structured Data -->
+    <!--
+      JSON-LD STRUCTURED DATA
+      -----------------------
+      Datos estructurados que Google usa para Rich Snippets.
+      Aparece en resultados de búsqueda con información destacada.
+
+      PERSONALIZAR:
+      - name: Tu nombre completo
+      - sameAs: Tus perfiles sociales
+      - jobTitle: Tu título profesional
+      - knowsAbout: Tus skills principales
+
+      BENEFICIO:
+      Google puede mostrar tu perfil con foto, skills, etc.
+      en los resultados de búsqueda.
+    -->
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Person",
-      "name": "686f6c61",
+      "name": "Your Name",  // CAMBIAR
       "url": Astro.site?.toString(),
       "image": ogImage.toString(),
-      "sameAs": [
-        "https://github.com/686f6c61",
-        "https://x.com/hex686f6c61"
+      "sameAs": [  // CAMBIAR: Tus redes sociales
+        "https://github.com/yourusername",
+        "https://twitter.com/yourusername"
       ],
-      "jobTitle": "Tech Enthusiast & Product Lover",
+      "jobTitle": "Full Stack Developer",  // CAMBIAR
       "description": description,
-      "knowsAbout": [
+      "knowsAbout": [  // CAMBIAR: Tus skills
         "React",
         "Node.js",
         "Astro",
         "TypeScript",
         "Python",
-        "AI",
         "Full Stack Development"
       ]
     })} />
 
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-88QWX7FZE7"></script>
+    <!--
+      GOOGLE ANALYTICS
+      ----------------
+      Tracking de visitas, páginas vistas, eventos, etc.
+
+      ACTIVAR:
+      1. Crea cuenta en https://analytics.google.com/
+      2. Obtén tu Measurement ID (formato: G-XXXXXXXXXX)
+      3. Reemplaza G-XXXXXXXXXX en las 2 líneas abajo
+      4. Descomenta el bloque completo
+
+      EVENTOS TRACKEADOS:
+      - Cambios de tema (ThemeToggle)
+      - Cambios de idioma (LanguageSwitcher)
+      - Clicks en proyectos (Projects)
+      - Revelación de email (Footer)
+    -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-88QWX7FZE7');
-    </script>
+      gtag('config', 'G-XXXXXXXXXX');  // CAMBIAR por tu ID
+    </script> -->
   </head>
+
+  <!--
+    BODY: Contenido de la Página
+    =============================
+
+    COMPONENTES GLOBALES:
+    - ThemeToggle: Botón flotante para cambiar tema (superior derecha)
+    - LanguageSwitcher: Botón flotante para cambiar idioma (superior derecha)
+
+    SLOT:
+    El contenido de cada página se inserta aquí.
+    Ejemplo: En index.astro, <Layout> envuelve Hero, Projects, Footer.
+    Esos componentes se renderizan en el <slot />.
+  -->
   <body>
+    <!-- Botón de cambio de tema (light/dark) -->
     <ThemeToggle lang={lang} />
+
+    <!-- Botón de cambio de idioma (es/en) -->
     <LanguageSwitcher currentLang={lang} currentPath={currentPath} />
+
+    <!-- Contenido de la página actual -->
     <slot />
   </body>
 </html>
 
+<!--
+  ESTILOS GLOBALES
+  ================
+
+  Importa los estilos CSS globales del archivo global.css.
+  is:global indica que son estilos globales (no scoped a este componente).
+
+  CONTENIDO DE GLOBAL.CSS:
+  - Reset CSS
+  - Variables CSS (colores, fuentes)
+  - Estilos base (body, h1-h6, p, a, etc.)
+  - Utilidades (container, mono, border-top, fade-in)
+  - Smooth scroll
+  - Tema light/dark
+-->
 <style is:global>
   @import '../styles/global.css';
 </style>
+
+<!--
+  CÓMO USAR ESTE LAYOUT
+  =====================
+
+  En cualquier página .astro:
+
+  ---
+  import Layout from '../layouts/Layout.astro';
+  ---
+
+  <Layout
+    title="Mi Página - Portfolio"
+    description="Descripción de mi página"
+    lang="es"
+  >
+    <YourContent />
+  </Layout>
+
+  PROPS DISPONIBLES:
+  - title (obligatorio): Título de la página
+  - description (opcional): Meta description
+  - lang (opcional): 'es' o 'en' (default: 'es')
+  - image (opcional): Ruta a imagen OG (default: '/og-image.jpg')
+-->

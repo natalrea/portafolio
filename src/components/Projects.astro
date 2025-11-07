@@ -1,32 +1,157 @@
 ---
+/**
+ * COMPONENTE: Projects
+ * ====================
+ *
+ * Sección principal de proyectos del portfolio con filtrado por tecnología.
+ * Es la sección más compleja del template.
+ *
+ * PROPÓSITO:
+ * - Mostrar todos tus proyectos en tarjetas (project cards)
+ * - Filtrar proyectos por tecnología/skill
+ * - Destacar proyectos importantes (featured/pinned)
+ * - Mostrar galerías de imágenes de proyectos
+ * - Mostrar explicaciones extendidas en modales
+ * - Enlaces a demos, código fuente, sitios web, CSVs
+ * - Tracking completo de interacciones con Google Analytics
+ *
+ * CARACTERÍSTICAS:
+ * - Filtro de tecnologías con estilo terminal (ls -C)
+ * - Proyectos destacados con badge "PINNED"
+ * - Múltiples tipos de enlaces por proyecto
+ * - Galerías de imágenes lightbox
+ * - Modales de explicación con scroll
+ * - Animaciones escalonadas al cargar
+ * - Grid responsive adaptable
+ * - Focus trap en modales (accesibilidad)
+ *
+ * ARQUITECTURA:
+ * - HTML: Tarjetas de proyectos + filtros + modales
+ * - CSS: Grid layout + responsive + animaciones
+ * - JavaScript: Filtrado + modales + tracking + accesibilidad
+ * - Datos: Vienen de projects-data.ts
+ * - Internacionalización: Todo el contenido bilingüe
+ *
+ * INTEGRACIÓN:
+ * - ImageGallery: Componente para galerías de screenshots
+ * - getAllProjects(): Función que obtiene proyectos ordenados
+ * - useI18n(): Traducciones según idioma
+ *
+ * PERSONALIZACIÓN:
+ * - NO modificar este archivo
+ * - Añadir/editar proyectos en: src/data/projects-data.ts
+ * - Cambiar textos en: src/i18n/translations.ts
+ */
+
+// IMPORTACIONES
+// -------------
+// Componente de galería de imágenes lightbox
 import ImageGallery from './ImageGallery.astro';
+
+// Utilidad para obtener proyectos ordenados (featured primero)
 import { getAllProjects } from '../lib/projects.js';
+
+// Utilidad de internacionalización
 import { useI18n } from '../lib/i18n.js';
 
+// PROPS
+// -----
 interface Props {
-  lang?: string;
+  lang?: string;  // Idioma de la página ('es' o 'en')
 }
 
+// Obtiene props con valores por defecto
 const { lang = 'es' } = Astro.props;
+
+// TRADUCCIONES
+// ------------
+// Obtiene todas las traducciones según el idioma actual
+// 't' contiene: projectsTitle, projectsDemo, projectsCode, etc.
 const { t } = useI18n(lang);
+
+// PROYECTOS
+// ---------
+// Obtiene todos los proyectos desde projects-data.ts
+// Ya vienen ordenados: featured primero, luego el resto
 const projects = getAllProjects();
 ---
 
+<!--
+  SECCIÓN PROJECTS
+  ================
+
+  ESTRUCTURA:
+  - id="projects": Permite navegación directa con #projects
+  - .border-top: Línea separadora superior (global.css)
+  - .container: Clase para centrar contenido (global.css)
+
+  COMPONENTES PRINCIPALES:
+  1. Filtro de tecnologías (estilo terminal)
+  2. Grid de tarjetas de proyectos
+  3. Galerías de imágenes (ImageGallery)
+  4. Modales de explicación
+-->
 <section id="projects" class="projects border-top">
+  <!-- Contenedor centrado (global.css) -->
   <div class="container">
+    <!-- Título de la sección -->
     <h2 class="mono">{t.projectsTitle}</h2>
 
-    <!-- Tech Filter -->
+    <!--
+      FILTRO DE TECNOLOGÍAS
+      =====================
+
+      Sistema de filtrado con estilo de comando terminal.
+      Simula el comando: $ ls -C technologies/
+
+      FUNCIONAMIENTO:
+      1. Botón toggle muestra/oculta la lista de tecnologías
+      2. Lista se genera dinámicamente desde todos los proyectos
+      3. Al hacer clic en una tecnología, filtra proyectos
+      4. "all" muestra todos los proyectos
+
+      ESTILO TERMINAL:
+      - $ (prompt): Simula prompt de terminal
+      - ls -C technologies/: Comando Unix para listar
+      - _ (cursor): Cursor parpadeante animado
+    -->
     <div class="filter-wrapper">
+      <!--
+        BOTÓN TOGGLE: Muestra/oculta filtros
+        Al hacer clic, aparece el output estilo terminal
+      -->
       <button class="filter-toggle mono" id="filter-toggle">
         <span class="prompt">$</span>
         <span class="command">ls -C technologies/</span>
         <span class="cursor">_</span>
       </button>
+
+      <!--
+        OUTPUT DEL FILTRO:
+        Lista de tecnologías en formato columnar
+        Inicialmente oculto (display: none)
+        JavaScript lo muestra al hacer clic en toggle
+      -->
       <div class="filter-output" id="filter-container" style="display: none;">
+        <!-- Botón "all": Muestra todos los proyectos -->
         <button class="filter-btn active mono" data-filter="all">
           {lang === 'es' ? 'all' : 'all'}
         </button>
+
+        <!--
+          BOTONES DE TECNOLOGÍAS:
+          Se generan dinámicamente desde los proyectos
+
+          LÓGICA:
+          1. projects.flatMap(p => p.tech): Obtiene todas las tecnologías
+          2. new Set(): Elimina duplicados
+          3. Array.from(): Convierte Set a Array
+          4. sort(): Ordena alfabéticamente
+          5. map(): Genera un botón por cada tecnología
+
+          RESULTADO:
+          Lista única y ordenada de todas las tecnologías usadas
+        -->
         {Array.from(new Set(projects.flatMap(p => p.tech))).sort().map(tech => (
           <button class="filter-btn mono" data-filter={tech}>
             {tech}
@@ -35,6 +160,44 @@ const projects = getAllProjects();
       </div>
     </div>
 
+    <!--
+      GRID DE PROYECTOS
+      =================
+
+      Grid adaptable de tarjetas de proyectos.
+      Se genera dinámicamente desde el array projects.
+
+      CADA TARJETA INCLUYE:
+      - Título del proyecto (bilingüe)
+      - Descripción breve (soporta HTML)
+      - Tech stack (etiquetas de tecnologías)
+      - Enlaces condicionales según disponibilidad:
+        • [demo]: Si project.demo !== null
+        • [code]: Si project.link !== null
+        • [web]: Si project.web !== null
+        • [images]: Si project.images !== null
+        • [explicación]: Si project.explanation !== undefined
+        • [csv]: Si project.csv !== null
+
+      CARACTERÍSTICAS:
+      - Badge "PINNED" si project.featured === true
+      - Animación escalonada (cada tarjeta +0.1s delay)
+      - data-tech: Para filtrado por tecnología
+      - data-event: Para tracking de Google Analytics
+      - class "featured": Estilo destacado para proyectos importantes
+
+      LAYOUT:
+      - Grid adaptable: auto-fit con mínimo 300px
+      - En mobile: 1 columna
+      - En tablet: 2 columnas
+      - En desktop: 3+ columnas (según ancho)
+
+      ACCESIBILIDAD:
+      - <article>: Elemento semántico para cada proyecto
+      - target="_blank": Links externos abren en nueva pestaña
+      - rel="noopener": Seguridad para links externos
+      - fade-in: Animación de aparición (global.css)
+    -->
     <div class="projects-grid">
       {projects.map((project, index) => (
         <article
@@ -42,17 +205,27 @@ const projects = getAllProjects();
           style={`animation-delay: ${index * 0.1}s`}
           data-tech={project.tech.join(',')}
         >
+          {/* Badge PINNED para proyectos destacados */}
           {project.featured && (
             <span class="featured-badge mono">{t.projectsFeatured}</span>
           )}
+
+          {/* Título del proyecto (bilingüe) */}
           <h3>{project.title[lang]}</h3>
+
+          {/* Descripción (soporta HTML con set:html) */}
           <p set:html={project.description[lang]}></p>
+
+          {/* Tech Stack: Etiquetas de tecnologías usadas */}
           <div class="tech-stack">
             {project.tech.map(tech => (
               <span class="tech-tag">{tech}</span>
             ))}
           </div>
+
+          {/* Enlaces del proyecto (solo se muestran si existen) */}
           <div class="project-links">
+            {/* DEMO: Link a demo en vivo */}
             {project.demo && (
               <a
                 href={project.demo}
@@ -64,6 +237,8 @@ const projects = getAllProjects();
                 <span class="mono">{t.projectsDemo}</span>
               </a>
             )}
+
+            {/* CODE: Link a repositorio GitHub */}
             {project.link && (
               <a
                 href={project.link}
@@ -75,6 +250,8 @@ const projects = getAllProjects();
                 <span class="mono">{t.projectsCode}</span>
               </a>
             )}
+
+            {/* WEB: Link a sitio web oficial */}
             {project.web && (
               <a
                 href={project.web}
@@ -86,6 +263,8 @@ const projects = getAllProjects();
                 <span class="mono">{t.projectsWeb}</span>
               </a>
             )}
+
+            {/* IMAGES: Botón para abrir galería de screenshots */}
             {project.images && (
               <button
                 class="btn-images mono"
@@ -96,6 +275,8 @@ const projects = getAllProjects();
                 {t.projectsImages}
               </button>
             )}
+
+            {/* EXPLANATION: Botón para abrir modal de explicación */}
             {project.explanation && (
               <button
                 class="btn-explanation mono"
@@ -106,6 +287,8 @@ const projects = getAllProjects();
                 {t.projectsExplanation}
               </button>
             )}
+
+            {/* CSV: Link para descargar archivo CSV */}
             {project.csv && (
               <a
                 href={project.csv}
@@ -122,6 +305,74 @@ const projects = getAllProjects();
       ))}
     </div>
   </div>
+
+  <!--
+    GALERÍAS DE IMÁGENES
+    ====================
+
+    Se generan componentes ImageGallery para cada proyecto que tenga imágenes.
+    Las galerías son modales lightbox con navegación entre imágenes.
+    JavaScript las conecta con los botones [images] de arriba.
+  -->
+  {projects.map(project =>
+    project.images && (
+      <ImageGallery images={project.images} projectTitle={project.title[lang]} />
+    )
+  )}
+
+  <!--
+    MODALES DE EXPLICACIÓN
+    ======================
+
+    Modales overlay para mostrar explicaciones extendidas de proyectos.
+    Se generan solo para proyectos que tienen el campo explanation definido.
+
+    CARACTERÍSTICAS:
+    - Overlay oscuro (rgba(0,0,0,0.95))
+    - Modal centrado con scroll
+    - Botón X para cerrar
+    - Cierre con Escape o click en overlay
+    - Focus trap para accesibilidad
+    - Restaura focus al botón que lo abrió
+
+    ATRIBUTOS ARIA:
+    - role="dialog": Indica que es un diálogo modal
+    - aria-modal="true": Indica modalidad (bloquea interacción con fondo)
+    - aria-labelledby: Conecta con el título del modal (accesibilidad)
+    - aria-label: Etiqueta para el botón de cerrar
+  -->
+  {projects.map(project =>
+    project.explanation && (
+      <div
+        class="explanation-modal"
+        id={`explanation-${project.title[lang].toLowerCase().replace(/\s+/g, '-')}`}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={`modal-title-${project.title[lang].toLowerCase().replace(/\s+/g, '-')}`}
+      >
+        {/* Overlay oscuro de fondo */}
+        <div class="modal-overlay" aria-hidden="true"></div>
+
+        {/* Contenido del modal */}
+        <div class="modal-content">
+          {/* Botón cerrar (X) */}
+          <button class="modal-close" aria-label={lang === 'es' ? 'Cerrar modal' : 'Close modal'}>×</button>
+
+          {/* Cuerpo del modal con scroll */}
+          <div class="modal-body">
+            {/* Título del proyecto */}
+            <h3 class="mono" id={`modal-title-${project.title[lang].toLowerCase().replace(/\s+/g, '-')}`}>
+              {project.title[lang]}
+            </h3>
+
+            {/* Texto de explicación (soporta HTML) */}
+            <div class="explanation-text" set:html={project.explanation ? project.explanation[lang] : ''}>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  )}
 
   {projects.map(project =>
     project.images && (
@@ -153,13 +404,52 @@ const projects = getAllProjects();
 </section>
 
 <style>
+  /**
+   * ESTILOS: Projects Section
+   * --------------------------
+   *
+   * CSS para la sección de proyectos, la más compleja del template.
+   *
+   * ESTRUCTURA:
+   * 1. Filtro de tecnologías (toggle + output estilo terminal)
+   * 2. Grid de tarjetas de proyectos (responsive)
+   * 3. Modales de explicación (overlay + content)
+   *
+   * CARACTERÍSTICAS:
+   * - Grid adaptable con auto-fit
+   * - Múltiples breakpoints responsive (480px, 768px, 1024px, 1200px)
+   * - Animaciones de cursor parpadeante y fade-in
+   * - Proyectos destacados con estilo especial
+   * - Modales overlay con scroll y focus trap
+   * - Scrollbar oculta en modales
+   * - Tema claro/oscuro adaptable
+   *
+   * VARIABLES CSS USADAS:
+   * - var(--border): Color del borde
+   * - var(--text): Color del texto
+   * - var(--bg): Color de fondo
+   * - var(--mono): Fuente monoespaciada
+   *
+   * RESPONSIVE BREAKPOINTS:
+   * - 480px: Mobile pequeño
+   * - 768px: Mobile/tablet
+   * - 1024px: Tablet landscape
+   * - 1200px: Desktop small
+   */
+
+  /* ============================================
+     SECCIÓN PROJECTS: Contenedor principal
+     ============================================ */
   .projects {
-    padding: 6rem 0;
+    padding: 6rem 0;  /* 96px arriba y abajo */
   }
 
+  /* ============================================
+     FILTRO: Wrapper del sistema de filtrado
+     ============================================ */
   .filter-wrapper {
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+    margin-top: 2rem;     /* 32px arriba */
+    margin-bottom: 2rem;  /* 32px abajo */
   }
 
   .filter-toggle {
@@ -523,16 +813,65 @@ const projects = getAllProjects();
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const imageButtons = document.querySelectorAll('.btn-images');
-    const explanationButtons = document.querySelectorAll('.btn-explanation');
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    const projectCards = document.querySelectorAll('.project-card');
-    const filterToggle = document.getElementById('filter-toggle');
-    const filterContainer = document.getElementById('filter-container');
-    let lastFocusedElement = null;
+  /**
+   * SCRIPT: Projects Interaction System
+   * ====================================
+   *
+   * JavaScript client-side para toda la funcionalidad interactiva de proyectos.
+   * Se ejecuta después de cargar la página (DOMContentLoaded).
+   *
+   * FUNCIONALIDADES:
+   * 1. Sistema de filtrado por tecnología
+   * 2. Toggle del panel de filtros (estilo terminal)
+   * 3. Apertura de galerías de imágenes (ImageGallery)
+   * 4. Modales de explicación (overlay + content)
+   * 5. Tracking completo con Google Analytics
+   * 6. Accesibilidad (focus trap, keyboard navigation)
+   *
+   * COMPONENTES:
+   * - Filter Toggle: Botón que muestra/oculta panel de filtros
+   * - Filter Buttons: Botones de tecnologías para filtrar proyectos
+   * - Image Buttons: Botones [images] que abren galerías
+   * - Explanation Buttons: Botones [explicación] que abren modales
+   * - Explanation Modals: Modales overlay con scroll
+   *
+   * TRACKING DE EVENTOS:
+   * Todos los elementos con data-event se trackean automáticamente:
+   * - click_demo: Click en link de demo
+   * - click_code: Click en link de código
+   * - click_web: Click en link de web
+   * - view_images: Click en botón de imágenes
+   * - view_explanation: Click en botón de explicación
+   * - download_csv: Click en link de CSV
+   * - filter_technology: Filtrado por tecnología
+   *
+   * ACCESIBILIDAD:
+   * - Focus trap: El foco se mantiene dentro de modales abiertos
+   * - Keyboard navigation: Tab, Shift+Tab, Escape
+   * - Focus restoration: Al cerrar modal, vuelve al botón que lo abrió
+   * - ARIA attributes: role="dialog", aria-modal, aria-label
+   *
+   * INTEGRACIÓN CON IMAGEGALLERY:
+   * Cada galería expone una función global window[`open_${galleryId}`]
+   * Los botones [images] llaman a estas funciones para abrir galerías
+   */
 
-    // Handle filter toggle
+  // EVENT LISTENER: DOMContentLoaded
+  // ---------------------------------
+  // Espera a que todo el HTML esté cargado antes de ejecutar
+  document.addEventListener('DOMContentLoaded', () => {
+    // ===== REFERENCIAS AL DOM =====
+    // Encuentra todos los elementos interactivos
+    const imageButtons = document.querySelectorAll('.btn-images');          // Botones [images]
+    const explanationButtons = document.querySelectorAll('.btn-explanation'); // Botones [explicación]
+    const filterButtons = document.querySelectorAll('.filter-btn');          // Botones de tecnologías
+    const projectCards = document.querySelectorAll('.project-card');         // Tarjetas de proyectos
+    const filterToggle = document.getElementById('filter-toggle');           // Botón toggle filtros
+    const filterContainer = document.getElementById('filter-container');     // Panel de filtros
+    let lastFocusedElement = null;  // Guarda el elemento que abrió un modal
+
+    // ===== TOGGLE DEL PANEL DE FILTROS =====
+    // Muestra/oculta el panel de tecnologías estilo terminal
     filterToggle?.addEventListener('click', () => {
       const isVisible = filterContainer?.style.display !== 'none';
 

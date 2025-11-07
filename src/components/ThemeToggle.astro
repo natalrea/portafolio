@@ -1,12 +1,68 @@
 ---
+/**
+ * COMPONENTE: Theme Toggle
+ * =========================
+ *
+ * Botón flotante que permite cambiar entre modo claro y oscuro.
+ * Posición: Superior derecha de la pantalla (fijo)
+ *
+ * FUNCIONALIDAD:
+ * - Detecta automáticamente el tema del sistema al cargar
+ * - Permite alternar manualmente entre light/dark
+ * - Persiste la preferencia del usuario en localStorage
+ * - Escucha cambios en las preferencias del sistema
+ * - Incluye tracking analytics (opcional)
+ *
+ * ARQUITECTURA:
+ * - HTML: Botón con iconos SVG (sol y luna)
+ * - CSS: Estilos con transiciones suaves y responsive
+ * - JavaScript: Lógica de cambio de tema con persistencia
+ *
+ * INTEGRACIÓN:
+ * Se incluye automáticamente en Layout.astro
+ * No necesitas importarlo manualmente en páginas
+ *
+ * ACCESIBILIDAD:
+ * - aria-label y title para lectores de pantalla
+ * - Texto localizado según idioma (es/en)
+ * - Focus visible para navegación por teclado
+ * - Indicador visual del tema actual
+ */
+
+// PROPS
+// -----
 interface Props {
-  lang?: string;
+  lang?: string;  // Idioma para textos de accesibilidad ('es' o 'en')
 }
 
+// Obtiene el idioma desde props, por defecto español
 const { lang = 'es' } = Astro.props;
 ---
 
-<button id="theme-toggle" aria-label={lang === 'es' ? 'Cambiar tema' : 'Toggle theme'} title={lang === 'es' ? 'Cambiar tema' : 'Toggle theme'}>
+<!--
+  BOTÓN DE CAMBIO DE TEMA
+  ========================
+
+  ESTRUCTURA:
+  - Botón con id único para JavaScript
+  - Dos iconos SVG: sol (light) y luna (dark)
+  - Solo se muestra uno a la vez según tema actual
+
+  ATRIBUTOS DE ACCESIBILIDAD:
+  - aria-label: Describe la acción para lectores de pantalla
+  - title: Tooltip al pasar el mouse
+  - Ambos textos localizados según idioma
+-->
+<button
+  id="theme-toggle"
+  aria-label={lang === 'es' ? 'Cambiar tema' : 'Toggle theme'}
+  title={lang === 'es' ? 'Cambiar tema' : 'Toggle theme'}
+>
+  <!--
+    ICONO: SOL (Modo Claro)
+    Se muestra cuando el tema es light
+    SVG dibuja un sol estilizado con rayos
+  -->
   <svg class="sun-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
     <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="2"/>
     <line x1="10" y1="2" x2="10" y2="4" stroke="currentColor" stroke-width="2"/>
@@ -18,63 +74,128 @@ const { lang = 'es' } = Astro.props;
     <line x1="15.5" y1="15.5" x2="14.5" y2="14.5" stroke="currentColor" stroke-width="2"/>
     <line x1="5.5" y1="5.5" x2="4.5" y2="4.5" stroke="currentColor" stroke-width="2"/>
   </svg>
+
+  <!--
+    ICONO: LUNA (Modo Oscuro)
+    Se muestra cuando el tema es dark
+    SVG dibuja una luna creciente
+  -->
   <svg class="moon-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M17 10.5C17 14.6421 13.6421 18 9.5 18C5.35786 18 2 14.6421 2 10.5C2 6.35786 5.35786 3 9.5 3C9.67793 3 9.85464 3.00696 10.0297 3.02063C9.38507 3.93644 9 5.06876 9 6.29032C9 9.43248 11.5675 12 14.7097 12C15.9312 12 17.0636 11.6149 17.9794 10.9703C17.993 11.1454 18 11.322 18 11.5" stroke="currentColor" stroke-width="2"/>
   </svg>
 </button>
 
 <style>
+  /**
+   * ESTILOS: Botón de Tema
+   * -----------------------
+   *
+   * POSICIONAMIENTO:
+   * - fixed: Se mantiene visible al hacer scroll
+   * - top/right: Posición en esquina superior derecha
+   * - z-index: 999 para estar sobre otros elementos
+   *
+   * DISEÑO:
+   * - Fondo transparente para integrarse con cualquier tema
+   * - Borde sutil que usa variable CSS (adapta al tema)
+   * - Tamaño cuadrado 40x40px para mantener proporción
+   *
+   * PERSONALIZACIÓN:
+   * Cambia top/right para mover la posición
+   * Cambia width/height para tamaño diferente
+   */
   #theme-toggle {
     position: fixed;
-    top: 2rem;
-    right: 7rem;
-    z-index: 999;
+    top: 2rem;           /* Distancia desde arriba */
+    right: 7rem;         /* Distancia desde derecha (deja espacio para LanguageSwitcher) */
+    z-index: 999;        /* Aparece sobre todo excepto modales */
     background: transparent;
-    border: 1px solid var(--border);
+    border: 1px solid var(--border);  /* Borde que se adapta al tema */
     padding: 0.5rem;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s;
+    transition: all 0.3s;  /* Animación suave */
     width: 40px;
     height: 40px;
   }
 
+  /**
+   * ESTADO: Hover
+   * -------------
+   * Efectos visuales cuando el usuario pasa el mouse
+   * - Borde más visible (color del texto)
+   * - Ligero movimiento hacia arriba (efecto "lift")
+   */
   #theme-toggle:hover {
     border-color: var(--text);
     transform: translateY(-2px);
   }
 
+  /**
+   * ICONOS: Colores
+   * ---------------
+   * Los iconos usan var(--text) para adaptarse automáticamente al tema
+   * En modo claro: texto oscuro
+   * En modo oscuro: texto claro
+   */
   .sun-icon,
   .moon-icon {
     color: var(--text);
   }
 
+  /**
+   * VISIBILIDAD DE ICONOS
+   * ----------------------
+   * Solo se muestra un icono a la vez según el tema actual:
+   *
+   * SIN ATRIBUTO data-theme o data-theme="dark":
+   * - Sol oculto (display: none)
+   * - Luna visible (display: block)
+   *
+   * CON data-theme="light":
+   * - Sol visible (display: block)
+   * - Luna oculta (display: none)
+   *
+   * LÓGICA:
+   * El icono que se muestra indica el tema ACTUAL, no el próximo.
+   * Si ves la luna = estás en modo oscuro
+   * Si ves el sol = estás en modo claro
+   */
   .sun-icon {
-    display: none;
+    display: none;  /* Por defecto oculto (modo oscuro por defecto) */
   }
 
   .moon-icon {
-    display: block;
+    display: block;  /* Por defecto visible (modo oscuro por defecto) */
   }
 
+  /* Modo claro activo */
   [data-theme="light"] .sun-icon {
-    display: block;
+    display: block;   /* Mostrar sol en modo claro */
   }
 
   [data-theme="light"] .moon-icon {
-    display: none;
+    display: none;    /* Ocultar luna en modo claro */
   }
 
+  /* Modo oscuro activo */
   [data-theme="dark"] .sun-icon {
-    display: none;
+    display: none;    /* Ocultar sol en modo oscuro */
   }
 
   [data-theme="dark"] .moon-icon {
-    display: block;
+    display: block;   /* Mostrar luna en modo oscuro */
   }
 
+  /**
+   * RESPONSIVE: Mobile
+   * ------------------
+   * En pantallas pequeñas:
+   * - Se reduce ligeramente el tamaño (36x36px)
+   * - Se ajusta la posición para dejar más espacio
+   */
   @media (max-width: 768px) {
     #theme-toggle {
       top: 1rem;
@@ -86,24 +207,80 @@ const { lang = 'es' } = Astro.props;
 </style>
 
 <script>
-  // Theme toggle functionality
-  const themeToggle = document.getElementById('theme-toggle');
-  const html = document.documentElement;
+  /**
+   * SCRIPT: Lógica de Cambio de Tema
+   * =================================
+   *
+   * Este script maneja toda la funcionalidad del botón de tema.
+   * Se ejecuta en el navegador (client-side) después de cargar la página.
+   *
+   * FLUJO DE TRABAJO:
+   * 1. Al cargar: Detecta tema guardado o preferencia del sistema
+   * 2. Al hacer clic: Alterna entre light y dark
+   * 3. Al cambiar tema del sistema: Actualiza si no hay preferencia manual
+   * 4. Persiste: Guarda preferencia en localStorage
+   *
+   * COMPATIBILIDAD:
+   * - localStorage: Todos los navegadores modernos
+   * - matchMedia: Detección de tema del sistema
+   * - gtag: Google Analytics (opcional, no rompe si no está)
+   */
 
-  // Get theme from localStorage or system preference
+  // REFERENCIAS AL DOM
+  // ------------------
+  const themeToggle = document.getElementById('theme-toggle');
+  const html = document.documentElement;  // <html> element
+
+  /**
+   * FUNCIÓN: getTheme
+   * -----------------
+   * Determina qué tema aplicar al cargar la página.
+   *
+   * PRIORIDAD:
+   * 1. Tema guardado en localStorage (preferencia del usuario)
+   * 2. Tema del sistema operativo (prefers-color-scheme)
+   *
+   * RETORNA:
+   * 'light' o 'dark'
+   *
+   * EJEMPLO:
+   * - Usuario en macOS con modo oscuro activado → 'dark'
+   * - Usuario que cambió manualmente a light → 'light' (persiste)
+   */
   function getTheme() {
     const stored = localStorage.getItem('theme');
-    if (stored) return stored;
+    if (stored) return stored;  // Preferencia manual guardada
 
+    // Detectar preferencia del sistema
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
 
-  // Set theme
-  function setTheme(theme, trackChange = false) {
+  /**
+   * FUNCIÓN: setTheme
+   * -----------------
+   * Aplica un tema al sitio y lo guarda en localStorage.
+   *
+   * PARÁMETROS:
+   * @param theme - 'light' o 'dark'
+   * @param trackChange - Si es true, registra evento en Google Analytics
+   *
+   * QUÉ HACE:
+   * 1. Añade atributo data-theme="light" o "dark" al <html>
+   * 2. Guarda preferencia en localStorage
+   * 3. (Opcional) Registra cambio en Google Analytics
+   *
+   * EL ATRIBUTO data-theme:
+   * Es usado por CSS para cambiar colores vía variables CSS:
+   * [data-theme="dark"] { --bg: #000; --text: #fff; }
+   * [data-theme="light"] { --bg: #fff; --text: #000; }
+   */
+  function setTheme(theme: string, trackChange = false) {
     html.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
 
-    // Track theme change if it's a manual change
+    // ANALYTICS (Opcional)
+    // Si Google Analytics está configurado, registra el cambio
+    // Solo trackea cambios manuales (trackChange = true), no automáticos
     if (trackChange && typeof gtag !== 'undefined') {
       gtag('event', 'change_theme', {
         event_category: 'user_preferences',
@@ -113,22 +290,81 @@ const { lang = 'es' } = Astro.props;
     }
   }
 
-  // Initialize theme
+  /**
+   * INICIALIZACIÓN
+   * --------------
+   * Se ejecuta inmediatamente al cargar la página.
+   * Detecta y aplica el tema inicial antes de que el usuario vea contenido.
+   *
+   * IMPORTANTE:
+   * Esto previene el "flash" de tema incorrecto al cargar.
+   */
   const initialTheme = getTheme();
   setTheme(initialTheme);
 
-  // Toggle theme on button click
+  /**
+   * EVENT LISTENER: Click en botón
+   * -------------------------------
+   * Alterna entre light y dark cuando el usuario hace clic.
+   *
+   * FUNCIONAMIENTO:
+   * 1. Lee el tema actual desde data-theme
+   * 2. Calcula el tema opuesto
+   * 3. Aplica el nuevo tema con setTheme()
+   * 4. trackChange=true para registrar en Analytics
+   */
   themeToggle?.addEventListener('click', () => {
     const currentTheme = html.getAttribute('data-theme');
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    setTheme(newTheme, true);
+    setTheme(newTheme, true);  // true = trackear en analytics
   });
 
-  // Listen for system theme changes
+  /**
+   * EVENT LISTENER: Cambio de tema del sistema
+   * -------------------------------------------
+   * Escucha cambios en prefers-color-scheme del sistema operativo.
+   *
+   * CASO DE USO:
+   * Usuario en macOS/Windows cambia entre modo claro/oscuro en configuración.
+   * El sitio se actualiza automáticamente SOLO si el usuario NO ha elegido
+   * una preferencia manual.
+   *
+   * LÓGICA:
+   * Si localStorage.theme existe → Usuario eligió manualmente → NO actualizar
+   * Si no existe → Usuario no ha elegido → Sí actualizar con preferencia del sistema
+   *
+   * BENEFICIO:
+   * Respeta la preferencia manual del usuario sobre la del sistema.
+   */
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-    // Only update if user hasn't manually set a preference
+    // Solo actualizar si NO hay preferencia manual guardada
     if (!localStorage.getItem('theme')) {
       setTheme(e.matches ? 'dark' : 'light');
     }
   });
 </script>
+
+<!--
+  CÓMO FUNCIONA EL CAMBIO DE TEMA
+  ================================
+
+  1. VARIABLES CSS (global.css):
+     :root { --bg: #fff; --text: #000; }
+     [data-theme="dark"] { --bg: #000; --text: #fff; }
+
+  2. ESTE COMPONENTE:
+     - Añade/quita data-theme="dark" o "light" al <html>
+     - CSS automáticamente aplica los colores correspondientes
+
+  3. PERSISTENCIA:
+     - localStorage guarda la preferencia
+     - Al recargar página, se aplica el tema guardado
+
+  4. DETECCIÓN AUTOMÁTICA:
+     - Si no hay preferencia guardada, usa tema del sistema
+     - Se actualiza si el usuario cambia tema en su OS
+
+  PERSONALIZAR COLORES:
+  Edita las variables CSS en src/styles/global.css
+  NO necesitas modificar este archivo.
+-->

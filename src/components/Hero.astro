@@ -1,131 +1,424 @@
 ---
+/**
+ * COMPONENTE: Hero
+ * ================
+ *
+ * Sección principal de presentación del portfolio.
+ * Primera sección que ven los visitantes al llegar al sitio.
+ *
+ * PROPÓSITO:
+ * - Presentación personal con nombre, título y descripción
+ * - Call-to-action (CTA) para ver proyectos
+ * - Botón para acceder al template en GitHub
+ * - Crear una primera impresión profesional
+ *
+ * CONTENIDO MOSTRADO:
+ * - Saludo (ej: "Hola, soy")
+ * - Nombre/Título principal con cursor parpadeante
+ * - Subtítulo (ej: "Desarrollador Full Stack")
+ * - Descripción breve de skills y experiencia
+ * - Botones CTA (Ver proyectos + Ver template)
+ *
+ * ARQUITECTURA:
+ * - HTML: Contenido semántico con <section>, <h1>, etc.
+ * - CSS: Diseño minimalista con animaciones sutiles
+ * - Internacionalización: Todo el contenido viene de translations.ts
+ * - Responsive: Se adapta perfectamente a móvil
+ *
+ * ANIMACIONES:
+ * - Cursor parpadeante (_) al final del título
+ * - Animación fade-in al cargar (definida en global.css)
+ * - Efecto hover en botones con movimiento
+ *
+ * PERSONALIZACIÓN:
+ * - NO modificar este archivo
+ * - Todo el contenido se edita en: src/i18n/translations.ts
+ * - Busca las claves: heroGreeting, heroTitle, heroSubtitle, etc.
+ */
+
+// IMPORTACIONES
+// -------------
+// Utilidad de internacionalización para obtener traducciones
 import { useI18n } from '../lib/i18n.js';
 
+// PROPS
+// -----
 interface Props {
-  lang?: string;
+  lang?: string;  // Idioma de la página ('es' o 'en')
 }
 
+// Obtiene props con valores por defecto
 const { lang = 'es' } = Astro.props;
+
+// TRADUCCIONES
+// ------------
+// Obtiene todas las traducciones según el idioma actual
+// 't' contiene todos los textos: heroGreeting, heroTitle, etc.
 const { t } = useI18n(lang);
 ---
 
+<!--
+  SECCIÓN HERO
+  ============
+
+  ESTRUCTURA HTML:
+  - <section>: Contenedor principal semántico
+  - .container: Clase para centrar contenido (definida en global.css)
+  - .hero-content: Contenedor del contenido con max-width
+  - .fade-in: Animación de aparición al cargar (global.css)
+
+  ELEMENTOS:
+  1. Saludo: Texto pequeño introductorio
+  2. Título (h1): Nombre con cursor parpadeante
+  3. Subtítulo: Tu rol o especialidad
+  4. Descripción: Breve resumen de skills/experiencia (soporta HTML)
+  5. CTAs: Botones de acción (proyectos + template)
+
+  CLASES MONO:
+  - .mono: Aplica fuente monoespaciada (definida en global.css)
+  - Usada en casi todos los textos para estilo de terminal/código
+
+  SEO:
+  - <h1> es el título principal de la página (crítico para SEO)
+  - Solo debe haber un <h1> por página
+  - El contenido es el más importante para Google
+-->
 <section class="hero">
+  <!-- Contenedor centrado (global.css) -->
   <div class="container">
+    <!-- Contenido con animación de aparición -->
     <div class="hero-content fade-in">
+      <!-- SALUDO: Texto pequeño introductorio -->
       <p class="mono greeting">{t.heroGreeting}</p>
+
+      <!--
+        TÍTULO PRINCIPAL (h1):
+        - Nombre o marca personal
+        - Incluye cursor parpadeante (_) con animación
+        - Es el elemento SEO más importante de la página
+      -->
       <h1>{t.heroTitle}<span class="blink">_</span></h1>
+
+      <!--
+        SUBTÍTULO:
+        - Tu rol, especialidad o título profesional
+        - Ej: "Desarrollador Full Stack", "UI/UX Designer"
+      -->
       <p class="subtitle mono">
         {t.heroSubtitle}
       </p>
+
+      <!--
+        DESCRIPCIÓN:
+        - Breve resumen de skills, experiencia o propuesta de valor
+        - set:html permite HTML en el texto (ej: <br>, <strong>)
+        - Cuidado: Solo usar con contenido confiable (no input de usuario)
+      -->
       <p class="description mono" set:html={t.heroDescription}></p>
+
+      <!--
+        CALL TO ACTIONS (CTAs):
+        - Botón primario: Scroll a sección de proyectos (#projects)
+        - Botón secundario: Link al repo del template en GitHub
+      -->
       <div class="cta">
+        <!--
+          BOTÓN PRIMARIO: Ver proyectos
+          - href="#projects": Scroll suave a sección (global.css)
+          - Estilo destacado (fondo sólido)
+        -->
         <a href="#projects" class="btn-primary mono">{t.heroCta}</a>
-        <a href="https://github.com/686f6c61/astro-portfolio-template-686f6c61" target="_blank" rel="noopener" class="btn-secondary mono">{t.heroTemplateButton}</a>
+
+        <!--
+          BOTÓN SECUNDARIO: Ver template
+          - Link externo a GitHub con tu template
+          - target="_blank": Abre en nueva pestaña
+          - rel="noopener": Seguridad (previene tabnabbing)
+          - Estilo secundario (fondo transparente)
+
+          PERSONALIZAR:
+          Cambia "yourusername/your-template-repo" por tu repo real
+        -->
+        <a href="https://github.com/yourusername/your-template-repo" target="_blank" rel="noopener" class="btn-secondary mono">{t.heroTemplateButton}</a>
       </div>
     </div>
   </div>
 </section>
 
 <style>
+  /**
+   * ESTILOS: Sección Hero
+   * ----------------------
+   *
+   * DISEÑO:
+   * - Layout centrado verticalmente (flexbox)
+   * - Texto alineado a la izquierda con max-width para legibilidad
+   * - Jerarquía visual clara: saludo → título → subtítulo → descripción → CTA
+   * - Opacidades diferentes para crear profundidad
+   * - Animaciones sutiles que no distraen
+   *
+   * VARIABLES CSS USADAS:
+   * - var(--text): Color del texto (adaptable a tema)
+   * - var(--bg): Color de fondo (adaptable a tema)
+   * - var(--mono): Fuente monoespaciada
+   *
+   * RESPONSIVO:
+   * - Desktop: Botones en fila horizontal
+   * - Mobile: Botones en columna vertical
+   *
+   * PERSONALIZACIÓN:
+   * - min-height: Altura mínima de la sección
+   * - max-width: Ancho máximo del contenido
+   * - font-size: Tamaños de texto relativos
+   */
+
+  /**
+   * CONTENEDOR: .hero
+   * -----------------
+   * Sección principal que ocupa casi toda la altura de la ventana
+   */
   .hero {
-    min-height: 90vh;
-    display: flex;
-    align-items: center;
-    padding: 6rem 0;
+    min-height: 90vh;     /* 90% de altura de ventana */
+    display: flex;        /* Flexbox para centrar verticalmente */
+    align-items: center;  /* Centra contenido verticalmente */
+    padding: 6rem 0;      /* 96px arriba y abajo */
   }
 
+  /**
+   * CONTENIDO: .hero-content
+   * -------------------------
+   * Limita el ancho del texto para mejor legibilidad
+   * Texto muy ancho (>800px) es difícil de leer
+   */
   .hero-content {
-    max-width: 800px;
+    max-width: 800px;  /* Ancho máximo para legibilidad óptima */
   }
 
+  /**
+   * SALUDO: .greeting
+   * -----------------
+   * Texto pequeño introductorio (ej: "Hola, soy")
+   * Opacidad reducida para menor jerarquía visual
+   */
   .greeting {
-    font-size: 0.9rem;
-    opacity: 0.7;
-    margin-bottom: 0.5rem;
+    font-size: 0.9rem;      /* 14.4px - Ligeramente pequeño */
+    opacity: 0.7;           /* 70% visible - Menos prominente */
+    margin-bottom: 0.5rem;  /* 8px de espacio debajo */
   }
 
+  /**
+   * TÍTULO PRINCIPAL: h1
+   * --------------------
+   * El nombre o marca personal
+   * Hereda estilos globales de h1 (global.css)
+   */
   h1 {
-    margin-bottom: 1rem;
+    margin-bottom: 1rem;  /* 16px de espacio debajo */
   }
 
+  /**
+   * CURSOR: .blink
+   * --------------
+   * Cursor parpadeante (_) al final del título
+   * Simula cursor de terminal escribiendo
+   */
   .blink {
-    animation: blink 1s infinite;
+    animation: blink 1s infinite;  /* Parpadea cada 1 segundo, infinitamente */
   }
 
+  /**
+   * ANIMACIÓN: blink
+   * ----------------
+   * Hace que el cursor aparezca y desaparezca
+   * 0-50%: Visible (opacity: 1)
+   * 51-100%: Invisible (opacity: 0)
+   */
   @keyframes blink {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0; }
+    0%, 50% { opacity: 1; }    /* Primera mitad: visible */
+    51%, 100% { opacity: 0; }  /* Segunda mitad: invisible */
   }
 
+  /**
+   * SUBTÍTULO: .subtitle
+   * --------------------
+   * Tu rol o especialidad (ej: "Desarrollador Full Stack")
+   * Ligeramente más grande que texto normal
+   */
   .subtitle {
-    font-size: 1.25rem;
-    margin-bottom: 1.5rem;
-    opacity: 0.8;
+    font-size: 1.25rem;     /* 20px - Prominente pero no tanto como h1 */
+    margin-bottom: 1.5rem;  /* 24px de espacio debajo */
+    opacity: 0.8;           /* 80% visible - Jerarquía intermedia */
   }
 
+  /**
+   * DESCRIPCIÓN: .description
+   * -------------------------
+   * Resumen breve de skills y experiencia
+   * Opacidad más baja que subtítulo para menor énfasis
+   */
   .description {
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
-    opacity: 0.7;
+    font-size: 1.1rem;    /* 17.6px - Legible pero secundario */
+    margin-bottom: 2rem;  /* 32px de espacio debajo */
+    opacity: 0.7;         /* 70% visible - Menor jerarquía */
   }
 
+  /**
+   * INFO TERMINAL: .terminal-info
+   * -----------------------------
+   * Clase para información adicional estilo terminal
+   * (Actualmente no usada en HTML pero disponible)
+   */
   .terminal-info {
     display: block;
-    font-size: 0.9rem;
-    opacity: 0.6;
-    margin-top: 0.5rem;
-    font-style: italic;
+    font-size: 0.9rem;    /* 14.4px - Pequeño */
+    opacity: 0.6;         /* 60% visible - Muy secundario */
+    margin-top: 0.5rem;   /* 8px arriba */
+    font-style: italic;   /* Cursiva para diferenciar */
   }
 
+  /**
+   * CONTENEDOR CTA: .cta
+   * --------------------
+   * Contenedor de botones de acción
+   * Flexbox para alinear botones horizontalmente
+   */
   .cta {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
+    display: flex;        /* Flexbox para layout horizontal */
+    gap: 1rem;            /* 16px de espacio entre botones */
+    flex-wrap: wrap;      /* Permite wrap en pantallas pequeñas */
   }
 
+  /**
+   * BOTONES: .btn-primary y .btn-secondary
+   * ---------------------------------------
+   * Estilos base compartidos por ambos botones
+   * Diferencias se definen en reglas específicas abajo
+   */
   .btn-primary,
   .btn-secondary {
-    padding: 0.75rem 2rem;
-    border: 2px solid var(--text);
-    transition: all 0.3s;
+    padding: 0.75rem 2rem;          /* 12px vertical, 32px horizontal */
+    border: 2px solid var(--text);  /* Borde adaptable al tema */
+    transition: all 0.3s;           /* Animación suave 300ms */
     display: inline-block;
-    font-family: var(--mono);
-    font-size: 0.9rem;
+    font-family: var(--mono);       /* Fuente monoespaciada */
+    font-size: 0.9rem;              /* 14.4px */
   }
 
+  /**
+   * BOTÓN PRIMARIO: .btn-primary
+   * ----------------------------
+   * Botón destacado con fondo sólido
+   * Mayor jerarquía visual (acción principal)
+   */
   .btn-primary {
-    background: var(--text);
-    color: var(--bg);
-    border-bottom: none;
+    background: var(--text);  /* Fondo del color del texto (invertido) */
+    color: var(--bg);         /* Texto del color del fondo (invertido) */
+    border-bottom: none;      /* Sin borde inferior */
   }
 
+  /**
+   * HOVER: Botón primario
+   * ---------------------
+   * Efecto al pasar el mouse
+   */
   .btn-primary:hover {
-    opacity: 1;
-    transform: translateY(-2px);
+    opacity: 1;                   /* Opacidad total */
+    transform: translateY(-2px);  /* Levanta 2px hacia arriba */
   }
 
+  /**
+   * BOTÓN SECUNDARIO: .btn-secondary
+   * --------------------------------
+   * Botón con fondo transparente
+   * Menor jerarquía visual (acción secundaria)
+   */
   .btn-secondary {
-    background: transparent;
+    background: transparent;  /* Fondo transparente, solo borde */
   }
 
+  /**
+   * HOVER: Botón secundario
+   * -----------------------
+   * Efecto al pasar el mouse: se rellena con color
+   */
   .btn-secondary:hover {
-    background: var(--text);
-    color: var(--bg);
-    opacity: 1;
+    background: var(--text);  /* Se rellena con color del texto */
+    color: var(--bg);         /* Texto cambia a color de fondo */
+    opacity: 1;               /* Opacidad total */
   }
 
+  /**
+   * RESPONSIVE: Mobile
+   * ------------------
+   * Ajustes para pantallas pequeñas (max-width: 768px)
+   */
   @media (max-width: 768px) {
+    /**
+     * Hero más corto en móvil
+     * Aprovecha mejor el espacio vertical limitado
+     */
     .hero {
-      min-height: 80vh;
+      min-height: 80vh;  /* 80% de altura (antes 90%) */
     }
 
+    /**
+     * Botones en columna vertical
+     * Mejor para pantallas estrechas
+     */
     .cta {
-      flex-direction: column;
+      flex-direction: column;  /* Cambia de fila a columna */
     }
 
+    /**
+     * Botones con texto centrado
+     * Se ve mejor en layout vertical
+     */
     .btn-primary,
     .btn-secondary {
-      text-align: center;
+      text-align: center;  /* Centra el texto del botón */
     }
   }
 </style>
+
+<!--
+  CÓMO PERSONALIZAR EL HERO
+  =========================
+
+  1. CAMBIAR TEXTOS:
+     Edita src/i18n/translations.ts
+     Busca las claves:
+     - heroGreeting: "Hola, soy"
+     - heroTitle: "Tu Nombre"
+     - heroSubtitle: "Tu Rol"
+     - heroDescription: "Tu descripción"
+     - heroCta: "Ver Proyectos"
+     - heroTemplateButton: "Ver Template"
+
+  2. CAMBIAR LINK DEL BOTÓN TEMPLATE:
+     Línea 142 de este archivo
+     Reemplaza "yourusername/your-template-repo"
+     Por tu repositorio real en GitHub
+
+  3. AJUSTAR DISEÑO VISUAL:
+     Edita los estilos en <style> arriba:
+     - min-height: Altura de la sección
+     - max-width: Ancho del contenido
+     - font-size: Tamaños de texto
+     - padding: Espaciados
+
+  4. CAMBIAR COLORES:
+     Los colores se definen en src/styles/global.css
+     Busca las variables CSS:
+     - --text: Color del texto
+     - --bg: Color de fondo
+     - --border: Color de bordes
+     Y tienen versiones para [data-theme="light"] y [data-theme="dark"]
+
+  5. ELIMINAR CURSOR PARPADEANTE:
+     Elimina: <span class="blink">_</span>
+     En la línea 100 de este archivo
+
+  6. QUITAR ANIMACIÓN FADE-IN:
+     Elimina la clase "fade-in"
+     De la línea 90 de este archivo
+-->

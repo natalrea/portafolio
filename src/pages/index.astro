@@ -1,21 +1,129 @@
 ---
+/**
+ * PÁGINA PRINCIPAL (ESPAÑOL)
+ * ==========================
+ *
+ * Esta es la página de inicio del portfolio en español.
+ * Ruta: / (raíz del sitio)
+ * URL: https://tu-dominio.com/
+ *
+ * PROPÓSITO:
+ * - Página principal en español (idioma por defecto)
+ * - Ensambla todos los componentes del portfolio
+ * - Configura meta tags y SEO para español
+ * - Punto de entrada principal del sitio
+ *
+ * ESTRUCTURA:
+ * - Layout: Contenedor principal con HTML, head y meta tags
+ * - Hero: Sección de presentación personal
+ * - Projects: Galería de proyectos con filtros
+ * - Footer: Información de contacto y redes sociales
+ *
+ * FUNCIONAMIENTO:
+ * - Todo el código entre --- --- se ejecuta en el servidor (SSG)
+ * - Se genera HTML estático en build time
+ * - El HTML generado incluye todos los componentes ya renderizados
+ *
+ * PERSONALIZACIÓN:
+ * - NO necesitas modificar este archivo para personalizar contenido
+ * - El contenido se gestiona desde:
+ *   - src/i18n/translations.ts (textos)
+ *   - src/data/projects-data.ts (proyectos)
+ *   - src/components/ (diseño visual)
+ *
+ * VERSIÓN INGLÉS:
+ * La versión en inglés está en: src/pages/en/index.astro
+ */
+
+// IMPORTACIONES
+// -------------
+// Layout: Contenedor HTML principal con meta tags
 import Layout from '../layouts/Layout.astro';
-import Hero from '../components/Hero.astro';
-import Projects from '../components/Projects.astro';
-import Footer from '../components/Footer.astro';
+
+// Componentes de la página
+import Hero from '../components/Hero.astro';      // Sección principal de presentación
+import Projects from '../components/Projects.astro';  // Galería de proyectos
+import Footer from '../components/Footer.astro';     // Footer con contacto
+
+// Utilidad de internacionalización para obtener traducciones
 import { useI18n } from '../lib/i18n.js';
 
+// CONFIGURACIÓN DE IDIOMA
+// -----------------------
+// Obtiene las traducciones en español desde translations.ts
+// La const 't' contiene todos los textos en español
 const { t } = useI18n('es');
 ---
 
+<!--
+  ESTRUCTURA HTML
+  ===============
+  Layout: Componente wrapper que genera <html>, <head> y <body>
+
+  PROPS DE LAYOUT:
+  - title: Título que aparece en la pestaña del navegador
+  - description: Meta descripción para SEO (Google, Bing, etc.)
+  - lang: Código de idioma para el atributo <html lang="">
+
+  BENEFICIOS SEO:
+  - title personalizado para cada idioma mejora ranking
+  - description optimizada aumenta CTR en resultados de búsqueda
+  - lang correcto ayuda a motores de búsqueda a indexar adecuadamente
+-->
 <Layout
   title={t.siteTitle}
   description={t.siteDescription}
   lang="es"
 >
+  <!--
+    MAIN CONTENT
+    ============
+    Contenedor principal con id para accesibilidad
+    El id permite navegación directa con "skip to content"
+
+    COMPONENTES INCLUIDOS:
+    1. Hero: Sección de bienvenida con nombre, título y descripción
+    2. Projects: Showcase de proyectos con filtrado por tecnología
+    3. Footer: Información de contacto, redes sociales y copyright
+
+    NOTA: Todos los componentes reciben lang="es" para renderizar
+    contenido en español desde translations.ts
+  -->
   <main id="main-content">
     <Hero lang="es" />
     <Projects lang="es" />
     <Footer lang="es" />
   </main>
 </Layout>
+
+<!--
+  NOTAS TÉCNICAS
+  ==============
+
+  1. GENERACIÓN ESTÁTICA (SSG):
+     Esta página se genera en build time, no en runtime.
+     Comando: npm run build
+     Output: dist/index.html
+
+  2. IDIOMA POR DEFECTO:
+     Esta página es la raíz (/), por lo que es el idioma por defecto.
+     Los visitantes que accedan a https://tu-dominio.com/ verán esta versión.
+
+  3. CAMBIO DE IDIOMA:
+     El componente LanguageSwitcher (incluido en Layout) permite
+     cambiar entre español (/index.html) e inglés (/en/index.html)
+
+  4. SEO MULTIIDIOMA:
+     Layout.astro incluye tags <link rel="alternate"> que indican
+     a Google que existe una versión alternativa en inglés.
+
+  5. PERFORMANCE:
+     - HTML estático = carga instantánea
+     - Sin JavaScript necesario para renderizar contenido
+     - CSS minificado en producción
+     - Imágenes lazy-loaded automáticamente
+
+  CÓMO VERIFICAR:
+  - Desarrollo: npm run dev → http://localhost:4321
+  - Producción: npm run build && npm run preview
+-->

@@ -1,30 +1,95 @@
-/* Reset y Variables */
+/**
+ * ESTILOS GLOBALES
+ * ================
+ *
+ * Este archivo contiene todos los estilos CSS globales del portfolio.
+ * Se importa en Layout.astro con is:global para aplicarse en todo el sitio.
+ *
+ * ESTRUCTURA:
+ * 1. Reset CSS: Normaliza estilos entre navegadores
+ * 2. Variables CSS: Colores y fuentes adaptables a tema
+ * 3. Temas: Light y dark mode
+ * 4. Base: Estilos para html y body
+ * 5. Tipografía: Estilos para h1-h6, p, a
+ * 6. Layout: Contenedores y secciones
+ * 7. Utilidades: Clases helper (.mono, .grid, etc.)
+ * 8. Animaciones: Keyframes y clases de animación
+ * 9. Accesibilidad: Focus states y reduced motion
+ *
+ * PERSONALIZACIÓN:
+ * - Colores: Edita variables en :root (líneas 35-40)
+ * - Fuentes: Edita --mono y --sans (líneas 39-40)
+ * - Tema dark: Edita colores en [data-theme="dark"] (líneas 56-61)
+ * - Tema light: Edita colores en [data-theme="light"] (líneas 63-68)
+ */
+
+/* ============================================
+   RESET CSS
+   ============================================
+   Elimina márgenes, paddings y normaliza box-sizing.
+   Garantiza comportamiento consistente entre navegadores.
+*/
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  box-sizing: border-box;  /* Incluye border y padding en width/height */
 }
 
+/* ============================================
+   VARIABLES CSS (TEMA POR DEFECTO: LIGHT)
+   ============================================
+   Variables que se adaptan automáticamente al tema activo.
+   Usadas en todos los componentes con var(--variable).
+
+   PERSONALIZAR:
+   - --bg: Color de fondo principal
+   - --text: Color del texto principal
+   - --accent: Color de acento (actualmente igual que text)
+   - --border: Color de bordes y separadores
+   - --mono: Familia de fuentes monoespaciadas
+   - --sans: Familia de fuentes sans-serif
+*/
 :root {
-  --bg: #ffffff;
-  --text: #000000;
-  --accent: #111111;
-  --border: #e5e5e5;
+  --bg: #ffffff;        /* Fondo blanco */
+  --text: #000000;      /* Texto negro */
+  --accent: #111111;    /* Acento gris muy oscuro */
+  --border: #e5e5e5;    /* Borde gris claro */
   --mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
   --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
-/* Dark theme via system preference */
+/* ============================================
+   TEMA DARK (VÍA PREFERENCIA DEL SISTEMA)
+   ============================================
+   Activa automáticamente el tema oscuro si el usuario
+   tiene dark mode activado en su sistema operativo.
+
+   CONDICIÓN:
+   - Sistema en dark mode: Se aplican estos colores
+   - Usuario eligió manualmente light: :root:not([data-theme="light"]) lo previene
+
+   PERSONALIZAR:
+   Cambia los colores para ajustar tu tema oscuro.
+*/
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #000000;
-    --text: #ffffff;
-    --accent: #eeeeee;
-    --border: #1a1a1a;
+    --bg: #000000;        /* Fondo negro */
+    --text: #ffffff;      /* Texto blanco */
+    --accent: #eeeeee;    /* Acento gris muy claro */
+    --border: #1a1a1a;    /* Borde gris muy oscuro */
   }
 }
 
-/* Manual theme overrides */
+/* ============================================
+   TEMA DARK (MANUAL - PRIORIDAD MÁXIMA)
+   ============================================
+   Cuando el usuario hace clic en el ThemeToggle y elige dark.
+   Se añade data-theme="dark" al <html> y estos estilos se aplican.
+
+   PRIORIDAD:
+   Este selector tiene mayor especificidad que @media,
+   por lo que sobrescribe la preferencia del sistema.
+*/
 [data-theme="dark"] {
   --bg: #000000;
   --text: #ffffff;
@@ -32,6 +97,12 @@
   --border: #1a1a1a;
 }
 
+/* ============================================
+   TEMA LIGHT (MANUAL - PRIORIDAD MÁXIMA)
+   ============================================
+   Cuando el usuario hace clic en el ThemeToggle y elige light.
+   Se añade data-theme="light" al <html> y estos estilos se aplican.
+*/
 [data-theme="light"] {
   --bg: #ffffff;
   --text: #000000;
@@ -39,11 +110,54 @@
   --border: #e5e5e5;
 }
 
-/* Base */
+/* ============================================
+   ESTILOS BASE
+   ============================================
+   Configuración fundamental de html y body.
+   Establece el comportamiento de scroll y estilos base del documento.
+*/
+
+/**
+ * HTML: Scroll Suave
+ * ------------------
+ * scroll-behavior: smooth permite animaciones suaves al hacer clic
+ * en enlaces ancla (#section) o al usar scrollIntoView().
+ *
+ * EJEMPLO:
+ * <a href="#projects">Ver proyectos</a>
+ * → El scroll hacia #projects será animado en lugar de instantáneo.
+ *
+ * NOTA ACCESIBILIDAD:
+ * Se respeta prefers-reduced-motion (ver línea 223).
+ * Usuarios con mareos o problemas vestibulares tendrán scroll instantáneo.
+ */
 html {
   scroll-behavior: smooth;
 }
 
+/**
+ * BODY: Estilos Base del Documento
+ * ---------------------------------
+ * Establece la fuente, colores y espaciado base para todo el sitio.
+ *
+ * font-family: var(--sans)
+ *   → Usa la fuente sans-serif definida en :root (línea 58)
+ *   → Por defecto: -apple-system, BlinkMacSystemFont, Segoe UI
+ *
+ * background: var(--bg)
+ *   → Color de fondo que se adapta al tema (blanco/negro)
+ *
+ * color: var(--text)
+ *   → Color del texto que se adapta al tema (negro/blanco)
+ *
+ * line-height: 1.6
+ *   → Espaciado entre líneas de texto (160% del tamaño de fuente)
+ *   → Mejora la legibilidad, especialmente en párrafos largos
+ *
+ * font-size: 16px
+ *   → Tamaño base de fuente
+ *   → Los tamaños relativos (rem, em) se calculan a partir de este valor
+ */
 body {
   font-family: var(--sans);
   background: var(--bg);
@@ -52,33 +166,129 @@ body {
   font-size: 16px;
 }
 
-/* Typography */
+/* ============================================
+   TIPOGRAFÍA
+   ============================================
+   Estilos para encabezados, párrafos y enlaces.
+   Establece jerarquía visual y legibilidad del contenido.
+*/
+
+/**
+ * ENCABEZADOS: h1, h2, h3
+ * -----------------------
+ * Estilos compartidos para los títulos principales.
+ *
+ * font-family: var(--mono)
+ *   → Usa fuente monoespaciada para estética técnica/minimalista
+ *   → Por defecto: JetBrains Mono, Fira Code, Courier New
+ *
+ * font-weight: 700
+ *   → Negrita para jerarquía visual clara
+ *
+ * line-height: 1.2
+ *   → Líneas más compactas que el body (1.6)
+ *   → Mejora la legibilidad en textos cortos como títulos
+ */
 h1, h2, h3 {
   font-family: var(--mono);
   font-weight: 700;
   line-height: 1.2;
 }
 
+/**
+ * H1: Título Principal
+ * --------------------
+ * Usado en Hero.astro para el nombre del desarrollador.
+ *
+ * clamp(2rem, 5vw, 4rem):
+ *   → Tamaño fluido que se adapta al viewport
+ *   → Mínimo: 2rem (32px) en móviles pequeños
+ *   → Preferido: 5vw (5% del ancho de viewport)
+ *   → Máximo: 4rem (64px) en pantallas grandes
+ *
+ * letter-spacing: -0.02em
+ *   → Acerca ligeramente las letras (tracking negativo)
+ *   → Mejora la cohesión visual en títulos grandes
+ */
 h1 {
   font-size: clamp(2rem, 5vw, 4rem);
   letter-spacing: -0.02em;
 }
 
+/**
+ * H2: Títulos de Sección
+ * ----------------------
+ * Usado en Projects.astro, Footer.astro para encabezados de sección.
+ *
+ * clamp(1.5rem, 3vw, 2.5rem):
+ *   → Mínimo: 1.5rem (24px)
+ *   → Preferido: 3vw
+ *   → Máximo: 2.5rem (40px)
+ *
+ * margin-bottom: 1.5rem
+ *   → Espacio entre título y contenido de la sección
+ */
 h2 {
   font-size: clamp(1.5rem, 3vw, 2.5rem);
   margin-bottom: 1.5rem;
 }
 
+/**
+ * H3: Subtítulos
+ * --------------
+ * Usado en Projects.astro para títulos de proyectos.
+ *
+ * font-size: 1.25rem (20px)
+ *   → Tamaño fijo, suficientemente distintivo del texto normal
+ *
+ * margin-bottom: 0.75rem
+ *   → Espacio moderado antes del contenido relacionado
+ */
 h3 {
   font-size: 1.25rem;
   margin-bottom: 0.75rem;
 }
 
+/**
+ * PÁRRAFOS: p
+ * -----------
+ * Estilos para bloques de texto.
+ *
+ * margin-bottom: 1rem
+ *   → Espacio entre párrafos consecutivos
+ *
+ * max-width: 65ch
+ *   → Limita el ancho a 65 caracteres
+ *   → BENEFICIO: Mejora la legibilidad
+ *   → RAZÓN: Líneas muy largas dificultan el seguimiento del texto
+ *   → ESTÁNDAR: 45-75 caracteres es el rango óptimo según tipografía
+ *
+ * NOTA: "ch" es una unidad CSS que representa el ancho del carácter "0"
+ */
 p {
   margin-bottom: 1rem;
   max-width: 65ch;
 }
 
+/**
+ * ENLACES: a
+ * ----------
+ * Estilos para todos los enlaces del sitio.
+ *
+ * color: var(--text)
+ *   → Mismo color que el texto normal (negro/blanco según tema)
+ *   → Estética minimalista sin colores azules tradicionales
+ *
+ * text-decoration: none
+ *   → Elimina el subrayado por defecto del navegador
+ *
+ * border-bottom: 1px solid var(--text)
+ *   → Subrayado personalizado más elegante que text-decoration
+ *   → Se adapta al tema (negro/blanco)
+ *
+ * transition: opacity 0.2s
+ *   → Animación suave del efecto hover (200ms)
+ */
 a {
   color: var(--text);
   text-decoration: none;
@@ -86,51 +296,212 @@ a {
   transition: opacity 0.2s;
 }
 
+/**
+ * ENLACES: Hover State
+ * --------------------
+ * Efecto visual al pasar el cursor sobre un enlace.
+ *
+ * opacity: 0.6
+ *   → Reduce la opacidad al 60%
+ *   → Feedback visual sutil y elegante
+ *   → Mantiene la legibilidad mientras indica interactividad
+ */
 a:hover {
   opacity: 0.6;
 }
 
-/* Layout */
+/* ============================================
+   LAYOUT
+   ============================================
+   Clases de utilidad para contenedores y secciones.
+   Establece el ancho máximo, espaciado y comportamiento responsive.
+*/
+
+/**
+ * CONTENEDOR: .container
+ * ----------------------
+ * Clase wrapper para centrar y limitar el ancho del contenido.
+ * Usado en Hero.astro, Projects.astro, Footer.astro.
+ *
+ * max-width: 1200px
+ *   → Ancho máximo del contenido en pantallas grandes
+ *   → Evita que las líneas de texto sean demasiado largas
+ *   → 1200px es un estándar común para contenido legible
+ *
+ * margin: 0 auto
+ *   → margin-left y margin-right automáticos
+ *   → EFECTO: Centra horizontalmente el contenedor
+ *
+ * padding: 0 2rem
+ *   → Padding horizontal de 2rem (32px)
+ *   → Previene que el contenido toque los bordes de la pantalla
+ *   → Se reduce a 1.5rem en móviles (ver media query abajo)
+ */
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
 }
 
+/**
+ * SECCIONES: section
+ * ------------------
+ * Estilos para las secciones principales de la página.
+ * Hero, Projects y Footer son elementos <section>.
+ *
+ * padding: 4rem 0
+ *   → Padding vertical de 4rem (64px) arriba y abajo
+ *   → Sin padding horizontal (lo maneja .container)
+ *   → Crea espacio respiratorio entre secciones
+ *
+ * min-height: 50vh
+ *   → Altura mínima del 50% del viewport (altura de pantalla)
+ *   → BENEFICIO: Secciones con poco contenido no se ven comprimidas
+ *   → RESPONSIVE: Se ajusta automáticamente al tamaño de pantalla
+ */
 section {
   padding: 4rem 0;
   min-height: 50vh;
 }
 
+/**
+ * RESPONSIVE: Móviles y Tablets
+ * ------------------------------
+ * Ajustes para pantallas menores a 768px (típicamente móviles).
+ *
+ * BREAKPOINT: 768px
+ *   → Punto de corte común entre móvil y desktop
+ *   → iPhone: ~375-428px
+ *   → iPad portrait: 768px
+ *   → Desktop: >768px
+ */
 @media (max-width: 768px) {
+  /**
+   * Secciones en móvil:
+   * - Padding reducido de 4rem a 3rem
+   * - Optimiza el uso del espacio vertical limitado
+   */
   section {
     padding: 3rem 0;
   }
 
+  /**
+   * Contenedor en móvil:
+   * - Padding reducido de 2rem a 1.5rem
+   * - Maximiza el ancho disponible para contenido
+   * - Previene que el texto toque los bordes
+   */
   .container {
     padding: 0 1.5rem;
   }
 }
 
-/* Utilities */
+/* ============================================
+   UTILIDADES
+   ============================================
+   Clases helper reutilizables para aplicar estilos comunes.
+   Usadas en múltiples componentes para mantener consistencia.
+*/
+
+/**
+ * .mono: Fuente Monoespaciada
+ * ---------------------------
+ * Aplica la fuente monoespaciada definida en --mono.
+ * Usado para dar estética técnica a elementos específicos.
+ *
+ * USO:
+ * <span class="mono">$ ls -la</span>
+ *
+ * DÓNDE SE USA:
+ * - Projects.astro: Terminal de filtrado de tecnologías
+ * - Cualquier texto que deba parecer código o terminal
+ */
 .mono {
   font-family: var(--mono);
 }
 
+/**
+ * .grid: Layout Grid
+ * ------------------
+ * Aplica CSS Grid con espaciado de 2rem entre elementos.
+ *
+ * display: grid
+ *   → Activa el sistema de layout CSS Grid
+ *   → Los hijos se organizan automáticamente en filas/columnas
+ *
+ * gap: 2rem
+ *   → Espacio de 2rem (32px) entre elementos del grid
+ *   → Reemplaza la necesidad de margins en hijos
+ *
+ * USO:
+ * <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
+ *   <div>Item 1</div>
+ *   <div>Item 2</div>
+ * </div>
+ *
+ * DÓNDE SE USA:
+ * - Projects.astro: Grid de tarjetas de proyectos
+ * - Footer.astro: Grid de enlaces sociales
+ */
 .grid {
   display: grid;
   gap: 2rem;
 }
 
+/**
+ * .border-top: Borde Superior
+ * ---------------------------
+ * Añade un borde de 1px en la parte superior del elemento.
+ * Color adaptable al tema (claro/oscuro).
+ *
+ * DÓNDE SE USA:
+ * - Footer.astro: Separador visual entre proyectos y contacto
+ * - Cualquier elemento que necesite separación visual superior
+ */
 .border-top {
   border-top: 1px solid var(--border);
 }
 
+/**
+ * .border-bottom: Borde Inferior
+ * ------------------------------
+ * Añade un borde de 1px en la parte inferior del elemento.
+ * Color adaptable al tema (claro/oscuro).
+ *
+ * DÓNDE SE USA:
+ * - Separadores entre secciones
+ * - Elementos que necesiten división visual inferior
+ */
 .border-bottom {
   border-bottom: 1px solid var(--border);
 }
 
-/* Animations */
+/* ============================================
+   ANIMACIONES
+   ============================================
+   Keyframes y clases de animación para efectos visuales.
+   Mejoran la experiencia de usuario con transiciones suaves.
+*/
+
+/**
+ * KEYFRAME: fadeIn
+ * ----------------
+ * Animación de aparición con desvanecimiento y movimiento vertical.
+ * Efecto común en sitios modernos para revelar contenido gradualmente.
+ *
+ * FRAMES:
+ * - from (0%):
+ *   opacity: 0        → Elemento invisible
+ *   translateY(20px)  → Elemento 20px más abajo de su posición final
+ *
+ * - to (100%):
+ *   opacity: 1        → Elemento completamente visible
+ *   translateY(0)     → Elemento en su posición final
+ *
+ * EFECTO VISUAL:
+ * El elemento aparece gradualmente desde abajo mientras se hace visible.
+ * Crea sensación de "entrada suave" en lugar de aparición brusca.
+ */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -142,13 +513,68 @@ section {
   }
 }
 
+/**
+ * CLASE: .fade-in
+ * ---------------
+ * Aplica la animación fadeIn a un elemento.
+ *
+ * animation: fadeIn 0.6s ease-out forwards
+ *   → fadeIn: Usa el keyframe definido arriba
+ *   → 0.6s: Duración de 600 milisegundos (medio segundo aprox)
+ *   → ease-out: Comienza rápido y termina lento (suave y natural)
+ *   → forwards: Mantiene el estado final (opacity: 1, translateY: 0)
+ *
+ * USO:
+ * <div class="fade-in">Este contenido aparecerá con efecto</div>
+ *
+ * DÓNDE SE USA:
+ * - Puede aplicarse a cualquier elemento que deba aparecer gradualmente
+ * - Típico en Hero.astro, tarjetas de proyecto, secciones al hacer scroll
+ *
+ * NOTA ACCESIBILIDAD:
+ * Esta animación se desactiva si el usuario tiene prefers-reduced-motion
+ * (ver sección de accesibilidad más abajo, línea 480+).
+ */
 .fade-in {
   animation: fadeIn 0.6s ease-out forwards;
 }
 
-/* Accessibility */
+/* ============================================
+   ACCESIBILIDAD
+   ============================================
+   Estilos para mejorar la experiencia de usuarios con necesidades especiales.
+   Cumple con WCAG 2.1 (Web Content Accessibility Guidelines).
+*/
 
-/* Respect user's motion preferences */
+/**
+ * REDUCED MOTION: Respeto a Preferencias de Movimiento
+ * -----------------------------------------------------
+ * Desactiva o reduce drásticamente animaciones si el usuario lo prefiere.
+ *
+ * CONTEXTO:
+ * Algunas personas experimentan mareos, náuseas o convulsiones con animaciones.
+ * Los sistemas operativos permiten desactivar animaciones (Reduce Motion).
+ *
+ * CÓMO ACTIVAR (USUARIO):
+ * - macOS: System Preferences > Accessibility > Display > Reduce motion
+ * - Windows: Settings > Ease of Access > Display > Show animations
+ * - iOS: Settings > Accessibility > Motion > Reduce Motion
+ * - Android: Settings > Accessibility > Remove animations
+ *
+ * EFECTO:
+ * Cuando está activado, este media query:
+ * - Reduce duración de animaciones a 0.01ms (prácticamente instantáneo)
+ * - Ejecuta animaciones solo 1 vez (no loops infinitos)
+ * - Reduce transiciones CSS a 0.01ms
+ * - Elimina smooth scroll (scroll instantáneo)
+ *
+ * !important:
+ * Necesario para sobrescribir cualquier otra regla CSS.
+ * Es uno de los pocos casos donde !important está justificado.
+ *
+ * BENEFICIO:
+ * Hace el sitio accesible para usuarios con trastornos vestibulares.
+ */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -160,12 +586,76 @@ section {
   }
 }
 
-/* Improved focus states */
+/**
+ * FOCUS STATES: Indicadores de Foco
+ * ----------------------------------
+ * Mejora la navegación por teclado con indicadores visuales claros.
+ *
+ * CONTEXTO:
+ * Usuarios que navegan con teclado (Tab, Shift+Tab) necesitan saber
+ * qué elemento está seleccionado. Esto incluye:
+ * - Usuarios con discapacidades motoras
+ * - Usuarios de lectores de pantalla
+ * - Power users que prefieren teclado sobre mouse
+ */
+
+/**
+ * :focus - Eliminar outline por defecto
+ * --------------------------------------
+ * Elimina el outline azul/naranja nativo del navegador.
+ * Se reemplaza con un estilo personalizado en :focus-visible.
+ *
+ * IMPORTANTE:
+ * NO es buena práctica eliminar focus sin reemplazarlo.
+ * Siempre debe haber un indicador visual de foco.
+ */
 *:focus {
   outline: none;
 }
 
+/**
+ * :focus-visible - Outline personalizado
+ * ---------------------------------------
+ * Muestra un outline personalizado SOLO cuando es relevante.
+ *
+ * DIFERENCIA focus vs focus-visible:
+ * - :focus → Se activa con mouse y teclado
+ * - :focus-visible → Se activa SOLO con teclado
+ *
+ * BENEFICIO:
+ * Evita outline molesto al hacer clic con mouse,
+ * pero mantiene indicador visible al navegar con teclado.
+ *
+ * outline: 2px solid var(--text)
+ *   → Borde de 2px del color del texto (negro/blanco según tema)
+ *   → Suficientemente visible para cumplir WCAG 2.1
+ *
+ * outline-offset: 2px
+ *   → Separa el outline 2px del elemento
+ *   → Mejora la visibilidad y evita que se confunda con bordes
+ *
+ * NAVEGACIÓN POR TECLADO:
+ * - Tab: Siguiente elemento
+ * - Shift + Tab: Elemento anterior
+ * - Enter/Space: Activar elemento enfocado
+ * - Escape: Cerrar modales (implementado en Projects.astro, ImageGallery.astro)
+ */
 *:focus-visible {
   outline: 2px solid var(--text);
   outline-offset: 2px;
 }
+
+/* ============================================
+   FIN DE ESTILOS GLOBALES
+   ============================================
+
+   Este archivo proporciona la base visual completa del portfolio.
+   Para estilos específicos de componentes, ver archivos .astro individuales.
+
+   PERSONALIZACIÓN RÁPIDA:
+   1. Colores: Edita variables en :root (línea 52-59)
+   2. Fuentes: Cambia --mono y --sans (línea 57-58)
+   3. Temas: Ajusta colores en [data-theme] (líneas 93-111)
+   4. Espaciado: Modifica padding/margin en secciones
+   5. Breakpoints: Ajusta @media queries para responsive
+*/
