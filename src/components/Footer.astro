@@ -1,106 +1,72 @@
 ---
-/**
- * Footer corregido — usa socials desde src/config/socials.ts
- * y la utilidad useI18n para obtener las traducciones correctamente.
- */
-
-import { socials } from "../config/socials";  // redes desde config
-import { useI18n } from "../lib/i18n.js";     // helper i18n del template
-
-const { lang = "es" } = Astro.props;
-const { t } = useI18n(lang);
-
-const currentYear = new Date().getFullYear();
+const socials = [
+  {
+    name: "Correo",
+    url: "mailto:reavalenciavictor@gmail.com",
+    description: "Escríbeme directamente por correo electrónico."
+  },
+  {
+    name: "LinkedIn",
+    url: "https://www.linkedin.com/in/victor-rea-vj?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+    description: "Perfil profesional en LinkedIn."
+  },
+  {
+    name: "GitHub",
+    url: "https://github.com/VictorJesusReaValencia",
+    description: "Repositorio de proyectos y desarrollos personales."
+  }
+];
 ---
 
-<footer id="contact" class="footer border-top">
-  <div class="footer-content">
-    <!-- Título principal -->
-    <h2 class="mono">{t.contactTitle}</h2>
+<footer class="footer">
+  <div class="container">
+    <p class="mono made-by">© 2025 Víctor Rea</p>
 
-    <!-- Subtítulo / Texto breve -->
-    <h3 class="mono">{t.contactLinks}</h3>
-
-    <!-- Lista de redes sociales -->
-    <ul class="socials" role="list">
+    <ul class="social-links">
       {socials.map((social) => (
         <li>
-          <a href={social.url} target="_blank" rel="noopener noreferrer" class="social-link">
-            {social.icon ? <i class="iconify" data-icon={social.icon}></i> : null}
-            <span>{social.name}</span>
+          <a
+            href={social.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mono"
+            title={social.description}
+          >
+            {social.name}
           </a>
         </li>
       ))}
     </ul>
-
-    <!-- Copyright -->
-    <p class="mono small-text">
-      {t.footerCopyright.replace("{year}", currentYear.toString())}
-    </p>
-
-    <!-- Status -->
-    <p class="mono small-text">
-      <span class="status">●</span> {t.footerStatus}
-    </p>
   </div>
 </footer>
 
 <style>
 .footer {
-  padding: 3rem 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 3rem 1rem;
   text-align: center;
-  background: transparent;
-  color: inherit;
+  opacity: 0.8;
 }
 
-.footer-content {
-  max-width: 900px;
-  margin: 0 auto;
+.made-by {
+  margin-bottom: 1rem;
 }
 
-.socials {
+.social-links {
+  list-style: none;
   display: flex;
   justify-content: center;
-  gap: 1.25rem;
-  list-style: none;
-  padding: 1rem 0;
-  margin: 0;
+  gap: 1.5rem;
+  padding: 0;
 }
 
-.social-link {
+.social-links a {
   text-decoration: none;
-  color: inherit;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: opacity 0.2s ease, transform 0.12s ease;
+  color: var(--text);
+  transition: 0.2s ease;
 }
 
-.social-link:hover {
-  opacity: 0.85;
-  transform: translateY(-2px);
-}
-
-.iconify {
-  font-size: 1.25rem;
-  line-height: 1;
-}
-
-.small-text {
-  font-size: 0.85rem;
-  opacity: 0.7;
-  margin-top: 0.5rem;
-}
-
-.status {
-  color: #00ff00;
-  margin-right: 0.5rem;
-}
-
-@media (max-width: 640px) {
-  .socials {
-    flex-direction: column;
-    gap: 0.6rem;
-  }
+.social-links a:hover {
+  color: var(--accent);
 }
 </style>

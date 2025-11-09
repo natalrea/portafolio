@@ -1,76 +1,45 @@
 ---
 /**
- * COMPONENTE: Projects
- * =====================
- * Muestra la sección de proyectos en el portafolio.
- * Adaptado para tener solo un apartado: "Página".
+ * Sección de proyectos — solo "Centro de la Vista"
  */
-
-import { useI18n } from "../lib/i18n.js";
-
-const { lang = "es" } = Astro.props;
-const { t } = useI18n(lang);
+const projects = [
+  {
+    name: "Centro de la Vista",
+    description:
+      "Desarrollo sistemas y soluciones digitales adaptadas a las necesidades de cada cliente, combinando funcionalidad, diseño y rendimiento.",
+    web: "https://centrodelavista.com/"
+  }
+];
 ---
-
-<section id="projects" class="projects">
+<section id="projects" class="projects-section">
   <div class="container">
-    <h2 class="mono">{t.projectsTitle}</h2>
+    <h2 class="mono">$ ls ~/projects</h2>
 
     <div class="projects-grid">
-      <!-- ÚNICO PROYECTO: PÁGINA -->
-      <article class="project-card">
-        <h3 class="project-title mono">Página</h3>
-        <p class="project-description mono">
-          Sitio web profesional desarrollado con Astro, TypeScript y diseño adaptable.  
-          Optimizado para mostrar proyectos, contacto y presencia digital de manera elegante y eficiente.
-        </p>
-        <div class="project-links">
-          <a href="/" class="btn-primary mono" target="_blank" rel="noopener">[ver página]</a>
-        </div>
-      </article>
+      {projects.map(project => (
+        <article class="project-card">
+          <h3 class="project-title mono">{project.name}</h3>
+          <p class="project-description mono">{project.description}</p>
+
+          <div class="project-actions">
+            <a href={project.web} target="_blank" rel="noopener noreferrer" class="btn-secondary mono">
+              Página
+            </a>
+          </div>
+        </article>
+      ))}
     </div>
   </div>
 </section>
 
 <style>
-.projects {
-  padding: 6rem 1rem;
-  text-align: center;
-}
-.projects-grid {
-  display: flex;
-  justify-content: center;
-  margin-top: 2rem;
-}
-.project-card {
-  border: 1px solid var(--text);
-  border-radius: 1rem;
-  padding: 2rem;
-  max-width: 600px;
-  background: transparent;
-  transition: transform 0.2s ease;
-}
-.project-card:hover {
-  transform: translateY(-4px);
-}
-.project-title {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
-.project-description {
-  font-size: 1rem;
-  opacity: 0.8;
-  margin-bottom: 1.5rem;
-}
-.project-links a {
-  text-decoration: none;
-  border: 1px solid var(--text);
-  padding: 0.5rem 1.5rem;
-  border-radius: 0.5rem;
-  transition: background 0.2s ease;
-}
-.project-links a:hover {
-  background: var(--text);
-  color: var(--bg);
-}
+.projects-section { padding:6rem 1.5rem; text-align:center; }
+.projects-grid { display:flex; flex-direction:column; gap:2.5rem; align-items:center; margin-top:2rem; }
+.project-card { max-width:780px; padding:2rem; border-radius:1rem; border:1px solid rgba(255,255,255,0.06); background:transparent; text-align:left; }
+.project-title { font-size:1.5rem; margin-bottom:0.75rem; }
+.project-description { opacity:.85; margin-bottom:1.25rem; line-height:1.6; }
+.project-actions { display:flex; gap:1rem; justify-content:flex-start; }
+.btn-secondary { padding:.65rem 1.25rem; border:2px solid var(--text); background:transparent; color:var(--text); text-decoration:none; font-family:var(--mono); border-radius:.5rem; transition:all .18s; }
+.btn-secondary:hover { background:var(--text); color:var(--bg); transform:translateY(-2px); }
+@media (max-width:768px){ .project-card{ text-align:center } .project-actions{ justify-content:center } }
 </style>
