@@ -1,22 +1,18 @@
 ---
-// src/components/Footer.astro
 /**
  * Footer corregido — usa socials desde src/config/socials.ts
  * y la utilidad useI18n para obtener las traducciones correctamente.
  */
 
-import { socials as socialLinks } from "../config/socials";  // redes desde config
-import { useI18n } from "../lib/i18n.js";                   // helper i18n del template
+import { socials } from "../config/socials";  // redes desde config
+import { useI18n } from "../lib/i18n.js";     // helper i18n del template
 
-// Props / idioma (por defecto 'es')
 const { lang = "es" } = Astro.props;
-
-// Obtiene las traducciones en el idioma actual
 const { t } = useI18n(lang);
 
-// Año actual
 const currentYear = new Date().getFullYear();
 ---
+
 <footer id="contact" class="footer border-top">
   <div class="footer-content">
     <!-- Título principal -->
@@ -27,7 +23,7 @@ const currentYear = new Date().getFullYear();
 
     <!-- Lista de redes sociales -->
     <ul class="socials" role="list">
-      {socialLinks.map((social) => (
+      {socials.map((social) => (
         <li>
           <a href={social.url} target="_blank" rel="noopener noreferrer" class="social-link">
             {social.icon ? <i class="iconify" data-icon={social.icon}></i> : null}
@@ -50,61 +46,61 @@ const currentYear = new Date().getFullYear();
 </footer>
 
 <style>
-  .footer {
-    padding: 3rem 1.5rem;
-    text-align: center;
-    background: transparent;
-    color: inherit;
-  }
+.footer {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  background: transparent;
+  color: inherit;
+}
 
-  .footer-content {
-    max-width: 900px;
-    margin: 0 auto;
-  }
+.footer-content {
+  max-width: 900px;
+  margin: 0 auto;
+}
 
+.socials {
+  display: flex;
+  justify-content: center;
+  gap: 1.25rem;
+  list-style: none;
+  padding: 1rem 0;
+  margin: 0;
+}
+
+.social-link {
+  text-decoration: none;
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: opacity 0.2s ease, transform 0.12s ease;
+}
+
+.social-link:hover {
+  opacity: 0.85;
+  transform: translateY(-2px);
+}
+
+.iconify {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.small-text {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  margin-top: 0.5rem;
+}
+
+.status {
+  color: #00ff00;
+  margin-right: 0.5rem;
+}
+
+@media (max-width: 640px) {
   .socials {
-    display: flex;
-    justify-content: center;
-    gap: 1.25rem;
-    list-style: none;
-    padding: 1rem 0;
-    margin: 0;
+    flex-direction: column;
+    gap: 0.6rem;
   }
-
-  .social-link {
-    text-decoration: none;
-    color: inherit;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: opacity 0.2s ease, transform 0.12s ease;
-  }
-
-  .social-link:hover {
-    opacity: 0.85;
-    transform: translateY(-2px);
-  }
-
-  .iconify {
-    font-size: 1.25rem;
-    line-height: 1;
-  }
-
-  .small-text {
-    font-size: 0.85rem;
-    opacity: 0.7;
-    margin-top: 0.5rem;
-  }
-
-  .status {
-    color: #00ff00;
-    margin-right: 0.5rem;
-  }
-
-  @media (max-width: 640px) {
-    .socials {
-      flex-direction: column;
-      gap: 0.6rem;
-    }
-  }
+}
 </style>

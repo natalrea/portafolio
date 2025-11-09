@@ -21,17 +21,15 @@ const translations = {
     greeting: "Hola, soy",
     title: "Victor Rea",
     subtitle: "Desarrollador Full Stack",
-    description: "Soy un desarrollador apasionado por crear experiencias web eficientes y modernas.",
-    ctaProjects: "Ver Proyectos",
-    ctaTemplate: "Ver Template"
+    description: "Soy un desarrollador enfocado en crear experiencias web eficientes, modernas y bien estructuradas.",
+    ctaProjects: "Ver Proyectos"
   },
   en: {
     greeting: "Hi, I'm",
     title: "Victor Rea",
     subtitle: "Full Stack Developer",
-    description: "I am a passionate developer creating efficient and modern web experiences.",
-    ctaProjects: "View Projects",
-    ctaTemplate: "View Template"
+    description: "I'm a developer focused on building efficient, modern, and well-structured web experiences.",
+    ctaProjects: "View Projects"
   }
 };
 
@@ -54,10 +52,9 @@ const t = translations[lang];
       <!-- DESCRIPCIÓN -->
       <p class="description mono" set:html={t.description}></p>
 
-      <!-- BOTONES CTA -->
+      <!-- BOTÓN CTA -->
       <div class="cta">
         <a href="#projects" class="btn-primary mono">{t.ctaProjects}</a>
-        <a href="https://github.com/yourusername/your-template-repo" target="_blank" rel="noopener" class="btn-secondary mono">{t.ctaTemplate}</a>
       </div>
     </div>
   </div>
@@ -78,11 +75,23 @@ h1 { margin-bottom: 1rem; }
 .subtitle { font-size: 1.25rem; margin-bottom: 1.5rem; opacity: 0.8; }
 .description { font-size: 1.1rem; margin-bottom: 2rem; opacity: 0.7; }
 .cta { display: flex; gap: 1rem; flex-wrap: wrap; }
-.btn-primary,
-.btn-secondary { padding: 0.75rem 2rem; border: 2px solid var(--text); transition: all 0.3s; display: inline-block; font-family: var(--mono); font-size: 0.9rem; }
-.btn-primary { background: var(--text); color: var(--bg); border-bottom: none; }
-.btn-primary:hover { opacity: 1; transform: translateY(-2px); }
-.btn-secondary { background: transparent; }
-.btn-secondary:hover { background: var(--text); color: var(--bg); opacity: 1; }
-@media (max-width: 768px) { .hero { min-height: 80vh; } .cta { flex-direction: column; } .btn-primary, .btn-secondary { text-align: center; } }
+.btn-primary { 
+  padding: 0.75rem 2rem; 
+  border: 2px solid var(--text); 
+  background: var(--text); 
+  color: var(--bg); 
+  transition: all 0.3s; 
+  display: inline-block; 
+  font-family: var(--mono); 
+  font-size: 0.9rem; 
+}
+.btn-primary:hover { 
+  opacity: 1; 
+  transform: translateY(-2px); 
+}
+@media (max-width: 768px) { 
+  .hero { min-height: 80vh; } 
+  .cta { flex-direction: column; } 
+  .btn-primary { text-align: center; } 
+}
 </style>
