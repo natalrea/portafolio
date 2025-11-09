@@ -3,88 +3,7 @@ interface Props {
   lang?: string;
 }
 
-const { lang = 'es' } = Astro.props;
-
-const translations = {
-  es: {
-    greeting: "Hola, soy",
-    title: "Víctor Rea",
-    subtitle: "Desarrollador de Software",
-    description:
-      "Desarrollo sistemas y soluciones digitales adaptadas a las necesidades de cada cliente, combinando funcionalidad, diseño y rendimiento.",
-    ctaProjects: "Página"
-  },
-  en: {
-    greeting: "Hi, I'm",
-    title: "Víctor Rea",
-    subtitle: "Software Developer",
-    description:
-      "I develop digital systems and solutions tailored to each client’s needs, combining functionality, design, and performance.",
-    ctaProjects: "Page"
-  }
-};
-
-const t = translations[lang];
----
-
-<!-- HERO -->
-<section class="hero">
-  <div class="container">
-    <div class="hero-content fade-in">
-      <p class="mono greeting">{t.greeting}</p>
-      <h1>{t.title}<span class="blink">_</span></h1>
-      <p class="subtitle mono">{t.subtitle}</p>
-      <p class="description mono" id="centro" set:html={t.description}></p>
-
-      <div class="cta">
-        <a href="#centro" class="btn-primary mono">{t.ctaProjects}</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<style>
-html {
-  scroll-behavior: smooth;
-}
-.hero {
-  min-height: 90vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 6rem 0;
-  text-align: center;
-}
-.hero-content { max-width: 800px; }
-.greeting { font-size: 0.9rem; opacity: 0.7; margin-bottom: 0.5rem; }
-h1 { margin-bottom: 1rem; }
-.blink { animation: blink 1s infinite; }
-@keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
-.subtitle { font-size: 1.25rem; margin-bottom: 1.5rem; opacity: 0.8; }
-.description { font-size: 1.1rem; margin-bottom: 2rem; opacity: 0.7; }
-.cta { display: flex; justify-content: center; }
-.btn-primary {
-  padding: 0.75rem 2rem;
-  border: 2px solid var(--text);
-  background: var(--text);
-  color: var(--bg);
-  transition: 0.3s;
-  font-family: var(--mono);
-  font-size: 0.9rem;
-}
-.btn-primary:hover { transform: translateY(-2px); }
-
-@media (max-width: 768px) {
-  .hero { min-height: 80vh; }
-  .cta { flex-direction: column; }
-}
-</style>
----
-interface Props {
-  lang?: string;
-}
-
-const { lang = 'es' } = Astro.props;
+const { lang = "es" } = Astro.props;
 
 const translations = {
   es: {
@@ -110,7 +29,7 @@ const translations = {
 const t = translations[lang];
 ---
 
-<!-- HERO -->
+<!-- SECCIÓN PRINCIPAL -->
 <section class="hero">
   <div class="container">
     <div class="hero-content fade-in">
@@ -118,6 +37,7 @@ const t = translations[lang];
       <h1>{t.title}<span class="blink">_</span></h1>
       <p class="subtitle mono">{t.subtitle}</p>
 
+      <!-- BOTÓN QUE BAJA A LA SECCIÓN -->
       <div class="cta">
         <a href="#centro" class="btn-primary mono">{t.ctaProjects}</a>
       </div>
@@ -125,11 +45,18 @@ const t = translations[lang];
   </div>
 </section>
 
-<!-- CENTRO DE LA VISTA -->
+<!-- SECCIÓN CENTRO DE LA VISTA -->
 <section id="centro" class="centro">
   <div class="container">
     <p class="description mono">{t.description}</p>
-    <a href="https://centrodelavista.com/" target="_blank" rel="noopener noreferrer" class="btn-secondary mono">
+
+    <!-- BOTÓN QUE LLEVA A LA PÁGINA EXTERNA -->
+    <a
+      href="https://centrodelavista.com/"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="btn-secondary mono"
+    >
       {t.pageLink}
     </a>
   </div>
@@ -139,6 +66,7 @@ const t = translations[lang];
 html {
   scroll-behavior: smooth;
 }
+
 .hero {
   min-height: 90vh;
   display: flex;
@@ -147,13 +75,42 @@ html {
   padding: 6rem 0;
   text-align: center;
 }
-.hero-content { max-width: 800px; }
-.greeting { font-size: 0.9rem; opacity: 0.7; margin-bottom: 0.5rem; }
-h1 { margin-bottom: 1rem; }
-.blink { animation: blink 1s infinite; }
-@keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
-.subtitle { font-size: 1.25rem; margin-bottom: 1.5rem; opacity: 0.8; }
-.cta { display: flex; justify-content: center; margin-top: 1rem; }
+
+.hero-content {
+  max-width: 800px;
+}
+
+.greeting {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  margin-bottom: 0.5rem;
+}
+
+h1 {
+  margin-bottom: 1rem;
+}
+
+.blink {
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+  opacity: 0.8;
+}
+
+.cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
 .btn-primary {
   padding: 0.75rem 2rem;
   border: 2px solid var(--text);
@@ -162,8 +119,12 @@ h1 { margin-bottom: 1rem; }
   transition: 0.3s;
   font-family: var(--mono);
   font-size: 0.9rem;
+  text-decoration: none;
 }
-.btn-primary:hover { transform: translateY(-2px); }
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+}
 
 .centro {
   min-height: 60vh;
@@ -174,12 +135,14 @@ h1 { margin-bottom: 1rem; }
   text-align: center;
   padding: 4rem 2rem;
 }
+
 .description {
   font-size: 1.1rem;
   margin-bottom: 1.5rem;
   opacity: 0.8;
   max-width: 700px;
 }
+
 .btn-secondary {
   padding: 0.65rem 1.75rem;
   border: 2px solid var(--text);
@@ -190,6 +153,7 @@ h1 { margin-bottom: 1rem; }
   transition: 0.3s;
   text-decoration: none;
 }
+
 .btn-secondary:hover {
   background: var(--text);
   color: var(--bg);
