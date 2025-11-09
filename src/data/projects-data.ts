@@ -140,133 +140,24 @@ export interface Project {
  * REEMPLAZA ESTOS EJEMPLOS CON TUS PROYECTOS REALES
  */
 export const projectsData: Project[] = [
-  /**
-   * TIPO 1: PROYECTO COMPLETO
-   * --------------------------
-   * Este ejemplo muestra TODAS las opciones disponibles.
-   * Tiene: featured, demo, code, web, images, explanation, csv
-   *
-   * USA ESTE COMO PLANTILLA para proyectos con muchas características.
-   *
-   * BOTONES QUE MUESTRA:
-   * [demo] [code] [web] [images] [explicación] [csv] + badge PINNED
-   */
   {
     title: {
-      es: "Proyecto Completo Ejemplo", // CAMBIAR: Nombre de tu proyecto
-      en: "Complete Example Project"
+      es: "Centro de la Vista",
+      en: "Centro de la Vista"
     },
     description: {
-      // SOPORTA HTML: <strong>, <br>, <span>, etc.
-      es: "<strong>Título destacado del proyecto.</strong><br><br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aquí describes brevemente tu proyecto. <strong>Característica 1</strong>, <strong>Característica 2</strong>, <strong>Característica 3</strong>.",
-      en: "<strong>Project featured title.</strong><br><br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Here you briefly describe your project. <strong>Feature 1</strong>, <strong>Feature 2</strong>, <strong>Feature 3</strong>."
+      es: "Desarrollo web para una clínica oftalmológica moderna. Sitio optimizado con diseño responsivo, enfoque en accesibilidad y velocidad. Incluye secciones de servicios, especialistas, contacto y ubicación.",
+      en: "Web development for a modern ophthalmology clinic. Responsive design with focus on accessibility and speed. Includes service details, specialists, contact, and location sections."
     },
-    explanation: {
-      // OPCIONAL: Descripción detallada que aparece en modal
-      // Útil para explicar contexto, arquitectura, resultados, métricas
-      es: "Aquí va la explicación EXTENDIDA del proyecto (opcional).<br><br><strong>Sección 1:</strong><br>• Punto 1<br>• Punto 2<br>• Punto 3<br><br><strong>Sección 2:</strong><br>• Detalle adicional<br>• Más información<br><br>Usa este campo para dar contexto detallado del proyecto.",
-      en: "Here goes the EXTENDED explanation of the project (optional).<br><br><strong>Section 1:</strong><br>• Point 1<br>• Point 2<br>• Point 3<br><br><strong>Section 2:</strong><br>• Additional detail<br>• More information<br><br>Use this field to give detailed context of the project."
-    },
-    tech: ["Skill 1", "Skill 2", "Skill 3", "Skill 4"], // CAMBIAR: Reemplaza con tecnologías reales (React, Node, etc.)
-    link: "https://github.com/yourusername/repo-name", // CAMBIAR: URL de tu repositorio GitHub
-    demo: "https://demo.yourproject.com", // CAMBIAR: URL de tu demo en vivo (Vercel, Netlify, etc.)
-    web: "https://www.yourproject.com", // CAMBIAR: URL del sitio web oficial
-    csv: "/assets/example-data/sample-data.csv", // CAMBIAR: Ruta a tu archivo CSV en public/assets/
-    featured: true, // true = aparece como "PINNED" al inicio
-    images: [ // CAMBIAR: Rutas a tus screenshots (sin extensión .png, .jpg)
-      "/screenshots/example-project/screenshot-01",
-      "/screenshots/example-project/screenshot-02",
-      "/screenshots/example-project/screenshot-03"
-    ]
-  },
-
-  /**
-   * TIPO 2: PROYECTO DESTACADO
-   * ---------------------------
-   * Proyecto importante pero con menos opciones que el completo.
-   * Tiene: featured, code, web (sin demo, csv, images, explanation)
-   *
-   * USA ESTE COMO PLANTILLA para proyectos destacados simples.
-   *
-   * BOTONES QUE MUESTRA:
-   * [code] [web] + badge PINNED
-   */
-  {
-    title: {
-      es: "Proyecto Destacado",
-      en: "Featured Project"
-    },
-    description: {
-      es: "<strong>Otro proyecto importante.</strong><br><br>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. <strong>Funcionalidad A</strong>, <strong>Funcionalidad B</strong>, <strong>Funcionalidad C</strong>.",
-      en: "<strong>Another important project.</strong><br><br>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. <strong>Functionality A</strong>, <strong>Functionality B</strong>, <strong>Functionality C</strong>."
-    },
-    // Sin explanation = no aparece botón [explicación]
-    tech: ["Skill 1", "Skill 2", "Skill 3"],
-    link: "https://github.com/yourusername/another-repo",
-    demo: null, // null = no mostrar botón [demo]
-    web: "https://www.anotherproject.com",
-    csv: null, // null = no mostrar botón [csv]
-    featured: true, // PINNED
-    images: null // null = no mostrar botón [images]
-  },
-
-  /**
-   * TIPO 3: PROYECTO REGULAR
-   * -------------------------
-   * Proyecto estándar sin destacar.
-   * Tiene: code, demo (sin featured, web, images, explanation, csv)
-   *
-   * USA ESTE COMO PLANTILLA para proyectos normales.
-   *
-   * BOTONES QUE MUESTRA:
-   * [demo] [code]
-   */
-  {
-    title: {
-      es: "Proyecto Regular",
-      en: "Regular Project"
-    },
-    description: {
-      es: "<strong>Descripción breve.</strong><br><br>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Este es un proyecto estándar.",
-      en: "<strong>Brief description.</strong><br><br>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. This is a standard project."
-    },
-    tech: ["Skill A", "Skill B"],
-    link: "https://github.com/yourusername/project-repo",
-    demo: "https://project-demo.com",
+    tech: ["Astro", "Frontend", "Web Design", "Tailwind CSS"],
+    link: "https://github.com/VictorJesusReaValencia", // Enlace a tu perfil de GitHub
+    demo: "https://centrodelavista.com/", // Enlace al sitio real
     web: null,
     csv: null,
-    featured: false, // false = NO aparece como destacado
-    images: null
-  },
-
-  /**
-   * TIPO 4: PROYECTO SIMPLE
-   * ------------------------
-   * Configuración mínima: solo código y tecnologías.
-   * Tiene: code (todo lo demás null/false)
-   *
-   * USA ESTE COMO PLANTILLA para proyectos básicos o en desarrollo.
-   *
-   * BOTONES QUE MUESTRA:
-   * [code] solamente
-   */
-  {
-    title: {
-      es: "Proyecto Simple",
-      en: "Simple Project"
-    },
-    description: {
-      es: "<strong>Proyecto básico.</strong><br><br>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.",
-      en: "<strong>Basic project.</strong><br><br>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore."
-    },
-    tech: ["Skill X", "Skill Y", "Skill Z"],
-    link: "https://github.com/yourusername/simple-project",
-    demo: null, // Todo null = solo muestra [code]
-    web: null,
-    csv: null,
-    featured: false,
+    featured: true, // Proyecto destacado (PINNED)
     images: null
   }
+
 ];
 
 /**

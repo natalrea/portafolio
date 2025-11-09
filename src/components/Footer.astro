@@ -1,593 +1,110 @@
 ---
+// src/components/Footer.astro
 /**
- * COMPONENTE: Footer
- * ==================
- *
- * Pie de página del portfolio con información de contacto y redes sociales.
- * Última sección que ven los visitantes al scrollear la página.
- *
- * PROPÓSITO:
- * - Proporcionar información de contacto (email revelable)
- * - Enlaces a redes sociales profesionales
- * - Copyright y año actual automático
- * - Indicador de disponibilidad (status)
- * - Cerrar la página de forma profesional
- *
- * CARACTERÍSTICAS:
- * - Email ofuscado para prevenir spam de bots
- * - Botón para revelar email (seguridad + tracking)
- * - Enlaces sociales configurables
- * - Año dinámico (no necesitas actualizarlo cada año)
- * - Status indicator animado (disponible/ocupado)
- *
- * ARQUITECTURA:
- * - HTML: Contenido semántico con <footer>, <nav>, etc.
- * - CSS: Grid layout responsive + animaciones sutiles
- * - JavaScript: Lógica de revelación de email con ofuscación Base64
- * - Internacionalización: Todo el contenido viene de translations.ts
- *
- * SEGURIDAD - OFUSCACIÓN DE EMAIL:
- * El email NO está visible en el HTML inicial
- * Se construye dinámicamente al hacer clic usando Base64
- * Esto previene que bots scrapeadores obtengan tu email
- *
- * PERSONALIZACIÓN:
- * 1. Textos: Edita src/i18n/translations.ts
- * 2. Email: Codifica tu email en Base64 (ver comentarios en script)
- * 3. Redes sociales: Actualiza el array socialLinks abajo
+ * Footer corregido — usa socials desde src/config/socials.ts
+ * y la utilidad useI18n para obtener las traducciones correctamente.
  */
 
-// IMPORTACIONES
-// -------------
-// Utilidad de internacionalización para obtener traducciones
-import { useI18n } from '../lib/i18n.js';
+import { socials as socialLinks } from "../config/socials";  // redes desde config
+import { useI18n } from "../lib/i18n.js";                   // helper i18n del template
 
-// PROPS
-// -----
-interface Props {
-  lang?: string;  // Idioma de la página ('es' o 'en')
-}
+// Props / idioma (por defecto 'es')
+const { lang = "es" } = Astro.props;
 
-// Obtiene props con valores por defecto
-const { lang = 'es' } = Astro.props;
-
-// TRADUCCIONES
-// ------------
-// Obtiene todas las traducciones según el idioma actual
-// 't' contiene: contactTitle, contactEmailButton, contactLinks, etc.
+// Obtiene las traducciones en el idioma actual
 const { t } = useI18n(lang);
 
-// AÑO ACTUAL DINÁMICO
-// -------------------
-// Se calcula automáticamente cada vez que se genera el sitio
-// No necesitas actualizar manualmente cada año
+// Año actual
 const currentYear = new Date().getFullYear();
-
-/**
- * CONFIGURACIÓN: Enlaces Sociales
- * --------------------------------
- * Array de tus redes sociales profesionales.
- *
- * CÓMO PERSONALIZAR:
- * 1. Reemplaza "yourusername" con tu usuario real
- * 2. Añade o elimina redes según necesites
- * 3. Los enlaces se renderizan en el orden del array
- *
- * EJEMPLOS DE REDES ADICIONALES:
- * { name: "Email", url: "mailto:tu@email.com" },
- * { name: "Portfolio", url: "https://tu-sitio.com" },
- * { name: "Dev.to", url: "https://dev.to/yourusername" },
- * { name: "CodePen", url: "https://codepen.io/yourusername" }
- */
-const socialLinks = [
-  { name: "GitHub", url: "https://github.com/yourusername" },      // Repositorios de código
-  { name: "Twitter", url: "https://twitter.com/yourusername" },    // Red social / X
-  { name: "LinkedIn", url: "https://linkedin.com/in/yourusername" } // Red profesional
-];
 ---
-
-<!--
-  FOOTER / PIE DE PÁGINA
-  =======================
-
-  ESTRUCTURA HTML:
-  - <footer>: Contenedor principal semántico con id="contact"
-  - .border-top: Línea separadora superior (global.css)
-  - .container: Clase para centrar contenido (global.css)
-
-  SECCIONES:
-  1. footer-content: Contenido principal (contacto + redes)
-     - footer-main: Email revelable
-     - footer-links: Enlaces sociales
-  2. footer-bottom: Copyright + status indicator
-
-  ACCESIBILIDAD:
-  - id="contact": Permite navegación directa con #contact
-  - <nav>: Contenedor semántico para enlaces de navegación
-  - target="_blank": Links externos abren en nueva pestaña
-  - rel="noopener noreferrer": Seguridad para links externos
--->
 <footer id="contact" class="footer border-top">
-  <!-- Contenedor centrado (global.css) -->
-  <div class="container">
-    <!--
-      SECCIÓN PRINCIPAL: Contacto + Redes
-      Grid de 2 columnas en desktop, 1 en mobile
-    -->
-    <div class="footer-content">
-      <!--
-        COLUMNA 1: Email Revelable
-        El email se muestra solo al hacer clic (anti-spam)
-      -->
-      <div class="footer-main">
-        <!-- Título de la sección de contacto -->
-        <h2 class="mono">{t.contactTitle}</h2>
+  <div class="footer-content">
+    <!-- Título principal -->
+    <h2 class="mono">{t.contactTitle}</h2>
 
-        <!--
-          BOTÓN: Revelar Email
-          - Al hacer clic, desaparece y muestra el email
-          - El email se construye dinámicamente (ver script abajo)
-        -->
-        <button class="reveal-email mono" id="reveal-email">
-          {t.contactEmailButton}
-        </button>
+    <!-- Subtítulo / Texto breve -->
+    <h3 class="mono">{t.contactLinks}</h3>
 
-        <!--
-          CONTENEDOR: Email Revelado
-          - Inicialmente oculto (display: none)
-          - El script lo muestra y rellena con el email
-          - #email-text se llenará dinámicamente con un link mailto:
-        -->
-        <div class="email-display mono" id="email-display" style="display: none;">
-          <span class="email-link" id="email-text"></span>
-        </div>
-      </div>
+    <!-- Lista de redes sociales -->
+    <ul class="socials" role="list">
+      {socialLinks.map((social) => (
+        <li>
+          <a href={social.url} target="_blank" rel="noopener noreferrer" class="social-link">
+            {social.icon ? <i class="iconify" data-icon={social.icon}></i> : null}
+            <span>{social.name}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
 
-      <!--
-        COLUMNA 2: Redes Sociales
-        Enlaces a tus perfiles profesionales
-      -->
-      <div class="footer-links">
-        <!-- Título de la sección de enlaces -->
-        <h3 class="mono">{t.contactLinks}</h3>
+    <!-- Copyright -->
+    <p class="mono small-text">
+      {t.footerCopyright.replace("{year}", currentYear.toString())}
+    </p>
 
-        <!--
-          NAV: Enlaces Sociales
-          - <nav>: Elemento semántico para navegación
-          - Se genera dinámicamente desde el array socialLinks
-          - Cada link abre en nueva pestaña (target="_blank")
-        -->
-        <nav class="social-links">
-          {socialLinks.map(link => (
-            <a href={link.url} target="_blank" rel="noopener noreferrer">
-              {link.name}
-            </a>
-          ))}
-        </nav>
-      </div>
-    </div>
-
-    <!--
-      SECCIÓN INFERIOR: Copyright + Status
-      Información secundaria al final del footer
-    -->
-    <div class="footer-bottom">
-      <!--
-        COPYRIGHT:
-        - Se genera dinámicamente con año actual
-        - t.footerCopyright contiene "{year}" que se reemplaza
-        - Ejemplo: "© {year} Tu Nombre" → "© 2025 Tu Nombre"
-      -->
-      <p class="mono">
-        {t.footerCopyright.replace('{year}', currentYear.toString())}
-      </p>
-
-      <!--
-        STATUS INDICATOR:
-        - Indicador de disponibilidad para trabajos
-        - ● con animación pulse (parpadeo)
-        - Texto configurable en translations.ts
-        - Ejemplo: "Disponible para proyectos"
-      -->
-      <p class="mono">
-        <span class="status">●</span> {t.footerStatus}
-      </p>
-    </div>
+    <!-- Status -->
+    <p class="mono small-text">
+      <span class="status">●</span> {t.footerStatus}
+    </p>
   </div>
 </footer>
 
 <style>
-  /**
-   * ESTILOS: Footer
-   * ---------------
-   *
-   * DISEÑO:
-   * - Grid layout de 2 columnas en desktop
-   * - Layout de columna única en mobile
-   * - Espaciado generoso para respiración visual
-   * - Animaciones sutiles en interacciones
-   *
-   * VARIABLES CSS USADAS:
-   * - var(--border): Color del borde
-   * - var(--text): Color del texto
-   * - var(--bg): Color de fondo
-   * - var(--mono): Fuente monoespaciada
-   *
-   * RESPONSIVO:
-   * - Desktop: 2 columnas (contacto + redes)
-   * - Mobile: 1 columna vertical
-   */
-
-  /**
-   * CONTENEDOR: .footer
-   * -------------------
-   * Espaciado del pie de página
-   */
   .footer {
-    padding: 4rem 0 2rem;  /* 64px arriba, 32px abajo */
-    margin-top: 4rem;      /* 64px de separación con contenido previo */
-  }
-
-  /**
-   * CONTENIDO: .footer-content
-   * --------------------------
-   * Grid de 2 columnas en desktop
-   * Columna izquierda (contacto) ocupa más espacio que derecha (redes)
-   */
-  .footer-content {
-    display: grid;
-    grid-template-columns: 2fr 1fr;  /* Columna izq 2x más ancha que derecha */
-    gap: 4rem;                       /* 64px de espacio entre columnas */
-    margin-bottom: 3rem;             /* 48px de espacio debajo */
-  }
-
-  /**
-   * TÍTULO: h2 del footer
-   * ---------------------
-   * Espaciado del título "Contacto"
-   */
-  .footer-main h2 {
-    margin-bottom: 1rem;  /* 16px de espacio debajo */
-  }
-
-  /**
-   * BOTÓN: .reveal-email
-   * --------------------
-   * Botón para revelar el email
-   * Similar al diseño de botones secundarios del Hero
-   */
-  .reveal-email {
+    padding: 3rem 1.5rem;
+    text-align: center;
     background: transparent;
-    border: 2px solid var(--border);   /* Borde adaptable al tema */
-    color: var(--text);                /* Color adaptable al tema */
-    padding: 0.75rem 1.5rem;           /* 12px vertical, 24px horizontal */
-    cursor: pointer;                   /* Indica que es clickeable */
-    transition: all 0.3s;              /* Animación suave 300ms */
-    font-family: var(--mono);          /* Fuente monoespaciada */
-    font-size: 0.9rem;                 /* 14.4px */
-    margin-bottom: 1rem;               /* 16px de espacio debajo */
+    color: inherit;
   }
 
-  /**
-   * HOVER: Botón reveal-email
-   * -------------------------
-   * Efecto al pasar el mouse
-   */
-  .reveal-email:hover {
-    border-color: var(--text);        /* Borde más prominente */
-    transform: translateY(-2px);      /* Levanta 2px hacia arriba */
+  .footer-content {
+    max-width: 900px;
+    margin: 0 auto;
   }
 
-  /**
-   * CONTENEDOR: .email-display
-   * --------------------------
-   * Contenedor del email revelado
-   * Aparece con animación fadeIn al mostrarse
-   */
-  .email-display {
-    margin-top: 1rem;              /* 16px de espacio arriba */
-    animation: fadeIn 0.5s ease-in;  /* Animación de aparición */
-  }
-
-  /**
-   * ANIMACIÓN: fadeIn
-   * -----------------
-   * Aparición suave del email revelado
-   * Combina fade (opacidad) + slide (movimiento)
-   */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;                     /* Comienza invisible */
-      transform: translateY(-10px);   /* Comienza 10px arriba */
-    }
-    to {
-      opacity: 1;                     /* Termina completamente visible */
-      transform: translateY(0);       /* Termina en posición original */
-    }
-  }
-
-  /**
-   * EMAIL LINK: .email-link
-   * -----------------------
-   * Estilos del link de email revelado
-   * Destacado para que sea fácil de ver
-   */
-  .email-link {
-    font-size: 1.25rem;      /* 20px - Grande y visible */
-    font-weight: 500;        /* Semi-bold para destacar */
-    display: inline-block;
-  }
-
-  /**
-   * TÍTULO: h3 de enlaces
-   * ---------------------
-   * Título "Enlaces" en la columna derecha
-   * Más pequeño y con menos prominencia
-   */
-  .footer-links h3 {
-    font-size: 0.9rem;      /* 14.4px - Pequeño */
-    margin-bottom: 1rem;    /* 16px de espacio debajo */
-    opacity: 0.7;           /* 70% visible - Menos prominente */
-  }
-
-  /**
-   * CONTENEDOR: .social-links
-   * -------------------------
-   * Lista de enlaces sociales en columna vertical
-   */
-  .social-links {
+  .socials {
     display: flex;
-    flex-direction: column;  /* Vertical */
-    gap: 0.75rem;            /* 12px entre cada link */
+    justify-content: center;
+    gap: 1.25rem;
+    list-style: none;
+    padding: 1rem 0;
+    margin: 0;
   }
 
-  /**
-   * ENLACES: .social-links a
-   * ------------------------
-   * Estilos de cada enlace social
-   * Opacidad reducida por defecto, aumenta en hover
-   */
-  .social-links a {
-    opacity: 0.7;              /* 70% visible por defecto */
-    transition: opacity 0.2s;  /* Transición suave 200ms */
+  .social-link {
+    text-decoration: none;
+    color: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: opacity 0.2s ease, transform 0.12s ease;
   }
 
-  /**
-   * HOVER: Enlaces sociales
-   * -----------------------
-   * Aumenta opacidad al pasar el mouse
-   */
-  .social-links a:hover {
-    opacity: 1;  /* 100% visible en hover */
+  .social-link:hover {
+    opacity: 0.85;
+    transform: translateY(-2px);
   }
 
-  /**
-   * SECCIÓN INFERIOR: .footer-bottom
-   * --------------------------------
-   * Contenedor de copyright y status
-   * Separado visualmente con borde superior
-   */
-  .footer-bottom {
-    padding-top: 2rem;                    /* 32px de espacio arriba */
-    border-top: 1px solid var(--border);  /* Línea separadora */
-    display: flex;
-    justify-content: space-between;       /* Copyright izq, status der */
-    align-items: center;                  /* Alineación vertical centrada */
-    font-size: 0.85rem;                   /* 13.6px - Pequeño */
-    opacity: 0.6;                         /* 60% visible - Información secundaria */
+  .iconify {
+    font-size: 1.25rem;
+    line-height: 1;
   }
 
-  /**
-   * STATUS INDICATOR: .status
-   * -------------------------
-   * Punto (●) que indica disponibilidad
-   * Color verde con animación pulse
-   */
+  .small-text {
+    font-size: 0.85rem;
+    opacity: 0.7;
+    margin-top: 0.5rem;
+  }
+
   .status {
-    color: #00ff00;              /* Verde brillante (terminal green) */
-    animation: pulse 2s infinite;  /* Parpadea cada 2 segundos, infinitamente */
+    color: #00ff00;
+    margin-right: 0.5rem;
   }
 
-  /**
-   * ANIMACIÓN: pulse
-   * ----------------
-   * Hace que el status indicator parpadee
-   * Simula indicador de "en línea" o "disponible"
-   */
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }    /* Inicio y fin: completamente visible */
-    50% { opacity: 0.5; }       /* Mitad: semi-transparente */
-  }
-
-  /**
-   * RESPONSIVE: Mobile
-   * ------------------
-   * Ajustes para pantallas pequeñas (max-width: 768px)
-   */
-  @media (max-width: 768px) {
-    /**
-     * Contenido en columna única
-     * En mobile, contacto y redes se apilan verticalmente
-     */
-    .footer-content {
-      grid-template-columns: 1fr;  /* 1 columna */
-      gap: 3rem;                   /* 48px entre secciones */
-    }
-
-    /**
-     * Footer bottom vertical
-     * Copyright y status se apilan en mobile
-     */
-    .footer-bottom {
-      flex-direction: column;  /* De horizontal a vertical */
-      gap: 1rem;               /* 16px entre elementos */
-      text-align: center;      /* Texto centrado */
+  @media (max-width: 640px) {
+    .socials {
+      flex-direction: column;
+      gap: 0.6rem;
     }
   }
 </style>
-
-<script>
-  /**
-   * SCRIPT: Email Revelation System
-   * ================================
-   *
-   * Este script maneja la revelación del email de contacto con ofuscación.
-   * Se ejecuta en el navegador (client-side) después de cargar la página.
-   *
-   * PROPÓSITO:
-   * Proteger el email de spam bots mediante ofuscación Base64.
-   * Los bots no pueden leer el email del HTML porque se construye dinámicamente.
-   *
-   * CÓMO FUNCIONA LA OFUSCACIÓN:
-   * 1. El email se divide en usuario + dominio
-   * 2. Cada parte se codifica en Base64
-   * 3. El código Base64 se almacena en el script
-   * 4. Al hacer clic, se decodifica y construye el email completo
-   * 5. Se crea un link mailto: dinámicamente
-   *
-   * VENTAJAS:
-   * - Email NO visible en el HTML inicial
-   * - Bots no pueden scrapearlo del código fuente
-   * - Humanos reales pueden accederlo fácilmente
-   * - Incluye tracking de Analytics
-   *
-   * CÓMO CODIFICAR TU EMAIL EN BASE64:
-   * 1. Ve a: https://www.base64encode.org/
-   * 2. Codifica el usuario (parte antes del @)
-   *    Ejemplo: "tunombre" → "dHVub21icmU="
-   * 3. Codifica el dominio (parte después del @)
-   *    Ejemplo: "ejemplo.com" → "ZWplbXBsby5jb20="
-   * 4. Reemplaza los valores en las líneas marcadas abajo
-   */
-
-  // EVENT LISTENER: DOMContentLoaded
-  // ---------------------------------
-  // Espera a que todo el HTML esté cargado antes de ejecutar
-  document.addEventListener('DOMContentLoaded', () => {
-    // REFERENCIAS AL DOM
-    // ------------------
-    // Encuentra los elementos necesarios por sus IDs
-    const revealButton = document.getElementById('reveal-email');  // Botón de revelar
-    const emailDisplay = document.getElementById('email-display');  // Contenedor del email
-    const emailText = document.getElementById('email-text');        // Span donde irá el link
-
-    // VALIDACIÓN
-    // ----------
-    // Verifica que todos los elementos existan antes de continuar
-    if (revealButton && emailDisplay && emailText) {
-      // EVENT LISTENER: Click en botón
-      // -------------------------------
-      // Se ejecuta cuando el usuario hace clic en "Revelar Email"
-      revealButton.addEventListener('click', () => {
-        // GOOGLE ANALYTICS
-        // ----------------
-        // Registra el evento de revelación de email
-        // Solo si Google Analytics está configurado
-        if (typeof gtag !== 'undefined') {
-          gtag('event', 'reveal_email', {
-            event_category: 'contact',       // Categoría: Contacto
-            event_label: 'email_revealed'    // Etiqueta: Email revelado
-          });
-        }
-
-        /**
-         * DECODIFICACIÓN DEL EMAIL
-         * ------------------------
-         * Construye el email completo decodificando las partes en Base64
-         *
-         * ⚠️ PERSONALIZAR AQUÍ ⚠️
-         * Reemplaza los strings Base64 con los de tu email:
-         *
-         * PASO 1: Codifica tu usuario (antes del @)
-         * Ve a https://www.base64encode.org/
-         * Ingresa solo tu usuario (ej: "tunombre")
-         * Copia el resultado y reemplaza 'eW91cnVzZXJuYW1l'
-         *
-         * PASO 2: Codifica tu dominio (después del @)
-         * Ingresa tu dominio (ej: "gmail.com")
-         * Copia el resultado y reemplaza 'ZXhhbXBsZS5jb20='
-         *
-         * EJEMPLO REAL:
-         * Email: john.doe@gmail.com
-         * Usuario: "john.doe" → Base64: "am9obi5kb2U="
-         * Dominio: "gmail.com" → Base64: "Z21haWwuY29t"
-         * const user = atob('am9obi5kb2U=');
-         * const domain = atob('Z21haWwuY29t');
-         */
-        const user = atob('eW91cnVzZXJuYW1l');   // Base64 de "yourusername" ← CAMBIAR
-        const domain = atob('ZXhhbXBsZS5jb20='); // Base64 de "example.com" ← CAMBIAR
-        const email = user + '@' + domain;        // Construye: usuario@dominio
-
-        // CREACIÓN DEL LINK
-        // -----------------
-        // Crea dinámicamente un elemento <a> con el email
-        const link = document.createElement('a');
-        link.href = 'mailto:' + email;  // Link mailto: para abrir cliente de email
-        link.textContent = email;       // Texto visible del email
-        link.className = 'email-link';  // Clase CSS para estilos
-
-        // INSERCIÓN EN EL DOM
-        // -------------------
-        // Añade el link al contenedor
-        emailText.appendChild(link);
-
-        // ACTUALIZACIÓN DE UI
-        // -------------------
-        // Oculta el botón y muestra el email
-        revealButton.style.display = 'none';   // Oculta botón "Revelar Email"
-        emailDisplay.style.display = 'block';  // Muestra contenedor del email
-      });
-    }
-  });
-</script>
-
-<!--
-  CÓMO PERSONALIZAR EL FOOTER
-  ===========================
-
-  1. CAMBIAR TEXTOS:
-     Edita src/i18n/translations.ts
-     Busca las claves:
-     - contactTitle: "Contacto"
-     - contactEmailButton: "Revelar Email"
-     - contactLinks: "Enlaces"
-     - footerCopyright: "© {year} Tu Nombre"
-     - footerStatus: "Disponible para proyectos"
-
-  2. CONFIGURAR TU EMAIL:
-     Ver instrucciones detalladas en el script arriba
-     Básicamente:
-     a) Ve a https://www.base64encode.org/
-     b) Codifica usuario y dominio por separado
-     c) Reemplaza los valores Base64 en las líneas marcadas
-
-  3. ACTUALIZAR REDES SOCIALES:
-     Edita el array socialLinks en el frontmatter (líneas 82-86)
-     Reemplaza "yourusername" con tu usuario real
-     Añade o elimina redes según necesites
-
-  4. CAMBIAR COLOR DEL STATUS:
-     Línea 387: color: #00ff00;
-     Reemplaza #00ff00 (verde) con otro color
-     Ejemplos:
-     - #ff0000: Rojo (ocupado)
-     - #ffff00: Amarillo (parcialmente disponible)
-     - #0080ff: Azul (freelance)
-
-  5. QUITAR STATUS INDICATOR:
-     Elimina las líneas 186-194 del HTML
-     El punto animado y texto de status desaparecerán
-
-  6. CAMBIAR LAYOUT DEL GRID:
-     Línea 239: grid-template-columns: 2fr 1fr;
-     - 2fr 1fr: Contacto ocupa 2/3, redes 1/3
-     - 1fr 1fr: Ambas columnas iguales
-     - 3fr 1fr: Contacto ocupa 3/4, redes 1/4
-
-  VERIFICAR OFUSCACIÓN:
-  1. Abre el sitio en tu navegador
-  2. Click derecho → "Ver código fuente"
-  3. Busca tu email (Ctrl+F)
-  4. Si NO aparece tu email real, la ofuscación funciona ✓
-  5. Si aparece, revisa que las líneas Base64 estén correctas
--->
