@@ -1,30 +1,31 @@
 ---
-/**
- * Hero.astro — Sección principal del portafolio
- * Victor Rea | Desarrollador de software
- */
-
 interface Props {
   lang?: string;
 }
 
 const { lang = 'es' } = Astro.props;
 
-const translations: Record<string, any> = {
+const translations = {
   es: {
     greeting: "Hola, soy",
-    title: "Victor Rea",
-    subtitle: "Desarrollador de software",
-    description: "Diseño y desarrollo sistemas personalizados que mejoran la productividad, automatizan procesos y ayudan a las empresas a crecer con tecnología a medida.",
-    ctaProjects: "Ver Proyectos",
+    title: "Víctor Rea",
+    subtitle: "Desarrollador de Software",
+    description:
+      "Desarrollo sistemas y soluciones digitales adaptadas a las necesidades de cada cliente, combinando funcionalidad, diseño y rendimiento.",
+    ctaProjects: "Ver Página",
+    pageTitle: "$ página",
+    pageContent: "Diseño y desarrollo sistemas web que impulsan negocios, mejoran la eficiencia y ofrecen experiencias modernas a los usuarios."
   },
   en: {
     greeting: "Hi, I'm",
-    title: "Victor Rea",
+    title: "Víctor Rea",
     subtitle: "Software Developer",
-    description: "I design and develop custom systems that enhance productivity, automate workflows, and help businesses grow through tailored technology.",
-    ctaProjects: "View Projects",
-  },
+    description:
+      "I develop digital systems and solutions tailored to each client’s needs, combining functionality, design, and performance.",
+    ctaProjects: "View Page",
+    pageTitle: "$ page",
+    pageContent: "I design and build web systems that boost businesses, improve efficiency, and provide modern user experiences."
+  }
 };
 
 const t = translations[lang];
@@ -36,12 +37,20 @@ const t = translations[lang];
       <p class="mono greeting">{t.greeting}</p>
       <h1>{t.title}<span class="blink">_</span></h1>
       <p class="subtitle mono">{t.subtitle}</p>
-      <p class="description mono">{t.description}</p>
+      <p class="description mono" set:html={t.description}></p>
 
       <div class="cta">
-        <a href="#projects" class="btn-primary mono">{t.ctaProjects}</a>
+        <a href="#pagina" class="btn-primary mono">{t.ctaProjects}</a>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- Sección "Página" dentro del mismo Hero -->
+<section id="pagina" class="pagina-section">
+  <div class="container">
+    <h2 class="mono">{t.pageTitle}</h2>
+    <p class="mono">{t.pageContent}</p>
   </div>
 </section>
 
@@ -50,82 +59,36 @@ const t = translations[lang];
   min-height: 90vh;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 6rem 1rem;
+  padding: 6rem 0;
 }
-
-.hero-content {
-  max-width: 800px;
-  text-align: center;
-  margin: 0 auto;
-}
-
-.greeting {
-  font-size: 0.9rem;
-  opacity: 0.7;
-  margin-bottom: 0.5rem;
-}
-
-h1 {
-  margin-bottom: 1rem;
-  font-size: 3rem;
-  font-weight: 700;
-}
-
-.blink {
-  animation: blink 1s infinite;
-}
-
-@keyframes blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0; }
-}
-
-.subtitle {
-  font-size: 1.25rem;
-  margin-bottom: 1.5rem;
-  opacity: 0.85;
-}
-
-.description {
-  font-size: 1.1rem;
-  margin-bottom: 2rem;
-  opacity: 0.75;
-}
-
-.cta {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-}
-
+.hero-content { max-width: 800px; }
+.greeting { font-size: 0.9rem; opacity: 0.7; margin-bottom: 0.5rem; }
+h1 { margin-bottom: 1rem; }
+.blink { animation: blink 1s infinite; }
+@keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+.subtitle { font-size: 1.25rem; margin-bottom: 1.5rem; opacity: 0.8; }
+.description { font-size: 1.1rem; margin-bottom: 2rem; opacity: 0.7; }
+.cta { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
 .btn-primary {
   padding: 0.75rem 2rem;
   border: 2px solid var(--text);
   background: var(--text);
   color: var(--bg);
+  transition: 0.3s;
   font-family: var(--mono);
   font-size: 0.9rem;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  border-radius: 0.5rem;
 }
+.btn-primary:hover { transform: translateY(-2px); }
 
-.btn-primary:hover {
-  opacity: 0.9;
-  transform: translateY(-2px);
+.pagina-section {
+  padding: 6rem 1rem;
+  text-align: center;
 }
+.pagina-section h2 { font-size: 1.5rem; margin-bottom: 1rem; }
+.pagina-section p { font-size: 1.1rem; opacity: 0.8; }
 
 @media (max-width: 768px) {
-  h1 {
-    font-size: 2.25rem;
-  }
-  .subtitle {
-    font-size: 1.1rem;
-  }
-  .btn-primary {
-    width: 100%;
-    text-align: center;
-  }
+  .hero { min-height: 80vh; }
+  .cta { flex-direction: column; }
 }
 </style>
