@@ -1,35 +1,42 @@
 ---
-interface Props { lang?: string; }
+interface Props {
+  lang?: string;
+}
+
 const { lang = 'es' } = Astro.props;
 
-const translations: Record<string, any> = {
+const translations = {
   es: {
     greeting: "Hola, soy",
     title: "Víctor Rea",
     subtitle: "Desarrollador de Software",
     description: "Desarrollo sistemas y soluciones digitales adaptadas a las necesidades de cada cliente, combinando funcionalidad, diseño y rendimiento.",
-    ctaProjects: "Proyectos"
+    ctaProjects: "Proyectos",
   },
   en: {
     greeting: "Hi, I'm",
     title: "Víctor Rea",
     subtitle: "Software Developer",
     description: "I develop digital systems and solutions tailored to each client's needs, combining functionality, design, and performance.",
-    ctaProjects: "Projects"
+    ctaProjects: "Projects",
   }
 };
 
 const t = translations[lang];
 ---
 
-<section class="hero">
+<section class="hero" id="inicio">
   <div class="container">
     <div class="hero-content fade-in">
-      <p class="mono greeting">{t.greeting}</p>
-      <h1>{t.title}<span class="blink">_</span></h1>
-      <p class="subtitle mono">{t.subtitle}</p>
-      <p class="description mono">{t.description}</p>
+      <!-- Todo el texto a la izquierda -->
+      <div class="text-left">
+        <p class="mono greeting">{t.greeting}</p>
+        <h1>{t.title}<span class="blink" data-astro-cid-bbe6dcrz>_</span></h1>
+        <p class="subtitle mono">{t.subtitle}</p>
+        <p class="description mono">{t.description}</p>
+      </div>
 
+      <!-- Botón centrado -->
       <div class="cta">
         <a href="#projects" class="btn-primary mono">{t.ctaProjects}</a>
       </div>
@@ -38,17 +45,77 @@ const t = translations[lang];
 </section>
 
 <style>
-html { scroll-behavior: smooth; }
-.hero { min-height: 90vh; display:flex; align-items:center; justify-content:center; padding:6rem 0; text-align:center; }
-.hero-content { max-width:800px; }
-.greeting{font-size:0.9rem; opacity:.7; margin-bottom:.5rem;}
-h1{margin-bottom:1rem;}
-.blink{animation:blink 1s infinite;}
-@keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
-.subtitle{font-size:1.25rem;margin-bottom:1.5rem;opacity:.8}
-.description{font-size:1.1rem;margin-bottom:2rem;opacity:.7}
-.cta{display:flex;justify-content:center}
-.btn-primary{padding:.75rem 2rem;border:2px solid var(--text);background:var(--text);color:var(--bg);transition:.3s;font-family:var(--mono);font-size:.9rem;text-decoration:none}
-.btn-primary:hover{transform:translateY(-2px)}
-@media (max-width:768px){.hero{min-height:80vh}.cta{flex-direction:column}}
+.hero {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 2rem;
+}
+
+.hero-content {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.text-left {
+  text-align: left;
+  animation: slideIn 0.8s forwards;
+  transform: translateX(-50px);
+  opacity: 0;
+}
+
+@keyframes slideIn {
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+h1 {
+  font-size: 3rem;
+  margin-bottom: 0.25rem;
+}
+
+.blink {
+  animation: blink 1s step-start infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.description {
+  font-size: 1.15rem;
+  opacity: 0.85;
+  margin-bottom: 2rem;
+}
+
+.cta {
+  display: flex;
+  justify-content: center;
+}
+
+.btn-primary {
+  padding: 0.75rem 2rem;
+  border: 2px solid var(--text);
+  background: var(--text);
+  color: var(--bg);
+  font-family: var(--mono);
+  font-size: 1rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
 </style>
