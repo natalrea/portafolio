@@ -20,16 +20,16 @@ const translations = {
   es: {
     greeting: "Hola, soy",
     title: "Victor Rea",
-    subtitle: "Desarrollador Full Stack",
-    description: "Soy un desarrollador enfocado en crear experiencias web eficientes, modernas y bien estructuradas.",
-    ctaProjects: "Ver Proyectos"
+    subtitle: "Desarrollador de software",
+    description: "Desarrollo soluciones digitales enfocadas en eficiencia, rendimiento y claridad de código.",
+    ctaProjects: "Ver Proyectos",
   },
   en: {
     greeting: "Hi, I'm",
     title: "Victor Rea",
-    subtitle: "Full Stack Developer",
-    description: "I'm a developer focused on building efficient, modern, and well-structured web experiences.",
-    ctaProjects: "View Projects"
+    subtitle: "Software Developer",
+    description: "I build digital solutions focused on efficiency, performance, and clean code.",
+    ctaProjects: "View Projects",
   }
 };
 
@@ -74,16 +74,17 @@ h1 { margin-bottom: 1rem; }
 @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
 .subtitle { font-size: 1.25rem; margin-bottom: 1.5rem; opacity: 0.8; }
 .description { font-size: 1.1rem; margin-bottom: 2rem; opacity: 0.7; }
-.cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+.cta { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
 .btn-primary { 
   padding: 0.75rem 2rem; 
   border: 2px solid var(--text); 
-  background: var(--text); 
-  color: var(--bg); 
   transition: all 0.3s; 
   display: inline-block; 
   font-family: var(--mono); 
   font-size: 0.9rem; 
+  background: var(--text); 
+  color: var(--bg); 
+  border-bottom: none; 
 }
 .btn-primary:hover { 
   opacity: 1; 
