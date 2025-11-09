@@ -1,58 +1,43 @@
 ---
 /**
- * COMPONENTE: Hero
- * =================
- *
- * Sección principal de presentación del portfolio.
- * Primera sección que ven los visitantes al llegar al sitio.
- *
- * Soporta Español e Inglés.
+ * Hero.astro — Sección principal del portafolio
+ * Victor Rea | Desarrollador de software
  */
 
 interface Props {
-  lang?: string;  // Idioma de la página ('es' o 'en')
+  lang?: string;
 }
 
 const { lang = 'es' } = Astro.props;
 
-// Textos traducidos
-const translations = {
+const translations: Record<string, any> = {
   es: {
     greeting: "Hola, soy",
     title: "Victor Rea",
     subtitle: "Desarrollador de software",
-    description: "Desarrollo soluciones digitales enfocadas en eficiencia, rendimiento y claridad de código.",
+    description: "Diseño y desarrollo sistemas personalizados que mejoran la productividad, automatizan procesos y ayudan a las empresas a crecer con tecnología a medida.",
     ctaProjects: "Ver Proyectos",
   },
   en: {
     greeting: "Hi, I'm",
     title: "Victor Rea",
     subtitle: "Software Developer",
-    description: "I build digital solutions focused on efficiency, performance, and clean code.",
+    description: "I design and develop custom systems that enhance productivity, automate workflows, and help businesses grow through tailored technology.",
     ctaProjects: "View Projects",
-  }
+  },
 };
 
-// Selecciona los textos según el idioma
 const t = translations[lang];
 ---
 
 <section class="hero">
   <div class="container">
     <div class="hero-content fade-in">
-      <!-- SALUDO -->
       <p class="mono greeting">{t.greeting}</p>
-
-      <!-- TÍTULO PRINCIPAL -->
       <h1>{t.title}<span class="blink">_</span></h1>
-
-      <!-- SUBTÍTULO -->
       <p class="subtitle mono">{t.subtitle}</p>
+      <p class="description mono">{t.description}</p>
 
-      <!-- DESCRIPCIÓN -->
-      <p class="description mono" set:html={t.description}></p>
-
-      <!-- BOTÓN CTA -->
       <div class="cta">
         <a href="#projects" class="btn-primary mono">{t.ctaProjects}</a>
       </div>
@@ -65,34 +50,82 @@ const t = translations[lang];
   min-height: 90vh;
   display: flex;
   align-items: center;
-  padding: 6rem 0;
+  justify-content: center;
+  padding: 6rem 1rem;
 }
-.hero-content { max-width: 800px; }
-.greeting { font-size: 0.9rem; opacity: 0.7; margin-bottom: 0.5rem; }
-h1 { margin-bottom: 1rem; }
-.blink { animation: blink 1s infinite; }
-@keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
-.subtitle { font-size: 1.25rem; margin-bottom: 1.5rem; opacity: 0.8; }
-.description { font-size: 1.1rem; margin-bottom: 2rem; opacity: 0.7; }
-.cta { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
-.btn-primary { 
-  padding: 0.75rem 2rem; 
-  border: 2px solid var(--text); 
-  transition: all 0.3s; 
-  display: inline-block; 
-  font-family: var(--mono); 
-  font-size: 0.9rem; 
-  background: var(--text); 
-  color: var(--bg); 
-  border-bottom: none; 
+
+.hero-content {
+  max-width: 800px;
+  text-align: center;
+  margin: 0 auto;
 }
-.btn-primary:hover { 
-  opacity: 1; 
-  transform: translateY(-2px); 
+
+.greeting {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  margin-bottom: 0.5rem;
 }
-@media (max-width: 768px) { 
-  .hero { min-height: 80vh; } 
-  .cta { flex-direction: column; } 
-  .btn-primary { text-align: center; } 
+
+h1 {
+  margin-bottom: 1rem;
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.blink {
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+  opacity: 0.85;
+}
+
+.description {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  opacity: 0.75;
+}
+
+.cta {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.btn-primary {
+  padding: 0.75rem 2rem;
+  border: 2px solid var(--text);
+  background: var(--text);
+  color: var(--bg);
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border-radius: 0.5rem;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2.25rem;
+  }
+  .subtitle {
+    font-size: 1.1rem;
+  }
+  .btn-primary {
+    width: 100%;
+    text-align: center;
+  }
 }
 </style>
