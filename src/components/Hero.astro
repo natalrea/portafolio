@@ -11,14 +11,14 @@ const translations = {
     title: "Víctor Rea",
     subtitle: "Desarrollador de Software",
     description: "Desarrollo sistemas y soluciones digitales adaptadas a las necesidades de cada cliente, combinando funcionalidad, diseño y rendimiento.",
-    ctaProjects: "Proyectos",
+    ctaProjects: "$ ls ~/proyectos",
   },
   en: {
     greeting: "Hi, I'm",
     title: "Víctor Rea",
     subtitle: "Software Developer",
     description: "I develop digital systems and solutions tailored to each client's needs, combining functionality, design, and performance.",
-    ctaProjects: "Projects",
+    ctaProjects: "$ ls ~/projects",
   }
 };
 
@@ -51,12 +51,13 @@ const t = translations[lang];
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding: 2rem;
+  padding: clamp(1rem, 4vw, 2rem);
 }
 
 .hero-content {
   max-width: 700px;
   margin: 0 auto;
+  width: 100%;
 }
 
 .text-left {
@@ -74,8 +75,14 @@ const t = translations[lang];
 }
 
 h1 {
-  font-size: 3rem;
+  font-size: clamp(2rem, 8vw, 3rem);
   margin-bottom: 0.25rem;
+  word-wrap: break-word;
+}
+
+.greeting {
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  margin-bottom: 0.5rem;
 }
 
 .blink {
@@ -87,35 +94,92 @@ h1 {
 }
 
 .subtitle {
-  font-size: 1.25rem;
+  font-size: clamp(1rem, 3vw, 1.25rem);
   margin-bottom: 1rem;
 }
 
 .description {
-  font-size: 1.15rem;
+  font-size: clamp(0.9rem, 2.5vw, 1.15rem);
   opacity: 0.85;
   margin-bottom: 2rem;
+  line-height: 1.6;
 }
 
 .cta {
   display: flex;
   justify-content: center;
+  width: 100%;
 }
 
 .btn-primary {
-  padding: 0.75rem 2rem;
+  padding: clamp(0.6rem, 2vw, 0.75rem) clamp(1.5rem, 4vw, 2rem);
   border: 2px solid var(--text);
   background: var(--text);
   color: var(--bg);
   font-family: var(--mono);
-  font-size: 1rem;
+  font-size: clamp(0.85rem, 2vw, 1rem);
   text-decoration: none;
   transition: all 0.3s ease;
   border-radius: 8px;
+  white-space: nowrap;
+  cursor: pointer;
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
   opacity: 0.9;
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+  .hero {
+    min-height: auto;
+    padding: clamp(1rem, 3vw, 1.5rem);
+  }
+
+  .hero-content {
+    max-width: 100%;
+  }
+
+  .text-left {
+    animation: slideIn 0.8s forwards;
+  }
+}
+
+/* Móviles */
+@media (max-width: 480px) {
+  .hero {
+    padding: 1rem;
+    min-height: auto;
+  }
+
+  .hero-content {
+    width: 100%;
+  }
+
+  h1 {
+    margin-bottom: 0.5rem;
+  }
+
+  .greeting {
+    margin-bottom: 0.25rem;
+  }
+
+  .subtitle {
+    margin-bottom: 0.75rem;
+  }
+
+  .description {
+    margin-bottom: 1.5rem;
+  }
+
+  .btn-primary {
+    word-break: break-word;
+    max-width: 90vw;
+  }
 }
 </style>
