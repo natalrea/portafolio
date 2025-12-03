@@ -16,6 +16,100 @@ import { useI18n } from '../lib/i18n.js';
 const { t } = useI18n('es');
 ---
 
+<style>
+  .tours-section {
+    padding: clamp(1rem, 4vw, 2rem);
+    text-align: center;
+    margin-top: 4rem;
+  }
+
+  .tours-section h2 {
+    margin-bottom: 1rem;
+    font-size: clamp(1.5rem, 5vw, 2rem);
+  }
+
+  .tour-item {
+    margin: clamp(1rem, 4vw, 3rem) auto;
+    max-width: 900px;
+    width: 100%;
+    padding: 0 clamp(0.5rem, 2vw, 1rem);
+    box-sizing: border-box;
+  }
+
+  .tour-item h3 {
+    margin: 0 0 clamp(0.5rem, 2vw, 0.75rem) 0;
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+  }
+
+  .tour-image-container {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .tour-image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+
+  .tour-button-container {
+    text-align: center;
+    margin-top: clamp(0.5rem, 2vw, 0.75rem);
+  }
+
+  .tour-iframe-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .tour-iframe-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  @media (max-width: 768px) {
+    .tours-section {
+      padding: clamp(1rem, 3vw, 1.5rem);
+      margin-top: 2rem;
+    }
+
+    .tour-item {
+      margin: clamp(0.75rem, 3vw, 1.5rem) auto;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .tours-section {
+      padding: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .tour-item {
+      margin: 1rem auto;
+      padding: 0 0.5rem;
+    }
+
+    .tour-item h3 {
+      margin-bottom: 0.5rem;
+    }
+
+    .tour-button-container {
+      margin-top: 0.5rem;
+    }
+  }
+</style>
+
 <Layout
   title={t.siteTitle}
   description={t.siteDescription}
@@ -29,53 +123,43 @@ const { t } = useI18n('es');
     <Projects lang="es" />
 
     <!-- TOURS VIRTUALES -->
-    <section id="tours" class="tours-section" style="padding: 2rem; text-align: center; margin-top: 4rem;">
-      <h2 style="margin-bottom: 1rem;">Tours Virtuales</h2>
-      <p style="margin-bottom: 2rem;">Explora los recorridos virtuales disponibles:</p>
+    <section id="tours" class="tours-section">
+      <h2>Tours Virtuales</h2>
 
       <!-- CICESE (vista previa con imagen) -->
-      <div style="margin: 2rem auto 3rem auto; max-width: 900px;">
-        <h3 style="margin: 0 0 0.75rem 0;">Recorrido Virtual — CICESE</h3>
+      <div class="tour-item">
+        <h3>Recorrido Virtual — CICESE</h3>
 
-        <!-- imagen responsiva -->
-        <div style="width:100%; border:1px solid #ccc; border-radius:8px; overflow:hidden;">
+        <div class="tour-image-container">
           <img
             src="/CICESE.png"
             alt="Vista previa del recorrido CICESE"
-            style="width:100%; height:auto; display:block; object-fit:cover;"
             loading="lazy"
           />
         </div>
-<div style="text-align:center; margin-top:1rem;">
-  <a
-    href="https://ut3.cicese.mx/recorrido"
-    class="btn btn-outline"
-    target="_blank"
-    rel="noopener noreferrer"
-    style="
-      border-color: #fff;
-      color: #fff;
-    "
-  >
-    Ir al recorrido del CICESE
-  </a>
-</div>
 
-
-
+        <div class="tour-button-container">
+          <a
+            href="https://ut3.cicese.mx/recorrido"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-secondary mono"
+          >
+            Ir al recorrido del CICESE
+          </a>
+        </div>
       </div>
 
       <!-- UAE (iframe responsive) -->
-      <div style="margin: 0 auto 3rem auto; max-width: 900px;">
-        <h3 style="margin: 0 0 0.75rem 0;">Recorrido Virtual — UAE</h3>
+      <div class="tour-item">
+        <h3>Recorrido Virtual — UAE</h3>
 
-        <div style="position:relative; width:100%; padding-bottom:56.25%; border:1px solid #ccc; border-radius:8px; overflow:hidden;">
+        <div class="tour-iframe-container">
           <iframe
             src="https://victorjesusreavalencia.github.io/expo-arte/"
             title="Recorrido virtual de UAE"
             allowfullscreen
             loading="lazy"
-            style="position:absolute; top:0; left:0; width:100%; height:100%; border:0;"
           ></iframe>
         </div>
       </div>
@@ -85,39 +169,6 @@ const { t } = useI18n('es');
     <Footer lang="es" />
   </main>
 </Layout>
-
-<!--
-  NOTAS TÉCNICAS
-  ==============
-
-  1. GENERACIÓN ESTÁTICA (SSG):
-     Esta página se genera en build time, no en runtime.
-     Comando: npm run build
-     Output: dist/index.html
-
-  2. IDIOMA POR DEFECTO:
-     Esta página es la raíz (/), por lo que es el idioma por defecto.
-     Los visitantes que accedan a https://tu-dominio.com/ verán esta versión.
-
-  3. CAMBIO DE IDIOMA:
-     El componente LanguageSwitcher (incluido en Layout) permite
-     cambiar entre español (/index.html) e inglés (/en/index.html)
-
-  4. SEO MULTIIDIOMA:
-     Layout.astro incluye tags <link rel="alternate"> que indican
-     a Google que existe una versión alternativa en inglés.
-
-  5. PERFORMANCE:
-     - HTML estático = carga instantánea
-     - Sin JavaScript necesario para renderizar contenido
-     - CSS minificado en producción
-     - Imágenes lazy-loaded automáticamente
-
-  CÓMO VERIFICAR:
-  - Desarrollo: npm run dev → http://localhost:4321
-  - Producción: npm run build && npm run preview
--->
-
 
 <!--
   NOTAS TÉCNICAS
