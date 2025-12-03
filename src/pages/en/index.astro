@@ -81,6 +81,29 @@ const { t } = useI18n('en');
     border: 0;
   }
 
+  .whatsapp-float {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: #25D366;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+    z-index: 1000;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .whatsapp-float:hover {
+    background: #128C7E;
+    transform: translateY(-2px);
+  }
+
   @media (max-width: 768px) {
     .tours-section {
       padding: clamp(1rem, 3vw, 1.5rem);
@@ -109,6 +132,20 @@ const { t } = useI18n('en');
 
     .tour-button-container {
       margin-top: 0.5rem;
+    }
+
+    .whatsapp-float span {
+      display: none;
+    }
+
+    .whatsapp-float {
+      width: 56px;
+      height: 56px;
+      padding: 0;
+      justify-content: center;
+      border-radius: 50%;
+      bottom: 1rem;
+      right: 1rem;
     }
   }
 </style>
@@ -167,6 +204,16 @@ const { t } = useI18n('en');
         </div>
       </div>
     </section>
+
+    <!-- WHATSAPP BUTTON -->
+    <a 
+      href="https://wa.me/525643997593" 
+      target="_blank" 
+      rel="noopener noreferrer" 
+      class="whatsapp-float"
+    >
+      <span>Schedule appointment</span>
+    </a>
 
     <!-- FOOTER -->
     <Footer lang="en" />
