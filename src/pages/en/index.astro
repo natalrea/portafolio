@@ -6,92 +6,169 @@
  * This is the portfolio homepage in English.
  * Route: /en
  * URL: https://your-domain.com/en
- *
- * PURPOSE:
- * - English version of the portfolio homepage
- * - Assembles all portfolio components
- * - Configures meta tags and SEO for English
- * - Alternative language entry point
- *
- * STRUCTURE:
- * - Layout: Main container with HTML, head and meta tags
- * - Hero: Personal presentation section
- * - Projects: Project gallery with filters
- * - Footer: Contact information and social media
- *
- * HOW IT WORKS:
- * - Code between --- --- executes on server (SSG)
- * - Generates static HTML at build time
- * - Generated HTML includes all rendered components
- *
- * CUSTOMIZATION:
- * - NO need to modify this file to customize content
- * - Content is managed from:
- *   - src/i18n/translations.ts (texts)
- *   - src/data/projects-data.ts (projects)
- *   - src/components/ (visual design)
- *
- * SPANISH VERSION:
- * The Spanish version is at: src/pages/index.astro
  */
 
 // IMPORTS
-// -------
-// Layout: Main HTML container with meta tags
 import Layout from '../../layouts/Layout.astro';
-
-// Page components
-import Hero from '../../components/Hero.astro';      // Main presentation section
-import Projects from '../../components/Projects.astro';  // Project gallery
-import Footer from '../../components/Footer.astro';     // Footer with contact
-
-// Internationalization utility to get translations
+import Hero from '../../components/Hero.astro';
+import Projects from '../../components/Projects.astro';
+import Footer from '../../components/Footer.astro';
 import { useI18n } from '../../lib/i18n.js';
 
 // LANGUAGE CONFIGURATION
-// ----------------------
-// Gets English translations from translations.ts
-// The 't' const contains all English texts
 const { t } = useI18n('en');
 ---
 
-<!--
-  HTML STRUCTURE
-  ==============
-  Layout: Wrapper component that generates <html>, <head> and <body>
+<style>
+  .tours-section {
+    padding: clamp(1rem, 4vw, 2rem);
+    text-align: center;
+    margin-top: 4rem;
+  }
 
-  LAYOUT PROPS:
-  - title: Title appearing in browser tab
-  - description: Meta description for SEO (Google, Bing, etc.)
-  - lang: Language code for <html lang=""> attribute
+  .tours-section h2 {
+    margin-bottom: 1rem;
+    font-size: clamp(1.5rem, 5vw, 2rem);
+  }
 
-  SEO BENEFITS:
-  - Localized title improves ranking
-  - Optimized description increases CTR in search results
-  - Correct lang helps search engines index properly
--->
+  .tour-item {
+    margin: clamp(1rem, 4vw, 3rem) auto;
+    max-width: 900px;
+    width: 100%;
+    padding: 0 clamp(0.5rem, 2vw, 1rem);
+    box-sizing: border-box;
+  }
+
+  .tour-item h3 {
+    margin: 0 0 clamp(0.5rem, 2vw, 0.75rem) 0;
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+  }
+
+  .tour-image-container {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .tour-image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+
+  .tour-button-container {
+    text-align: center;
+    margin-top: clamp(0.5rem, 2vw, 0.75rem);
+  }
+
+  .tour-iframe-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .tour-iframe-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  @media (max-width: 768px) {
+    .tours-section {
+      padding: clamp(1rem, 3vw, 1.5rem);
+      margin-top: 2rem;
+    }
+
+    .tour-item {
+      margin: clamp(0.75rem, 3vw, 1.5rem) auto;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .tours-section {
+      padding: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .tour-item {
+      margin: 1rem auto;
+      padding: 0 0.5rem;
+    }
+
+    .tour-item h3 {
+      margin-bottom: 0.5rem;
+    }
+
+    .tour-button-container {
+      margin-top: 0.5rem;
+    }
+  }
+</style>
+
 <Layout
   title={t.siteTitle}
   description={t.siteDescription}
   lang="en"
 >
-  <!--
-    MAIN CONTENT
-    ============
-    Main container with id for accessibility
-    The id allows direct navigation with "skip to content"
-
-    INCLUDED COMPONENTS:
-    1. Hero: Welcome section with name, title and description
-    2. Projects: Project showcase with technology filtering
-    3. Footer: Contact information, social media and copyright
-
-    NOTE: All components receive lang="en" to render
-    English content from translations.ts
-  -->
   <main id="main-content">
+    <!-- HERO -->
     <Hero lang="en" />
+
+    <!-- PROJECTS -->
     <Projects lang="en" />
+
+    <!-- VIRTUAL TOURS -->
+    <section id="tours" class="tours-section">
+      <h2>Virtual Tours</h2>
+
+      <!-- CICESE (preview with image) -->
+      <div class="tour-item">
+        <h3>Virtual Tour — CICESE</h3>
+
+        <div class="tour-image-container">
+          <img
+            src="/CICESE.png"
+            alt="CICESE virtual tour preview"
+            loading="lazy"
+          />
+        </div>
+
+        <div class="tour-button-container">
+          
+            href="https://ut3.cicese.mx/recorrido"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-secondary mono"
+          >
+            Go to CICESE tour
+          </a>
+        </div>
+      </div>
+
+      <!-- UAE (responsive iframe) -->
+      <div class="tour-item">
+        <h3>Virtual Tour — UAE</h3>
+
+        <div class="tour-iframe-container">
+          <iframe
+            src="https://victorjesusreavalencia.github.io/expo-arte/"
+            title="UAE virtual tour"
+            allowfullscreen
+            loading="lazy"
+          ></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
     <Footer lang="en" />
   </main>
 </Layout>
